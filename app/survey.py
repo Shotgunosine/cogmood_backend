@@ -2,11 +2,11 @@ from flask import (Blueprint, redirect, render_template, request, session, url_f
 from .io import write_data, write_metadata
 
 ## Initialize blueprint.
-bp = Blueprint('experiment', __name__)
+bp = Blueprint('survey', __name__)
 
-@bp.route('/experiment')
-def experiment():
-    """Present jsPsych experiment to participant."""
+@bp.route('/survey')
+def survey():
+    """Present survey to participant."""
 
     ## Error-catching: screen for missing session.
     if not 'workerId' in session:
@@ -21,10 +21,10 @@ def experiment():
         return redirect(url_for('complete.complete'))
 
     ## Case 2: repeat visit.
-    elif not session['allow_restart'] and 'experiment' in session:
+    elif not session['allow_restart'] and 'survey' in session:
 
         ## Update participant metadata.
-        session['ERROR'] = "1004: Revisited experiment."
+        session['ERROR'] = "1004: Revisited survey."
         session['complete'] = 'error'
         write_metadata(session, ['ERROR','complete'], 'a')
 
@@ -35,13 +35,13 @@ def experiment():
     else:
 
         ## Update participant metadata.
-        session['experiment'] = True
-        write_metadata(session, ['experiment'], 'a')
+        session['survey'] = True
+        write_metadata(session, ['survey'], 'a')
 
-        ## Present experiment.
-        return render_template('experiment.html', workerId=session['workerId'], assignmentId=session['assignmentId'], hitId=session['hitId'], code_success=session['code_success'], code_reject=session['code_reject'])
+        ## Present survey.
+        return render_template('survey.html', workerId=session['workerId'], assignmentId=session['assignmentId'], hitId=session['hitId'], code_success=session['code_success'], code_reject=session['code_reject'])
 
-@bp.route('/experiment', methods=['POST'])
+@bp.route('/survey', methods=['POST'])
 def pass_message():
     """Write jsPsych message to metadata."""
 

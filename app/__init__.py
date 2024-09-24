@@ -1,7 +1,7 @@
 from pathlib import Path
 import os, sys, re, configparser, warnings
 from flask import (Flask, redirect, render_template, request, session, url_for)
-from app import consent, alert, experiment, complete, error
+from app import consent, alert, survey, complete, error
 from .io import write_metadata
 from .utils import gen_code
 from .database import db, Participant
@@ -46,6 +46,7 @@ allow_restart = cfg['FLASK'].getboolean('ALLOW_RESTART')
 ## Initialize Flask application.
 app = Flask(__name__)
 app.secret_key = secret_key
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 app.config['SQLALCHEMY_DATABASE_URI'] = connection_string
 app.config['SQLALCHEMY_ECHO'] = True
 db.init_app(app)
@@ -67,7 +68,7 @@ with app.app_context():
 ## Apply blueprints to the application.
 app.register_blueprint(consent.bp)
 app.register_blueprint(alert.bp)
-app.register_blueprint(experiment.bp)
+app.register_blueprint(survey.bp)
 app.register_blueprint(complete.bp)
 app.register_blueprint(error.bp)
 
@@ -87,6 +88,7 @@ def index():
     session['allow_restart'] = allow_restart
 
     ## Record incoming metadata.
+    ## todo sanitize the paramters
     info = dict(
         workerId     = request.args.get('PROLIFIC_PID'),    # Prolific metadata
         assignmentId = request.args.get('SESSION_ID'),      # Prolific metadata
@@ -150,8 +152,8 @@ def index():
         elif consent: info['consent'] = consent.group(1)                        # consent = bot
 
         ## Check for previous experiment.
-        experiment = re.search('experiment\t(.*)\n', logs)
-        if experiment: info['experiment'] = experiment.group(1)
+        survey = re.search('survey\t(.*)\n', logs)
+        if survey: info['survey'] = survey.group(1)
 
         ## Check for previous complete.
         complete = re.search('complete\t(.*)\n', logs)
@@ -163,8 +165,8 @@ def index():
         ## Redirect participant as appropriate.
         if 'complete' in session:
             return redirect(url_for('complete.complete'))
-        elif 'experiment' in session:
-            return redirect(url_for('experiment.experiment'))
+        elif 'survey' in session:
+            return redirect(url_for('survey.survey'))
         else:
             return redirect(url_for('consent.consent'))
 
