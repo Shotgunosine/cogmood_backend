@@ -1,5 +1,6 @@
 from flask import (Blueprint, redirect, render_template, request, session, url_for)
 from .io import write_metadata
+from .database import db, Participant
 
 ## Initialize blueprint.
 bp = Blueprint('consent', __name__)
@@ -69,6 +70,18 @@ def consent_post():
         ## Update participant metadata.
         session['consent'] = True
         write_metadata(session, ['consent'], 'a')
+
+        ## TODO: validate subid
+        ## TODO: deal with psycopg2.errors.UniqueViolation: duplicate key value violates unique constraint "participant_subid_key"
+        ## DETAIL:  Key (subid)=(ae1c2x4nmzi7e2q87nomvrer) already exists.
+
+        ## get seqid
+        participant = Participant(subid=session['subId'])
+        db.session.add(participant)
+        db.session.commit()
+        db.session.refresh(participant)
+        session['seqId'] = participant.seqid
+        write_metadata(session, ['seqId'], 'a')
 
         ## Redirect participant to alert page.
         return redirect(url_for('alert.alert'))
