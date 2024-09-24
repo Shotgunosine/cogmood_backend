@@ -1,8 +1,13 @@
+from pathlib import Path
 import os, sys, re, configparser, warnings
 from flask import (Flask, redirect, render_template, request, session, url_for)
 from app import consent, alert, experiment, complete, error
 from .io import write_metadata
 from .utils import gen_code
+from .database import db, Participant
+from sqlalchemy.exc import IntegrityError
+
+
 __version__ = '1.2.6'
 
 ## Define root directory.
@@ -32,13 +37,33 @@ secret_key = cfg['FLASK']['SECRET_KEY']
 if secret_key == "PLEASE_CHANGE_THIS":
     warnings.warn("WARNING: Flask password is currently default. This should be changed prior to production.")
 
+## Get DB password and connection string
+connection_string = os.getenv('CMBEDB_CONNECT')
+
 ## Check restart mode; if true, participants can restart experiment.
 allow_restart = cfg['FLASK'].getboolean('ALLOW_RESTART')
 
 ## Initialize Flask application.
 app = Flask(__name__)
 app.secret_key = secret_key
+app.config['SQLALCHEMY_DATABASE_URI'] = connection_string
+app.config['SQLALCHEMY_ECHO'] = True
+db.init_app(app)
 
+# create a table in the db
+with app.app_context():
+    try:
+        db.create_all()
+    except IntegrityError:
+        pass
+    if debug:
+        print(db.session.execute(db.select(Participant)).scalars().all())
+# load existing subjects into database
+# mds = sorted(Path(meta_dir).glob('*'))
+# to_insert = [[] for md in mds]
+# for md in mds:
+#     to_insert[md['seqId']-1] = Participant(subid=md['SubId'])
+# for pp in to_insert:
 ## Apply blueprints to the application.
 app.register_blueprint(consent.bp)
 app.register_blueprint(alert.bp)
