@@ -1,5 +1,6 @@
 from flask import (Blueprint, redirect, render_template, request, session, url_for)
 from .io import write_metadata
+from .routing import routing
 
 ## Initialize blueprint.
 bp = Blueprint('alert', __name__)
@@ -8,27 +9,10 @@ bp = Blueprint('alert', __name__)
 def alert():
     """Present alert to participant."""
 
-    ## Error-catching: screen for missing session.
-    if not 'workerId' in session:
-
-        ## Redirect participant to error (missing workerId).
-        return redirect(url_for('error.error', errornum=1000))
-
-    ## Case 1: previously completed experiment.
-    elif 'complete' in session:
-
-        ## Redirect participant to complete page.
-        return redirect(url_for('complete.complete'))
-
-    ## Case 2: repeat visit.
-    elif 'alert' in session:
-
-        ## Redirect participant to experiment.
-        return redirect(url_for('survey.survey'))
-
-    ## Case 3: first visit.
+    rres = routing('alert')
+    if rres is not None:
+        return rres
     else:
-
         ## Update participant metadata.
         session['alert'] = True
         write_metadata(session, ['alert'], 'a')
@@ -41,4 +25,4 @@ def alert_post():
     """Process participant repsonse to alert page."""
 
     ## Redirect participant to experiment.
-    return redirect(url_for('survey.survey'))
+    return redirect(url_for('survey.survey', **request.args))

@@ -1,4 +1,5 @@
-import random, string
+import random
+import string
 
 def gen_code(N):
     """Generate random completion code."""

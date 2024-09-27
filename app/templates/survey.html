@@ -1744,15 +1744,6 @@
       ]
   }
 
-  // These functions are needed to hide the clear and ... buttons
-  // Also going to hide the ridiculous svg checkmarks
-  // hide legend at top of choices
-  function hide_actions(_, options) {
-      {#$( ".sd-action-bar.sd-action-title-bar.sd-action-bar--empty").hide()#}
-      {#$( ".sd-item__svg.sd-checkbox__svg").hide()#}
-      {#$( "legend.sv-hidden").hide()#}
-  }
-
   // Setup a markdown converter for survey text so I can bold things
   // https://surveyjs.io/form-library/examples/edit-survey-questions-markdown/vanillajs#content-code
   const converter = new showdown.Converter();
@@ -1767,7 +1758,6 @@
   };
 
   function augment_survey(survey) {
-      survey.onAfterRenderPage.add(hide_actions)
       survey.onTextMarkdown.add(convert_markdown)
   }
 
@@ -1825,7 +1815,7 @@
   function pass_message(msg) {
 
     $.ajax({
-      url: "/experiment",
+      url: "/survey",
       method: 'POST',
       data: JSON.stringify(msg),
       contentType: "application/json; charset=utf-8",

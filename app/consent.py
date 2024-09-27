@@ -1,6 +1,8 @@
 from flask import (Blueprint, redirect, render_template, request, session, url_for)
 from .io import write_metadata
 from .database import db, Participant
+from .routing import routing
+from hashlib import blake2b
 
 ## Initialize blueprint.
 bp = Blueprint('consent', __name__)
@@ -9,41 +11,14 @@ bp = Blueprint('consent', __name__)
 def consent():
     """Present consent form to participant."""
 
-    ## Error-catching: screen for missing session.
-    if not 'workerId' in session:
+    print("foo")
+    print(request.args)
+    rres = routing('consent')
 
-        ## Redirect participant to error (missing workerId).
-        return redirect(url_for('error.error', errornum=1000))
-
-    ## Case 1: previously completed experiment.
-    elif 'complete' in session:
-
-        ## Redirect participant to complete page.
-        return redirect(url_for('complete.complete'))
-
-    ## Case 2: first visit.
-    elif not 'consent' in session:
-
-        ## Present consent form.
+    if rres is None:
         return render_template('consent.html')
-
-    ## Case 3: repeat visit, previous bot-detection.
-    elif session['consent'] == 'BOT':
-
-        ## Redirect participant to error (unusual activity).
-        return redirect(url_for('error.error', errornum=1005))
-
-    ## Case 4: repeat visit, previous non-consent.
-    elif session['consent'] == False:
-
-        ## Redirect participant to error (decline consent).
-        return redirect(url_for('error.error', errornum=1002))
-
-    ## Case 5: repeat visit, previous consent.
     else:
-
-        ## Redirect participant to alert page.
-        return redirect(url_for('alert.alert'))
+        return rres
 
 @bp.route('/consent', methods=['POST'])
 def consent_post():
@@ -57,9 +32,11 @@ def consent_post():
     if bot_check:
 
         ## Update participant metadata.
-        session['consent'] = 'BOT'
+        session['consent'] = False
         session['complete'] = 'error'
-        write_metadata(session, ['consent','complete'], 'a')
+        session['terminalerror'] = 1005
+        session['ERROR'] = '1005: failed bot check on consent.'
+        write_metadata(session, ['consent','complete', 'terminalerror', 'ERROR'], 'a')
 
         ## Redirect participant to error (unusual activity).
         return redirect(url_for('error.error', errornum=1005))
@@ -71,27 +48,32 @@ def consent_post():
         session['consent'] = True
         write_metadata(session, ['consent'], 'a')
 
-        ## TODO: validate subid
+        ## TODO: validate subid and workerId
         ## TODO: deal with psycopg2.errors.UniqueViolation: duplicate key value violates unique constraint "participant_subid_key"
         ## DETAIL:  Key (subid)=(ae1c2x4nmzi7e2q87nomvrer) already exists.
 
+        h_workerId = blake2b(session['workerId'].encode(), digest_size=20).hexdigest()
+
         ## get seqid
-        participant = Participant(subid=session['subId'])
-        db.session.add(participant)
-        db.session.commit()
-        db.session.refresh(participant)
-        session['seqId'] = participant.seqid
-        write_metadata(session, ['seqId'], 'a')
+        if 'seqId' not in session:
+            participant = Participant(subid=session['subId'], workerid=h_workerId)
+            db.session.add(participant)
+            db.session.commit()
+            db.session.refresh(participant)
+            session['seqId'] = participant.seqid
+            write_metadata(session, ['seqId'], 'a')
 
         ## Redirect participant to alert page.
-        return redirect(url_for('alert.alert'))
+        return redirect(url_for('alert.alert', **request.args))
 
     else:
 
         ## Update participant metadata.
         session['consent'] = False
         session['complete'] = 'error'
-        write_metadata(session, ['consent'], 'a')
+        session['terminalerror'] = 1002
+        session['ERROR'] = '1002: did not consent.'
+        write_metadata(session, ['consent', 'complete', 'terminalerror', 'ERROR'], 'a')
 
         ## Redirect participant to error (decline consent).
         return redirect(url_for('error.error', errornum=1002))

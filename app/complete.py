@@ -1,5 +1,6 @@
 from flask import (Blueprint, redirect, render_template, request, session, url_for)
 from .io import write_metadata
+from .config import CFG
 
 ## Initialize blueprint.
 bp = Blueprint('complete', __name__)
@@ -23,21 +24,21 @@ def complete():
         write_metadata(session, ['ERROR','complete','code_reject'], 'a')
 
         ## Redirect participant with decoy code.
-        url = "https://app.prolific.co/submissions/complete?cc=" + session['code_reject']
+        url = "https://app.prolific.co/submissions/complete?cc=" + CFG['code_reject']
         return redirect(url)
 
     ## Case 2: visit complete page with previous rejection.
     elif session['complete'] == 'reject':
 
         ## Redirect participant with decoy code.
-        url = "https://app.prolific.co/submissions/complete?cc=" + session['code_reject']
+        url = "https://app.prolific.co/submissions/complete?cc=" + CFG['code_reject']
         return redirect(url)
 
     ## Case 3: visit complete page with previous rejection.
     elif session['complete'] == 'success':
 
         ## Redirect participant with completion code.
-        url = "https://app.prolific.co/submissions/complete?cc=" + session['code_success']
+        url = "https://app.prolific.co/submissions/complete?cc=" + CFG['code_success']
         return redirect(url)
 
     ## Case 4: visit complete page with previous error.
