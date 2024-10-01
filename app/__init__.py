@@ -9,6 +9,8 @@ from .utils import gen_code
 from .database import db, Participant
 from .routing import routing
 from sqlalchemy.exc import IntegrityError
+from itsdangerous.serializer import Serializer
+
 
 __version__ = '1.2.6'
 
@@ -27,6 +29,11 @@ secret_key = cfg['FLASK']['SECRET_KEY']
 if secret_key == "PLEASE_CHANGE_THIS":
     warnings.warn("WARNING: Flask password is currently default. This should be changed prior to production.")
 
+supreme_secret_key = cfg['SUPREME']['SECRET_KEY']
+if supreme_secret_key == "PLEASE_CHANGE_THIS":
+    warnings.warn("WARNING: SUPREME password is currently default. This should be changed prior to production.")
+
+
 ## Get DB password and connection string
 connection_string = os.getenv('CMBEDB_CONNECT')
 
@@ -38,6 +45,7 @@ app.secret_key = secret_key
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 app.config['SQLALCHEMY_DATABASE_URI'] = connection_string
 app.config['SQLALCHEMY_ECHO'] = True
+app.config['SUPREME_serializer'] = Serializer(supreme_secret_key)
 db.init_app(app)
 
 # create a table in the db

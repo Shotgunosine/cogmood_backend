@@ -11,8 +11,6 @@ bp = Blueprint('consent', __name__)
 def consent():
     """Present consent form to participant."""
 
-    print("foo")
-    print(request.args)
     rres = routing('consent')
 
     if rres is None:

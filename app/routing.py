@@ -16,8 +16,11 @@ def routing(ep):
         hitId        = request.args.get('STUDY_ID'),        # Prolific metadata
         subId        = gen_code(24),                        # NivTurk metadata
         address      = request.remote_addr,                 # NivTurk metadata
-        user_agent   = request.user_agent.string,           # User metadata
+        user_agent   = request.user_agent.string.lower(),   # User metadata
     )
+
+    disallowed_agent = any([device in info['user_agent'] for device in CFG['disallowed_agents']])
+    allowed_agent = any([device in info['user_agent'] for device in CFG['allowed_agents']])
     print("running routing")
     print(info)
     print()
@@ -33,7 +36,7 @@ def routing(ep):
 
     # Case 2: mobile / tablet / game console user.
     # Not a terminal error because we want the user to be able to try again from a different device
-    if any([device in info['user_agent'].lower() for device in CFG['disallowed_agents']]):
+    if disallowed_agent or not allowed_agent:
 
         # Redirect participant to error (platform error).
         return redirect(url_for('error.error', errornum=1001))
@@ -60,8 +63,9 @@ def routing(ep):
         # Redirect participant to error (unusual activity).
         return redirect(url_for('error.error', errornum=1005))
 
-    # Case 6: repeat visit, preexisting log but no session data.
+    # Case 6: workerid not in session
     elif not 'workerId' in session:
+        # Case 6a: metadata exists for workerid
         if h_workerId in os.listdir(CFG['meta']):
 
             ## Parse log file.
@@ -76,7 +80,8 @@ def routing(ep):
                 'survey',
                 'consent',
                 'alert',
-                'dlstart'
+                'dlstart',
+                'dlready'
             ]
 
             for field in bool_fields:
@@ -93,6 +98,7 @@ def routing(ep):
                 'terminalerror',
                 'ERROR',
                 'surveycomplete',
+                'platform'
             ]
 
             for field in fields:
@@ -103,34 +109,44 @@ def routing(ep):
             for k, v in info.items():
                 session[k] = v
 
+            if 'macintosh' in info['user_agent']:
+                session['platform'] = 'mac'
+            else:
+                session['platform'] = 'win'
             write_metadata(session, [
                 'workerId',
                 'hitId',
                 'assignmentId',
                 'subId',
                 'address',
-                'user_agent'
+                'user_agent',
+                'platform'
             ], 'w')
             # Just a little recursion, once the session is updated, the routing rules will work.
             # This way we don't have to repeat the rules
             return routing(ep)
 
-        # case 7: first visit, workerID present
+        # case 6b: first visit, workerID present
         else:
             for k, v in info.items():
                 session[k] = v
+            if 'macintosh' in info['user_agent']:
+                session['platform'] = 'mac'
+            else:
+                session['platform'] = 'win'
             write_metadata(session, [
                 'workerId',
                 'hitId',
                 'assignmentId',
                 'subId',
                 'address',
-                'user_agent'
+                'user_agent',
+                'platform'
             ], 'w')
 
             return redirect(url_for('consent.consent', **request.args))
 
-    # case 8: Not consented
+    # case 7: Not consented
     elif 'consent' not in session:
         print('8')
         if ep == 'consent':
@@ -139,7 +155,7 @@ def routing(ep):
             return redirect(url_for('consent.consent', **request.args))
 
 
-    # case 9: Not viewed alert
+    # case 8: Not viewed alert
     elif ('alert' not in session) or not session['alert']:
         print('9')
         if ep == 'alert':
@@ -148,7 +164,7 @@ def routing(ep):
             return redirect(url_for('alert.alert', **request.args))
 
 
-    # case 10: Survey not complete and restarts not allwoed
+    # case 9: Survey not complete and restarts not allwoed
     elif not CFG['allow_restart'] and 'survey' in session:
 
         ## Update participant metadata.
@@ -160,7 +176,7 @@ def routing(ep):
         ## Redirect participant to error (previous participation).
         return redirect(url_for('error.error', errornum=1004))
 
-    # case 11: Survey not complete
+    # case 10: Survey not complete
     elif 'surveycomplete' not in session:
         if ep == 'survey':
             return
@@ -168,19 +184,13 @@ def routing(ep):
             return redirect(url_for('survey.survey', **request.args))
 
 
-    # case 12: download not started
+    # case 11: download not started
     elif 'dlstart' not in session:
         if ep == 'taskstart':
             return
         else:
-            return redirect(url_for('taskstart.taskstart'))
+            return redirect(url_for('taskstart.taskstart', **request.args))
 
-    # case 13: not complete
-    elif 'complete' not in session:
-        if ep == 'task':
-            return 'task'
-        else:
-            return redirect(url_for('task.task', **request.args))
-
+    # case 12: not complete
     else:
-        return redirect(url_for('error.error', **request.args))
+        return redirect(url_for('task.task', **request.args))

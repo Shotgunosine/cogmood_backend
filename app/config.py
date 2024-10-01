@@ -21,6 +21,10 @@ reject_dir = os.path.join(ROOT_DIR, cfg['IO']['REJECT'])
 if not os.path.isdir(reject_dir): os.makedirs(reject_dir)
 task_dir = os.path.join(data_dir, 'task')
 if not os.path.isdir(task_dir): os.makedirs(task_dir)
+dl_dir = os.path.join(data_dir, 'download')
+if not os.path.isdir(dl_dir): os.makedirs(dl_dir)
+exe_dir = os.path.join(data_dir, 'exe')
+if not os.path.isdir(exe_dir): os.makedirs(exe_dir)
 survey_dir = os.path.join(data_dir, 'survey')
 if not os.path.isdir(survey_dir): os.makedirs(survey_dir)
 
@@ -35,5 +39,8 @@ CFG = dict(
     reject=reject_dir,
     task=task_dir,
     survey=survey_dir,
-    disallowed_agents=json.loads(cfg['FLASK']['DISALLOWED_AGENTS'])
+    download=dl_dir,
+    exe=dl_dir,
+    disallowed_agents=json.loads(cfg['FLASK']['DISALLOWED_AGENTS']),
+    allowed_agents=json.loads(cfg['FLASK']['ALLOWED_AGENTS'])
 )
