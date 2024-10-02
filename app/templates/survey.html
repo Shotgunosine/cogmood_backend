@@ -188,7 +188,7 @@
   function redirect_success() {
 
     // Concatenate metadata into complete URL (returned on success).
-    var url = "{{ url_for("taskstart.taskstart") }}"
+    var url = "{{ url_for("taskstart.taskstart") }}" +'?'+ window.location.href.split('?')[1]
 
     $.ajax({
       url: "/redirect_success",
