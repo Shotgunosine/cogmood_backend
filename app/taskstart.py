@@ -26,20 +26,20 @@ def taskstart():
     rres = routing('taskstart')
 
     supreme_seqid = current_app.config['SUPREME_serializer'].dumps(session['seqId'])
-    win_dlpath = os.path.join(CFG['download'], 'win_' + session['seqId'])
-    mac_dlpath = os.path.join(CFG['download'], 'mac_' + session['seqId'])
+    win_dlpath = os.path.join(CFG['download'], 'win_' + str(session['seqId']) + '.exe')
+    mac_dlpath = os.path.join(CFG['download'], 'mac_' + str(session['seqId']) + '.app')
     make_download(supreme_seqid, win_dlpath, 'windows')
     make_download(supreme_seqid, mac_dlpath, 'mac')
     session['dlready'] = True
     write_metadata(session, ['dlready'], 'a')
     if session['platform'] == 'mac':
-        platform_link = url_for(taskstart.download_mac)
+        platform_link = url_for('taskstart.download_mac')
         other_platform = 'win'
-        other_link = url_for(taskstart.download_win)
+        other_link = url_for('taskstart.download_win')
     else:
-        platform_link = url_for(taskstart.download_win)
+        platform_link = url_for('taskstart.download_win')
         other_platform = 'mac'
-        other_link = url_for(taskstart.download_mac)
+        other_link = url_for('taskstart.download_mac')
     if rres is None:
         return render_template('taskstart.html',
                                platform=session['platform'],
@@ -51,32 +51,32 @@ def taskstart():
 
 @bp.route('/download/mac')
 def download_mac():
-    dlpath = os.path.join(CFG['download'], 'mac_' + session['seqId'])
+    dlpath = os.path.join(CFG['download'], 'mac_' + str(session['seqId']) + '.app')
 
     session['dlstarted'] = True
     write_metadata(session, ['dlstarted'], 'a')
     if os.path.exists(dlpath) and session['dlready']:
-        # TODO: figure out mimetype and file extension
         return send_file(
             dlpath,
             as_attachment=True,
-            download_name='CogMood_task'
+            download_name='CogMood_task',
+            mimetype="inode/directory"
         )
     else:
         return redirect(url_for('task.task', **request.args))
 
 @bp.route('/download/win')
 def download_win():
-    dlpath = os.path.join(CFG['download'], 'win_' + session['seqId'])
+    dlpath = os.path.join(CFG['download'], 'win_' + str(session['seqId']) + '.exe')
 
     session['dlstarted'] = True
     write_metadata(session, ['dlstarted'], 'a')
     if os.path.exists(dlpath) and session['dlready']:
-        # TODO: figure out mimetype and file extension
         return send_file(
             dlpath,
             as_attachment=True,
-            download_name='CogMood_task'
+            download_name='CogMood_task',
+            mimetype="application/vnd.microsoft.portable-executable"
         )
     else:
         return redirect(url_for('task.task', **request.args))

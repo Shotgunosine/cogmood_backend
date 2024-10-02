@@ -16,7 +16,7 @@ def survey():
         return rres
     else:
         ## Case 6: repeat visit allowed
-        ## TODO: implement this
+        ## TODO: implement survey resumption
         ## https://surveyjs.io/form-library/examples/healthcare/patient-medical-history-form-template/vanillajs#content-code
         ## https://www.google.com/search?q=flask+render+json+in+template&oq=flask+render+json+in&gs_lcrp=EgZjaHJvbWUqCAgBEAAYFhgeMgYIABBFGDkyCAgBEAAYFhgeMggIAhAAGBYYHjIICAMQABgWGB4yCAgEEAAYFhgeMggIBRAAGBYYHjIKCAYQABiABBiiBDIKCAcQABiABBiiBDIKCAgQABiABBiiBDIKCAkQABiABBiiBNIBCDc4MzFqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8
         if CFG['allow_restart'] and 'survey' in session:
@@ -37,8 +37,35 @@ def survey():
                 assignmentId=session['assignmentId'],
                 hitId=session['hitId'],
                 code_success=CFG['code_success'],
+                code_attn3=CFG['code_attn3'],
+                code_attn4=CFG['code_attn4'],
+                code_attn5=CFG['code_attn5'],
                 code_reject=CFG['code_reject']
             )
+
+@bp.route('/surveynodl', methods=['POST'])
+def survey_nodl():
+    if request.is_json:
+
+        ## Retrieve jsPsych data.
+        JSON = request.get_json()
+
+        ## Save jsPsch data to disk.
+        write_surveydata(session, JSON, method='incomplete')
+
+    ## Flag partial data saving.
+    session['MESSAGE'] = 'incomplete dataset saved'
+    session['terminalerror'] = 1008
+    session['ERROR'] = '1008: not willing to download and run task.'
+    session['complete'] = 'error'
+    write_metadata(session, ['MESSAGE', 'terminalerror', 'ERROR', 'complete'], 'a')
+
+    ## DEV NOTE:
+    ## This function returns the HTTP response status code: 200
+    ## Code 200 signifies the POST request has succeeded.
+    ## For a full list of status codes, see:
+    ## https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+    return ('', 200)
 
 @bp.route('/survey', methods=['POST'])
 def pass_message():
@@ -52,7 +79,7 @@ def pass_message():
         ## Update participant metadata.
         session['MESSAGE'] = msg
         write_metadata(session, ['MESSAGE'], 'a')
-
+    # TODO: implement intermediate rejection for failing check questions
     ## DEV NOTE:
     ## This function returns the HTTP response status code: 200
     ## Code 200 signifies the POST request has succeeded.
@@ -60,6 +87,23 @@ def pass_message():
     ## https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
     return ('', 200)
 
+@bp.route('/ongoing_save', methods=['POST'])
+def ongoing_save():
+    """Save incomplete jsPsych dataset to disk."""
+
+    if request.is_json:
+
+        ## Retrieve jsPsych data.
+        JSON = request.get_json()
+        ## Save jsPsch data to disk.
+        write_surveydata(session, JSON, method='ongoing')
+
+    ## DEV NOTE:
+    ## This function returns the HTTP response status code: 200
+    ## Code 200 signifies the POST request has succeeded.
+    ## For a full list of status codes, see:
+    ## https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+    return ('', 200)
 @bp.route('/incomplete_save', methods=['POST'])
 def incomplete_save():
     """Save incomplete jsPsych dataset to disk."""
@@ -74,9 +118,7 @@ def incomplete_save():
 
     ## Flag partial data saving.
     session['MESSAGE'] = 'incomplete dataset saved'
-    # if they save incomplete survey data, we're going to make them view tha alert again
-    session['alert'] = False
-    write_metadata(session, ['MESSAGE', 'alert'], 'a')
+    write_metadata(session, ['MESSAGE'], 'a')
 
     ## DEV NOTE:
     ## This function returns the HTTP response status code: 200

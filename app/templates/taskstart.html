@@ -4,10 +4,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>CogMood - Task</title>
-  <link rel="stylesheet" href="/static/css/tacit-css.min.css"/>
+  <link rel="stylesheet" href="../static/css/tacit-css.min.css"/>
+
+
 </head>
 <style>
-
+    div.box {
+        text-align: center;
+    }
 </style>
 <body>
 
@@ -16,9 +20,15 @@
   <p>
       Placeholder
   </p>
-  <a class="btn btn-success" href="{{platform_link}}">Download</a>
-  <br>
-  <a href="{{other_link}}">Download for {{other_platform.title()}}</a>
+  <div id="buttons-box" class="box">
+      <button onclick="location.href='{{ platform_link }}';">
+          Download
+          <br>
+          <small> for {{ platform.title() }}</small>
+      </button>
+      <br>
+      <small><a href="{{other_link}}">Download for {{ other_platform.title() }}</a></small>
+  </div>
 
 </body>
 <script>

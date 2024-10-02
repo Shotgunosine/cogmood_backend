@@ -27,18 +27,33 @@ exe_dir = os.path.join(data_dir, 'exe')
 if not os.path.isdir(exe_dir): os.makedirs(exe_dir)
 survey_dir = os.path.join(data_dir, 'survey')
 if not os.path.isdir(survey_dir): os.makedirs(survey_dir)
+survey_incomplete_dir = os.path.join(survey_dir, 'incomplete')
+if not os.path.isdir(survey_incomplete_dir): os.makedirs(survey_incomplete_dir)
+survey_ongoing_dir = os.path.join(survey_dir, 'ongoing')
+if not os.path.isdir(survey_ongoing_dir): os.makedirs(survey_ongoing_dir)
+survey_reject_dir = os.path.join(survey_dir, 'reject')
+if not os.path.isdir(survey_reject_dir): os.makedirs(survey_reject_dir)
+survey_complete_dir = os.path.join(survey_dir, 'complete')
+if not os.path.isdir(survey_complete_dir): os.makedirs(survey_complete_dir)
 
 CFG = dict(
     debug=cfg['FLASK'].getboolean('DEBUG'),
     allow_restart=cfg['FLASK'].getboolean('ALLOW_RESTART'),
     code_success=cfg['PROLIFIC'].get('CODE_SUCCESS', gen_code(8).upper()),
     code_reject=cfg['PROLIFIC'].get('CODE_REJECT', gen_code(8).upper()),
+    code_attn3=cfg['PROLIFIC'].get('CODE_ATTN3', gen_code(8).upper()),
+    code_attn4=cfg['PROLIFIC'].get('CODE_ATTN4', gen_code(8).upper()),
+    code_attn5=cfg['PROLIFIC'].get('CODE_ATTN5', gen_code(8).upper()),
     data=data_dir,
     meta=meta_dir,
     incomplete=incomplete_dir,
     reject=reject_dir,
     task=task_dir,
     survey=survey_dir,
+    s_incomplete=survey_incomplete_dir,
+    s_ongoing=survey_ongoing_dir,
+    s_reject=survey_reject_dir,
+    s_complete=survey_complete_dir,
     download=dl_dir,
     exe=dl_dir,
     disallowed_agents=json.loads(cfg['FLASK']['DISALLOWED_AGENTS']),

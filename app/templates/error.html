@@ -57,6 +57,20 @@
 
   <p>Please return the study so someone else can perform the experiment.</p>
 
+  {% elif errornum == 1007 %}
+
+  <p>We have detected unusual or noncompliant activity from your account. You accessed the completion page directly without completing the survey and task first. Please note that if we detect similar behavior from your account in the future, you may be permanently excluded from all future experiments.</p>
+
+  <p>If you would like to receive partial compensation, or if you have reached this page following an error, please send us a message on Prolific describing the error that you experienced.</p>
+
+  <p>Please return the study so someone else can perform the experiment.</p>
+
+  {% elif errornum == 1008 %}
+
+  <p>You have indicated that you are not willing to download and run the task on your computer.</p>
+
+  <p>Please return the study so someone else can perform the experiment.</p>
+
   {% else %}
 
   <p>Sorry, there was an unexpected error in our processing of your study.</p>

@@ -1,4 +1,5 @@
 import os
+import json
 from datetime import datetime
 from hashlib import blake2b
 from .config import CFG
@@ -28,7 +29,7 @@ def write_metadata(session, keys, mode='w'):
         for k in keys:
             f.write(f'{timestamp}\t{k}\t{session[k]}\n')
 
-def write_surveydata(session, json, method='pass'):
+def write_surveydata(session, jsondat, method='pass'):
     """Write jsPsych output to disk.
 
     Parameters
@@ -43,10 +44,16 @@ def write_surveydata(session, json, method='pass'):
 
     ## Write data to disk.
     if method == 'pass':
-        fout = os.path.join(CFG['survey'], '%s.json' %session['subId'])
+        fout = os.path.join(CFG['s_complete'], '%s.json' %session['subId'])
     elif method == 'reject':
-        fout = os.path.join(CFG['reject'], '%s.json' %session['subId'])
+        fout = os.path.join(CFG['s_reject'], '%s.json' %session['subId'])
     elif method == 'incomplete':
-        fout = os.path.join(CFG['incomplete'], '%s.json' %session['subId'])
-
-    with open(fout, 'w') as f: f.write(json)
+        fout = os.path.join(CFG['s_incomplete'], '%s.json' %session['subId'])
+    elif method == 'ongoing':
+        fout = os.path.join(CFG['s_ongoing'], '%s.json' %session['subId'])
+    try:
+        with open(fout, 'w') as f:
+            f.write(jsondat)
+    except TypeError:
+        with open(fout, 'w') as f:
+            f.write(json.dumps(jsondat, indent=2))
