@@ -55,6 +55,13 @@
       survey.onTextMarkdown.add(convert_markdown)
       survey.onValueChanged.add(ongoing_save)
       survey.onValueChanged.add(save_current_page)
+      {% if prev_data is not none %}
+          let parsed_data = JSON.parse({{ prev_data|tojson|safe }});
+          survey.data = parsed_data
+          if (parsed_data.pageNo) {
+              survey.currentPageNo = parsed_data.pageNo
+          }
+      {% endif %}
   }
 
   // Define global variables.
@@ -64,7 +71,7 @@
     type: jsPsychSurvey,
     survey_json: survey_json,
     survey_function:  augment_survey,
-    onstart: function(data) {
+    on_start: function(data) {
       pass_message('message to pass to nivturk')
     },
   };
@@ -75,32 +82,28 @@
   // Initialize jsPsych.
   var jsPsych = initJsPsych({
     on_finish: function() {
-      // Remove requirement to verify redirect
-      window.removeEventListener("beforeunload", verify_unload);
+        // Remove requirement to verify redirect
+        window.removeEventListener("beforeunload", verify_unload);
 
-      // Add interactions to the data variable
-      var interaction_data = jsPsych.data.getInteractionData();
-      jsPsych.data.get().addToLast({interactions: interaction_data.json()});
+        // Figure out if we had an early exit due to check questions
+        var csd = jsPsych.data.get()['trials'][0]['response']
+        // Add interactions to the data variable
+        var interaction_data = jsPsych.data.getInteractionData();
+        jsPsych.data.get().addToLast({interactions: interaction_data.json()});
 
-      // Display jsPsych data in viewport.
-      // jsPsych.data.displayData();
-      switch(currentpage) {
-          // did not agree to download and run task on their computer
-          case "screen":
-              nodl(1008)
-              break;
-          case "hitop_02":
-              redirect_reject("{{workerId}}", "{{assignmentId}}", "{{hitId}}", "{{code_attn3}}");
-              break;
-          case "hitop_08":
-              redirect_reject("{{workerId}}", "{{assignmentId}}", "{{hitId}}", "{{code_attn4}}");
-              break;
-          case "hitop_14":
-              redirect_reject("{{workerId}}", "{{assignmentId}}", "{{hitId}}", "{{code_attn5}}");
-              break;
-          default:
-              redirect_success("{{workerId}}", "{{assignmentId}}", "{{hitId}}", "{{code_success}}");
-      }
+        // Display jsPsych data in viewport.
+        // jsPsych.data.displayData();
+        if (csd['attn__1'] != 'Yes') {
+            nodl(1008);
+        } else if (csd['attn_fails'] < 2) {
+            redirect_success("{{workerId}}", "{{assignmentId}}", "{{hitId}}", "{{code_success}}");
+        } else if (csd['hitop_02']['attn__3'] != 2) {
+            redirect_reject("{{workerId}}", "{{assignmentId}}", "{{hitId}}", "{{code_attn3}}");
+        } else if (csd['hitop_08']['attn__4'] != 3) {
+            redirect_reject("{{workerId}}", "{{assignmentId}}", "{{hitId}}", "{{code_attn4}}");
+        } else if (csd['hitop_14']['attn__5'] != 0) {
+            redirect_reject("{{workerId}}", "{{assignmentId}}", "{{hitId}}", "{{code_attn5}}");
+        }
     }
   });
 
@@ -131,10 +134,12 @@
 
     // Save an ongoing data.
   function ongoing_save(survey) {
+    var ogdata = survey.data;
+    ogdata.pageNo = survey.currentPageNo;
     $.ajax({
       url: "/ongoing_save",
       method: 'POST',
-      data: JSON.stringify(survey.data),
+      data: JSON.stringify(ogdata),
       contentType: "application/json; charset=utf-8",
       xhrFields: {
         withCredentials: true

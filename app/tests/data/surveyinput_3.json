@@ -1,0 +1,442 @@
+[
+  [
+    {
+      "type": "checkbox",
+      "title": "Which most closely describes your racial group(s)?",
+      "answer": "White"
+    },
+    {
+      "type": "radiogroup",
+      "title": "Which most closely describes your ethnic group?",
+      "answer": "Not Hispanic or Latino"
+    },
+    {
+      "type": "radiogroup",
+      "title": "Which most closely describes your gender?",
+      "answer": "Prefer not to answer"
+    },
+    {
+      "type": "radiogroup",
+      "title": "What was your biological sex at birth?",
+      "answer": "Prefer not to answer"
+    },
+    {
+      "type": "text",
+      "title": "How old are you (in years)?",
+      "answer": 20
+    }
+  ],
+  [],
+  [
+    {
+      "type": "radiogroup",
+      "title": "Do you have \u2013 or have you had \u2013 a diagnosed, on-going mental health/illness/condition?",
+      "answer": "No"
+    },
+    {
+      "type": "radiogroup",
+      "title": "Do you have any diagnosed mental health condition that is uncontrolled (by medication or intervention) and which has a significant impact on your daily life / activities?",
+      "answer": "No"
+    },
+    {
+      "type": "radiogroup",
+      "title": "Do you experience depression?",
+      "answer": "No"
+    },
+    {
+      "type": "radiogroup",
+      "title": "Do you experience anxiety?",
+      "answer": "No"
+    },
+    {
+      "type": "radiogroup",
+      "title": "Do you consider yourself to have attention deficit disorder (ADD)/attention deficit hyperactivity disorder (ADHD)?",
+      "answer": "Yes"
+    },
+    {
+      "type": "radiogroup",
+      "title": "Are you willing to download and run tasks on your computer?",
+      "answer": "Yes"
+    }
+  ],
+  [
+    {
+      "type": "radiogroup",
+      "title": "Have you been diagnosed with a mood disorder",
+      "answer": "Yes"
+    }
+  ],
+  [
+    {
+      "type": "checkbox",
+      "title": "Which mood disorders have you been diagnosed with? Please select all that apply.",
+      "answer": "Bipolar II Disorder"
+    },
+    {
+      "type": "text",
+      "title": "How many years ago were you first diagnosed with a mood disorder (to the best of your ability to recall)?",
+      "answer": 20
+    },
+    {
+      "type": "checkbox",
+      "title": "Are you currently receiving treatment for this disorder, if so, which types? Please select all treatments that you have received in the last month that are intended to treat your mood disorder(s).",
+      "answer": "Group therapy"
+    },
+    {
+      "type": "radiogroup",
+      "title": "In the past two weeks have you been bothered by symptoms of your mood disorder(s)?",
+      "answer": "Yes"
+    }
+  ],
+  [
+    {
+      "type": "radiogroup",
+      "title": "Have you been diagnosed with an anxiety disorder",
+      "answer": "Yes"
+    }
+  ],
+  [
+    {
+      "type": "checkbox",
+      "title": "Which anxiety disorders have you been diagnosed with? Please select all that apply.",
+      "answer": "Selective Mutism"
+    },
+    {
+      "type": "text",
+      "title": "How many years ago were you first diagnosed with an anxiety disorder (to the best of your ability to recall)?",
+      "answer": 20
+    },
+    {
+      "type": "checkbox",
+      "title": "Are you currently receiving treatment for this disorder, if so, which types? Please select all treatments that you have received in the last month that are intended to treat your anxiety disorder(s).",
+      "answer": "Serotonin and Norepinephrine Reuptake Inhibitor (SNRI), such as: Cymbalta (duloxetine), Effexor (venalfaxine)"
+    },
+    {
+      "type": "radiogroup",
+      "title": "In the past two weeks have you been bothered by symptoms of your anxiety disorder(s)?",
+      "answer": "Yes"
+    }
+  ],
+  [
+    {
+      "type": "radiogroup",
+      "title": "Have you been diagnosed with attention-deficit/hyperactivity disorder (ADHD) or attention-deficit disorder (ADD)?",
+      "answer": "Yes"
+    }
+  ],
+  [
+    {
+      "type": "checkbox",
+      "title": "Which attention disorders have you been diagnosed with? Please select all that apply.",
+      "answer": "Attention-Deficit Disorder (ADD)"
+    },
+    {
+      "type": "text",
+      "title": "How many years ago were you first diagnosed with an attention disorder (to the best of your ability to recall)?",
+      "answer": 20
+    },
+    {
+      "type": "checkbox",
+      "title": "Are you currently receiving treatment for this disorder, if so, which types? Please select all treatments that you have received in the last month that are intended to treat your anxiety disorder(s).",
+      "answer": "Strattera (atomoxetine)"
+    },
+    {
+      "type": "radiogroup",
+      "title": "In the past two weeks have you been bothered by symptoms of your attention disorder(s)?",
+      "answer": "Yes"
+    }
+  ],
+  [
+    {
+      "type": "matrix",
+      "title": "Fail to give close attention to details or make careless mistakes in my work or other activities",
+      "answer": "Never or rarely"
+    },
+    {
+      "type": "matrix",
+      "title": "Difficulty sustaining my attention in tasks or fun activities",
+      "answer": "Never or rarely"
+    },
+    {
+      "type": "matrix",
+      "title": "Don't listen when spoken to directly",
+      "answer": "Sometimes"
+    },
+    {
+      "type": "matrix",
+      "title": "Don't follow through on instructions and fail to finish work or chores",
+      "answer": "Often"
+    },
+    {
+      "type": "matrix",
+      "title": "Have difficulty organizing tasks and activities",
+      "answer": "Often"
+    },
+    {
+      "type": "matrix",
+      "title": "Avoid, dislike, or am reluctant to engage in tasks that require sustained mental effort",
+      "answer": "Sometimes"
+    },
+    {
+      "type": "matrix",
+      "title": "To check if you are a true respondent, please select \"Very often\" for this item.",
+      "answer": "Sometimes"
+    },
+    {
+      "type": "matrix",
+      "title": "Lose things necessary for tasks or activities",
+      "answer": "Never or rarely"
+    },
+    {
+      "type": "matrix",
+      "title": "Easily distracted by extraneous stimuli or irrelevant thoughts",
+      "answer": "Never or rarely"
+    },
+    {
+      "type": "matrix",
+      "title": "Forgetful in daily activities",
+      "answer": "Very Often"
+    }
+  ],
+  [
+    {
+      "type": "matrix",
+      "title": "Fidget with hands or feet or squirm in seat",
+      "answer": "Very Often"
+    },
+    {
+      "type": "matrix",
+      "title": "Leave my seat in classrooms or in other situations in which remaining seated is expected",
+      "answer": "Sometimes"
+    },
+    {
+      "type": "matrix",
+      "title": "Shift around excessively or feel restless or hemmed in",
+      "answer": "Often"
+    },
+    {
+      "type": "matrix",
+      "title": "Have difficulty engaging in leisure activities quietly (feel uncomfortable, or am loud or noisy)",
+      "answer": "Sometimes"
+    },
+    {
+      "type": "matrix",
+      "title": "I am \"on the go\" or act as if \"driven by a motor\" (or I feel like I have to be busy or always doing something)",
+      "answer": "Sometimes"
+    }
+  ],
+  [
+    {
+      "type": "matrix",
+      "title": "Talk excessively (in social situations)",
+      "answer": "Never or rarely"
+    },
+    {
+      "type": "matrix",
+      "title": "Blurt out answers before questions have been completed, complete others' sentences, or jump the gun",
+      "answer": "Sometimes"
+    },
+    {
+      "type": "matrix",
+      "title": "Have difficulty awaiting my turn",
+      "answer": "Often"
+    },
+    {
+      "type": "matrix",
+      "title": "Interrupt or intrude on others (butt into conversations or activities without permission or take over what others are doing)",
+      "answer": "Sometimes"
+    }
+  ],
+  [
+    {
+      "type": "matrix",
+      "title": "Prone to daydreaming when I should be concentrating on something or working",
+      "answer": "Never or rarely"
+    },
+    {
+      "type": "matrix",
+      "title": "Have trouble staying alert or awake in boring situations",
+      "answer": "Often"
+    },
+    {
+      "type": "matrix",
+      "title": "Easily confused",
+      "answer": "Very Often"
+    },
+    {
+      "type": "matrix",
+      "title": "Easily bored",
+      "answer": "Sometimes"
+    },
+    {
+      "type": "matrix",
+      "title": "Spacey or \"in a fog\"",
+      "answer": "Sometimes"
+    },
+    {
+      "type": "matrix",
+      "title": "Lethargic, more tired than others",
+      "answer": "Often"
+    },
+    {
+      "type": "matrix",
+      "title": "Underactive or have less energy than others",
+      "answer": "Never or rarely"
+    },
+    {
+      "type": "matrix",
+      "title": "Slow moving",
+      "answer": "Never or rarely"
+    },
+    {
+      "type": "matrix",
+      "title": "I don't seem to process information as quickly or as accurately as others",
+      "answer": "Very Often"
+    }
+  ],
+  [
+    {
+      "type": "matrix",
+      "title": "Feeling nervous, anxious or on edge",
+      "answer": "Not at all"
+    },
+    {
+      "type": "matrix",
+      "title": "Not being able to stop or control worrying",
+      "answer": "Several days"
+    },
+    {
+      "type": "matrix",
+      "title": "Worrying too much about different things",
+      "answer": "Not at all"
+    },
+    {
+      "type": "matrix",
+      "title": "Trouble relaxing",
+      "answer": "Nearly every day"
+    },
+    {
+      "type": "matrix",
+      "title": "Being so restless that it is hard to sit still",
+      "answer": "Not at all"
+    },
+    {
+      "type": "matrix",
+      "title": "Becoming easily annoyed or irritable",
+      "answer": "More than half the days"
+    },
+    {
+      "type": "matrix",
+      "title": "Feeling afraid, as if something awful might happen",
+      "answer": "Several days"
+    }
+  ],
+  [
+    {
+      "type": "matrix",
+      "title": "Little interest or pleasure in doing things",
+      "answer": "Nearly every day"
+    },
+    {
+      "type": "matrix",
+      "title": "Feeling down, depressed, irritable or hopeless",
+      "answer": "Nearly every day"
+    },
+    {
+      "type": "matrix",
+      "title": "Trouble falling or staying asleep, or sleeping too much",
+      "answer": "More than half the days"
+    },
+    {
+      "type": "matrix",
+      "title": "Feeling tired or having little energy",
+      "answer": "More than half the days"
+    },
+    {
+      "type": "matrix",
+      "title": "Poor appetite or overeating",
+      "answer": "Not at all"
+    },
+    {
+      "type": "matrix",
+      "title": "Feeling bad about yourself \u2013 or that you are a failure or have let yourself or your family down",
+      "answer": "Not at all"
+    },
+    {
+      "type": "matrix",
+      "title": "Trouble concentrating on things, such as school work, reading or watching television",
+      "answer": "Nearly every day"
+    },
+    {
+      "type": "matrix",
+      "title": "Moving or speaking so slowly that other people could have noticed? Or the opposite \u2013 being so fidgety or restless that you have been moving around a lot more than usual",
+      "answer": "Not at all"
+    }
+  ],
+  [],
+  [],
+  [
+    {
+      "type": "matrix",
+      "title": "I had very little energy.",
+      "answer": "Not at all"
+    },
+    {
+      "type": "matrix",
+      "title": "I worried that others would abandon me.",
+      "answer": "Not at all"
+    },
+    {
+      "type": "matrix",
+      "title": "Thoughts were racing through my head.",
+      "answer": "Not at all"
+    },
+    {
+      "type": "matrix",
+      "title": "It was easy for me to laugh.",
+      "answer": "Not at all"
+    },
+    {
+      "type": "matrix",
+      "title": "I stuffed myself with food.",
+      "answer": "A little"
+    },
+    {
+      "type": "matrix",
+      "title": "I was unable to enjoy things like I normally do.",
+      "answer": "Not at all"
+    }
+  ],
+  [
+    {
+      "type": "matrix",
+      "title": "I wanted other people to take care of me.",
+      "answer": "A lot"
+    },
+    {
+      "type": "matrix",
+      "title": "I had a lot of nervous energy.",
+      "answer": "Not at all"
+    },
+    {
+      "type": "matrix",
+      "title": "I wanted someone else to make decisions for me.",
+      "answer": "Not at all"
+    },
+    {
+      "type": "matrix",
+      "title": "To check if you are a true respondent, please select \"Moderately\" for this item.",
+      "answer": "A lot"
+    },
+    {
+      "type": "matrix",
+      "title": "I avoided performing or giving a talk in front of others.",
+      "answer": "A lot"
+    },
+    {
+      "type": "matrix",
+      "title": "I was overwhelmed by anxiety.",
+      "answer": "A little"
+    }
+  ]
+]

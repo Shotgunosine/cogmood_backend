@@ -1,5 +1,5 @@
 from flask import (Blueprint, redirect, render_template, request, session, url_for)
-from .io import write_surveydata, write_metadata
+from .io import write_surveydata, write_metadata, get_surveydata
 from .config import CFG
 from .routing import routing
 
@@ -16,32 +16,34 @@ def survey():
         return rres
     else:
         ## Case 6: repeat visit allowed
-        ## TODO: implement survey resumption
-        ## https://surveyjs.io/form-library/examples/healthcare/patient-medical-history-form-template/vanillajs#content-code
-        ## https://www.google.com/search?q=flask+render+json+in+template&oq=flask+render+json+in&gs_lcrp=EgZjaHJvbWUqCAgBEAAYFhgeMgYIABBFGDkyCAgBEAAYFhgeMggIAhAAGBYYHjIICAMQABgWGB4yCAgEEAAYFhgeMggIBRAAGBYYHjIKCAYQABiABBiiBDIKCAcQABiABBiiBDIKCAgQABiABBiiBDIKCAkQABiABBiiBNIBCDc4MzFqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8
         if CFG['allow_restart'] and 'survey' in session:
 
-            raise NotImplementedError
+            try:
+                prev_data = get_surveydata(session)
+            except FileNotFoundError:
+                # case 6, they started the survey, but haven't entered anything yet
+                prev_data = None
 
         ## Case 7: first visit.
         else:
-
+            prev_data = None
             ## Update participant metadata.
             session['survey'] = True
             write_metadata(session, ['survey'], 'a')
 
-            ## Present survey.
-            return render_template(
-                'survey.html',
-                workerId=session['workerId'],
-                assignmentId=session['assignmentId'],
-                hitId=session['hitId'],
-                code_success=CFG['code_success'],
-                code_attn3=CFG['code_attn3'],
-                code_attn4=CFG['code_attn4'],
-                code_attn5=CFG['code_attn5'],
-                code_reject=CFG['code_reject']
-            )
+        ## Present survey.
+        return render_template(
+            'survey.html',
+            workerId=session['workerId'],
+            assignmentId=session['assignmentId'],
+            hitId=session['hitId'],
+            code_success=CFG['code_success'],
+            code_attn3=CFG['code_attn3'],
+            code_attn4=CFG['code_attn4'],
+            code_attn5=CFG['code_attn5'],
+            code_reject=CFG['code_reject'],
+            prev_data=prev_data
+        )
 
 @bp.route('/surveynodl', methods=['POST'])
 def survey_nodl():
@@ -51,7 +53,7 @@ def survey_nodl():
         JSON = request.get_json()
 
         ## Save jsPsch data to disk.
-        write_surveydata(session, JSON, method='incomplete')
+        write_surveydata(session, JSON, method='reject')
 
     ## Flag partial data saving.
     session['MESSAGE'] = 'incomplete dataset saved'

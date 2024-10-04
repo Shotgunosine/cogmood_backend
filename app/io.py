@@ -57,3 +57,23 @@ def write_surveydata(session, jsondat, method='pass'):
     except TypeError:
         with open(fout, 'w') as f:
             f.write(json.dumps(jsondat, indent=2))
+
+def get_surveydata(session, method='ongoing'):
+    """Write jsPsych output to disk.
+
+    Parameters
+    ----------
+    session : flask session
+        Current user session.
+    method : ongoing
+        Designates target folder for data.
+    """
+
+    ## Write data to disk.
+    if method == 'ongoing':
+        fin = os.path.join(CFG['s_ongoing'], '%s.json' %session['subId'])
+    else:
+        raise NotImplementedError("Getting survey data from anywhere but ongoing is not supported")
+    with open(fin, 'r') as f:
+        data = f.read()
+    return data

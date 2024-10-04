@@ -1,0 +1,17 @@
+{
+  "race": [
+    "Black or African American"
+  ],
+  "ethnicity": "Not Hispanic or Latino",
+  "gender": "none",
+  "sex_at_birth": "Prefer not to answer",
+  "age": 20,
+  "ladder": null,
+  "ongoing_mentalhealth": "Yes",
+  "mentalhealth_daily_impact": "Yes",
+  "experience_depression": "Yes",
+  "experience_anxiety": "No",
+  "have_adhd": "No",
+  "attn__1": "No",
+  "attn_fails": 0
+}

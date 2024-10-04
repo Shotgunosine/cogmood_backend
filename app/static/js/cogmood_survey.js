@@ -1,7 +1,14 @@
 const survey_json = {
       calculatedValues: [{
           name: "attn_fails",
-          expression: "iif({baaars_inattention.attn__2} != 4 and {baaars_inattention.attn__2} notempty, 1, 0) + iif({hitop_02.attn__3} != 2 and {hitop_02.attn__3} notempty, 1, 0) + iif({hitop_08.attn__4} != 3 and {hitop_08.attn__4} notempty, 1, 0) + iif({hitop_14.attn__5} != 0 and {hitop_14.attn__5} notempty, 1, 0)",
+          expression: "iif({baaars_inattention.attn__2} != 4 " +
+              "and {baaars_inattention.attn__2} notempty, 1, 0) " +
+              "+ iif({hitop_02.attn__3} != 2 " +
+              "and {hitop_02.attn__3} notempty, 1, 0) " +
+              "+ iif({hitop_08.attn__4} != 3 " +
+              "and {hitop_08.attn__4} notempty, 1, 0) " +
+              "+ iif({hitop_14.attn__5} != 0 " +
+              "and {hitop_14.attn__5} notempty, 1, 0)",
           includeIntoResult: true
       }],
       triggers: [{
@@ -1367,7 +1374,7 @@ const survey_json = {
                   text: "Talk excessively (in social situations)",
               }, {
                   value: "todayattn__1",
-                  text: 'To check if you are a true respondent, please select "Very often" for this item.',
+                  text: 'Please select this item.',
               }, {
                   value: "todaybaars_impulsivity_2",
                   text: "Blurt out answers before questions have been completed, complete others' sentences, or jump the gun",
@@ -1578,7 +1585,7 @@ const survey_json = {
               title: "Please select the statements that apply to you **today**",
               choices: [{
                   value: "todayhitop_anhdep_7",
-                  text: 'It felt like there wasn’t anything interesting or fun to do.',
+                  text: "It felt like there wasn’t anything interesting or fun to do.",
               }, {
                   value: "todayhitop_insom_1",
                   text: "I slept very poorly.",
@@ -1730,7 +1737,7 @@ const survey_json = {
                   text: 'My heart was racing or pounding.',
               }, {
                   value: "todayhitop_hypsom_5",
-                  text: 'I had days when I never got tired.',
+                  text: 'I never got tired.',
               }, {
                   value: "todayhitop_insom_4",
                   text: 'I woke up early and could not get back to sleep.',
@@ -1748,7 +1755,7 @@ const survey_json = {
                   text: 'I blamed myself for things.',
               }, {
                   value: "todayattn__3",
-                  text: "Please slect this item.",
+                  text: "Please select this item.",
               }, {
                   value: "todayhitop_appls_3",
                   text: 'I did not feel much like eating.',

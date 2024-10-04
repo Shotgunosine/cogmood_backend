@@ -1,0 +1,62 @@
+[
+  [
+    {
+      "type": "checkbox",
+      "title": "Which most closely describes your racial group(s)?",
+      "answer": "Black or African American"
+    },
+    {
+      "type": "radiogroup",
+      "title": "Which most closely describes your ethnic group?",
+      "answer": "Not Hispanic or Latino"
+    },
+    {
+      "type": "radiogroup",
+      "title": "Which most closely describes your gender?",
+      "answer": "Prefer not to answer"
+    },
+    {
+      "type": "radiogroup",
+      "title": "What was your biological sex at birth?",
+      "answer": "Prefer not to answer"
+    },
+    {
+      "type": "text",
+      "title": "How old are you (in years)?",
+      "answer": 20
+    }
+  ],
+  [],
+  [
+    {
+      "type": "radiogroup",
+      "title": "Do you have \u2013 or have you had \u2013 a diagnosed, on-going mental health/illness/condition?",
+      "answer": "Yes"
+    },
+    {
+      "type": "radiogroup",
+      "title": "Do you have any diagnosed mental health condition that is uncontrolled (by medication or intervention) and which has a significant impact on your daily life / activities?",
+      "answer": "Yes"
+    },
+    {
+      "type": "radiogroup",
+      "title": "Do you experience depression?",
+      "answer": "Yes"
+    },
+    {
+      "type": "radiogroup",
+      "title": "Do you experience anxiety?",
+      "answer": "No"
+    },
+    {
+      "type": "radiogroup",
+      "title": "Do you consider yourself to have attention deficit disorder (ADD)/attention deficit hyperactivity disorder (ADHD)?",
+      "answer": "No"
+    },
+    {
+      "type": "radiogroup",
+      "title": "Are you willing to download and run tasks on your computer?",
+      "answer": "No"
+    }
+  ]
+]
