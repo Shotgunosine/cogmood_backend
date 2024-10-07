@@ -10,7 +10,6 @@ from flask import (
     send_file
 )
 from .io import write_metadata
-from .database import db, Participant
 from .config import CFG
 from .routing import routing
 from .utils import make_download
@@ -25,11 +24,11 @@ def taskstart():
 
     rres = routing('taskstart')
 
-    supreme_seqid = current_app.config['SUPREME_serializer'].dumps(session['seqId'])
-    win_dlpath = os.path.join(CFG['download'], 'win_' + str(session['seqId']) + '.exe')
-    mac_dlpath = os.path.join(CFG['download'], 'mac_' + str(session['seqId']) + '.app')
-    make_download(supreme_seqid, win_dlpath, 'windows')
-    make_download(supreme_seqid, mac_dlpath, 'mac')
+    supreme_subid = current_app.config['SUPREME_serializer'].dumps(session['subId'])
+    win_dlpath = os.path.join(CFG['download'], 'win_' + str(session['subId']) + '.exe')
+    mac_dlpath = os.path.join(CFG['download'], 'mac_' + str(session['subId']) + '.app')
+    make_download(supreme_subid, win_dlpath, 'windows')
+    make_download(supreme_subid, mac_dlpath, 'mac')
     session['dlready'] = True
     write_metadata(session, ['dlready'], 'a')
     if session['platform'] == 'mac':
@@ -51,7 +50,7 @@ def taskstart():
 
 @bp.route('/download/mac')
 def download_mac():
-    dlpath = os.path.join(CFG['download'], 'mac_' + str(session['seqId']) + '.app')
+    dlpath = os.path.join(CFG['download'], 'mac_' + str(session['subId']) + '.app')
 
     session['dlstarted'] = True
     write_metadata(session, ['dlstarted'], 'a')
@@ -67,7 +66,7 @@ def download_mac():
 
 @bp.route('/download/win')
 def download_win():
-    dlpath = os.path.join(CFG['download'], 'win_' + str(session['seqId']) + '.exe')
+    dlpath = os.path.join(CFG['download'], 'win_' + str(session['subId']) + '.exe')
 
     session['dlstarted'] = True
     write_metadata(session, ['dlstarted'], 'a')

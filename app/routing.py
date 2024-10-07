@@ -93,7 +93,6 @@ def routing(ep):
 
             # Grab str fields from logs
             fields = [
-                'seqId',
                 'complete',
                 'terminalerror',
                 'ERROR',

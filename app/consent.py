@@ -1,6 +1,5 @@
 from flask import (Blueprint, redirect, render_template, request, session, url_for)
 from .io import write_metadata
-from .database import db, Participant
 from .routing import routing
 from hashlib import blake2b
 
@@ -51,15 +50,6 @@ def consent_post():
         ## DETAIL:  Key (subid)=(ae1c2x4nmzi7e2q87nomvrer) already exists.
 
         h_workerId = blake2b(session['workerId'].encode(), digest_size=20).hexdigest()
-
-        ## get seqid
-        if 'seqId' not in session:
-            participant = Participant(subid=session['subId'], workerid=h_workerId)
-            db.session.add(participant)
-            db.session.commit()
-            db.session.refresh(participant)
-            session['seqId'] = participant.seqid
-            write_metadata(session, ['seqId'], 'a')
 
         ## Redirect participant to alert page.
         return redirect(url_for('alert.alert', **request.args))

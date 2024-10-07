@@ -6,6 +6,7 @@ from flask import (Blueprint, request)
 from .config import CFG
 from .database import db, Participant
 
+
 ## Initialize blueprint.
 bp = Blueprint('taskcontrol', __name__)
 

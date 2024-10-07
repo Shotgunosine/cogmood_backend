@@ -1,7 +1,6 @@
 from flask import (Blueprint, redirect, render_template, request, session, url_for)
 from .routing import routing
 from .io import write_metadata
-from .database import db, Participant
 
 ## Initialize blueprint.
 bp = Blueprint('task', __name__)

@@ -6,9 +6,7 @@ from app import consent, alert, survey, complete, error, taskstart, task, taskco
 from .config import CFG
 from .io import write_metadata
 from .utils import gen_code
-from .database import db, Participant
 from .routing import routing
-from sqlalchemy.exc import IntegrityError
 from itsdangerous.serializer import Serializer
 
 
@@ -43,19 +41,8 @@ connection_string = os.getenv('CMBEDB_CONNECT')
 app = Flask(__name__)
 app.secret_key = secret_key
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
-app.config['SQLALCHEMY_DATABASE_URI'] = connection_string
-app.config['SQLALCHEMY_ECHO'] = True
 app.config['SUPREME_serializer'] = Serializer(supreme_secret_key)
-db.init_app(app)
 
-# create a table in the db
-with app.app_context():
-    try:
-        db.create_all()
-    except IntegrityError:
-        pass
-    if CFG['debug']:
-        print(db.session.execute(db.select(Participant)).scalars().all())
 # load existing subjects into database
 # mds = sorted(Path(meta_dir).glob('*'))
 # to_insert = [[] for md in mds]
