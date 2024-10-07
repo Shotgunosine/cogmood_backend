@@ -6,6 +6,9 @@ def gen_code(N):
     return ''.join(random.choices(string.ascii_lowercase + string.digits, k=N))
 
 
-
 def make_download(sid, dlpath, platform):
     pass
+
+
+def pseudorandomize(blocks):
+    return blocks

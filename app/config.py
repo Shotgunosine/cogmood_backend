@@ -21,6 +21,12 @@ reject_dir = os.path.join(ROOT_DIR, cfg['IO']['REJECT'])
 if not os.path.isdir(reject_dir): os.makedirs(reject_dir)
 task_dir = os.path.join(data_dir, 'task')
 if not os.path.isdir(task_dir): os.makedirs(task_dir)
+task_db_dir = os.path.join(task_dir, 'db')
+if not os.path.isdir(task_db_dir): os.makedirs(task_db_dir)
+task_upload_dir = os.path.join(task_dir, 'upload')
+if not os.path.isdir(task_upload_dir): os.makedirs(task_upload_dir)
+task_badupload_dir = os.path.join(task_dir, 'bad_upload')
+if not os.path.isdir(task_badupload_dir): os.makedirs(task_badupload_dir)
 dl_dir = os.path.join(data_dir, 'download')
 if not os.path.isdir(dl_dir): os.makedirs(dl_dir)
 exe_dir = os.path.join(data_dir, 'exe')
@@ -49,6 +55,9 @@ CFG = dict(
     incomplete=incomplete_dir,
     reject=reject_dir,
     task=task_dir,
+    t_db=task_db_dir,
+    t_upload=task_upload_dir,
+    t_badupload=task_badupload_dir,
     survey=survey_dir,
     s_incomplete=survey_incomplete_dir,
     s_ongoing=survey_ongoing_dir,
@@ -57,5 +66,6 @@ CFG = dict(
     download=dl_dir,
     exe=dl_dir,
     disallowed_agents=json.loads(cfg['FLASK']['DISALLOWED_AGENTS']),
-    allowed_agents=json.loads(cfg['FLASK']['ALLOWED_AGENTS'])
+    allowed_agents=json.loads(cfg['FLASK']['ALLOWED_AGENTS']),
+    blocks=json.loads(cfg['SUPREME']['BLOCKS'])
 )

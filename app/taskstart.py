@@ -9,7 +9,7 @@ from flask import (
     current_app,
     send_file
 )
-from .io import write_metadata
+from .io import write_metadata, initialize_taskdata
 from .config import CFG
 from .routing import routing
 from .utils import make_download
@@ -33,6 +33,8 @@ def taskstart():
     make_download(supreme_subid, mac_dlpath, 'mac')
     session['dlready'] = True
     write_metadata(session, ['dlready'], 'a')
+    initialize_taskdata(session)
+
     if session['platform'] == 'mac':
         platform_link = url_for('taskstart.download_mac')
         other_platform = 'win'
