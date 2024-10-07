@@ -21,7 +21,7 @@ def write_metadata(session, keys, mode='w'):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     # hash workerid
-    h_workerId = blake2b(session['workerId'].encode(), digest_size=20).hexdigest()
+    h_workerId = blake2b(session['workerId'].encode(), digest_size=24).hexdigest()
 
     ## Write metadata to disk.
     fout = os.path.join(CFG['meta'], h_workerId)

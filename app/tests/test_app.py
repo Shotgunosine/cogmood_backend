@@ -57,7 +57,7 @@ def test_survey_complete(page: Page, request):
     expect(page).to_have_url(f'{TESTURL}taskstart?PROLIFIC_PID={workerId}')
 
     # get saved data and compare to expectation
-    h_workerId = blake2b(workerId.encode(), digest_size=20).hexdigest()
+    h_workerId = blake2b(workerId.encode(), digest_size=24).hexdigest()
     with open(os.path.join(CFG['meta'], h_workerId), 'r') as f:
         logs = f.read()
     subId = re.search('subId\t(.*)\n', logs).group(1)
@@ -99,7 +99,7 @@ def test_survey_attn1(page: Page, request):
     expect(page).to_have_url(f'{TESTURL}error/1008')
 
     # get saved data and compare to expectation
-    h_workerId = blake2b(workerId.encode(), digest_size=20).hexdigest()
+    h_workerId = blake2b(workerId.encode(), digest_size=24).hexdigest()
     with open(os.path.join(CFG['meta'], h_workerId), 'r') as f:
         logs = f.read()
     subId = re.search('subId\t(.*)\n', logs).group(1)
@@ -141,7 +141,7 @@ def test_survey_attn3(page: Page, request):
     expect(page.get_by_role("img", name="Prolific logo")).to_be_visible()
 
     # get saved data and compare to expectation
-    h_workerId = blake2b(workerId.encode(), digest_size=20).hexdigest()
+    h_workerId = blake2b(workerId.encode(), digest_size=24).hexdigest()
     with open(os.path.join(CFG['meta'], h_workerId), 'r') as f:
         logs = f.read()
     subId = re.search('subId\t(.*)\n', logs).group(1)

@@ -49,7 +49,7 @@ def consent_post():
         ## TODO: deal with psycopg2.errors.UniqueViolation: duplicate key value violates unique constraint "participant_subid_key"
         ## DETAIL:  Key (subid)=(ae1c2x4nmzi7e2q87nomvrer) already exists.
 
-        h_workerId = blake2b(session['workerId'].encode(), digest_size=20).hexdigest()
+        h_workerId = blake2b(session['workerId'].encode(), digest_size=24).hexdigest()
 
         ## Redirect participant to alert page.
         return redirect(url_for('alert.alert', **request.args))

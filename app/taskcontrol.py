@@ -2,9 +2,9 @@ import sys
 import os
 import re
 from hashlib import blake2b
-from flask import (Blueprint, request)
+from flask import (Blueprint, request, current_app)
 from .config import CFG
-from .database import db, Participant
+from itsdangerous.exc import BadSignature
 
 
 ## Initialize blueprint.
@@ -15,29 +15,19 @@ def control_post():
     data = {}
     # validate seqId
     try:
-        seqId = int(request.form['seqId'])
+        subId =  current_app.config['SUPREME_serializer'].loads(request.form['subId'])
     except KeyError:
-        data['error'] = 'No seqId'
+        data['error'] = 'No subId'
         return data, 400
-    except ValueError:
-        data['error'] = 'Invalid seqId'
-        return data, 400
-
-    # call the database to look up the workerId
-    record = db.session.execute(db.select(Participant).filter_by(seqid=seqId)).scalars().all()
-
-    # read the subject metadata to load the subId
-    try:
-        workerId = record[0].workerid
-    except IndexError:
-        data['error'] = 'seqId not found'
+    except BadSignature:
+        data['error'] = 'Invalid subId'
         return data, 400
 
-    h_workerId = blake2b(workerId.encode(), digest_size=20).hexdigest()
-    with open(os.path.join(CFG['meta'], h_workerId), 'r') as f:
-        logs = f.read()
 
-    subId = re.search('subId\t(.*)\n', logs).group(1)
+    # with open(os.path.join(CFG['meta'], subId), 'r') as f:
+    #     logs = f.read()
+    #
+    # subId = re.search('subId\t(.*)\n', logs).group(1)
 
     # validate the token
 

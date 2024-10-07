@@ -28,7 +28,7 @@ def routing(ep):
     print(session)
     # Case 1: workerId absent from URL.
     try:
-        h_workerId = blake2b(info['workerId'].encode(), digest_size=20).hexdigest()
+        h_workerId = blake2b(info['workerId'].encode(), digest_size=24).hexdigest()
     except AttributeError:
         ## Redirect participant to error (missing workerId).
         return redirect(url_for('error.error', errornum=1000))

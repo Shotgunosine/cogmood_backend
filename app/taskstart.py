@@ -13,6 +13,8 @@ from .io import write_metadata
 from .config import CFG
 from .routing import routing
 from .utils import make_download
+from hashlib import blake2b
+
 
 ## Initialize blueprint.
 bp = Blueprint('taskstart', __name__)
@@ -23,8 +25,8 @@ def taskstart():
     """Present download to participant."""
 
     rres = routing('taskstart')
-
-    supreme_subid = current_app.config['SUPREME_serializer'].dumps(session['subId'])
+    h_workerId = blake2b(session['workerId'].encode(), digest_size=24).hexdigest()
+    supreme_subid = current_app.config['SUPREME_serializer'].dumps(h_workerId)
     win_dlpath = os.path.join(CFG['download'], 'win_' + str(session['subId']) + '.exe')
     mac_dlpath = os.path.join(CFG['download'], 'mac_' + str(session['subId']) + '.app')
     make_download(supreme_subid, win_dlpath, 'windows')
