@@ -26,7 +26,13 @@
       "answer": 20
     }
   ],
-  [],
+  [
+    {
+      "type": "radiogroup",
+      "title": "Where would you place yourself on the ladder?",
+      "answer": "2nd rung"
+    }
+  ],
   [
     {
       "type": "radiogroup",
