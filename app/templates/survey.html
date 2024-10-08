@@ -47,14 +47,25 @@
       options.html = str;
   };
 
+  function add_onclick(_, options) {
+      if (options.htmlElement.getAttribute('data-name') == 'ladder') {
+          options.htmlElement.querySelectorAll('area').forEach((el) => {
+              let rung_name=el.getAttribute('alt')
+              el.onclick = function () {document.querySelector(`input[value='` + rung_name + `']`).click()}
+          })
+      }
+  }
+
   function save_current_page(survey) {
       currentpage = survey.currentPage.name
       console.log(currentpage)
   }
   function augment_survey(survey) {
-      survey.onTextMarkdown.add(convert_markdown)
-      survey.onValueChanged.add(ongoing_save)
-      survey.onValueChanged.add(save_current_page)
+      survey.onTextMarkdown.add(convert_markdown);
+      survey.onValueChanged.add(ongoing_save);
+      survey.onValueChanged.add(save_current_page);
+      survey.onAfterRenderQuestion.add(add_onclick);
+
       {% if prev_data is not none %}
           let parsed_data = JSON.parse({{ prev_data|tojson|safe }});
           survey.data = parsed_data

@@ -72,7 +72,19 @@ const survey_json = {
           elements: [{
               type: "html",
               name: "ladder",
-              html: "<img src='../static/img/LadderImage_hiRes.png'>",
+              html: "<img src='../static/img/LadderImage_hiRes.png' usemap='#laddermap'> " +
+                  "<map name='laddermap'>" +
+                  " <area shape='poly' alt='Top rung' coords='595,244,672,271,699,189,615,165'>"+
+                  " <area shape='poly' alt='2nd rung' coords='580,330,652,358,672,271,595,244'>"+
+                  " <area shape='poly' alt='3rd rung' coords='559,514,634,444,652,358,580,330'>"+
+                  " <area shape='poly' alt='4th rung' coords='541,498,619,529,634,444,559,514'>"+
+                  " <area shape='poly' alt='5th rung' coords='529,580,604,612,619,529,541,498'>"+
+                  " <area shape='poly' alt='6th rung' coords='510,669,586,697,604,612,529,580'>"+
+                  " <area shape='poly' alt='7th rung' coords='496,753,565,780,586,697,510,669'>"+
+                  " <area shape='poly' alt='8th rung' coords='478,838,550,868,565,780,496,753'>"+
+                  " <area shape='poly' alt='9th rung' coords='460,922,532,949,550,868,478,838'>"+
+                  " <area shape='poly' alt='Bottom rung' coords='440,1005,515,1033,532,949,460,922'>"+
+                  "</map>",
               startWithNewLine: false
           }, {
               type: "radiogroup",
