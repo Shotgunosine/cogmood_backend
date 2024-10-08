@@ -14,6 +14,7 @@ def test_no_workerid(page: Page):
     expect(page.locator("body")).to_contain_text("Sorry, there was an error. Sorry, we are missing your Prolific ID. Please start the experiment over from the Prolific link.")
 
 
+@pytest.mark.browser_context_args(user_agent="macintosh")
 def test_consent(page: Page):
     workerId = get_new_workerid()
     page.goto(f"{TESTURL}?PROLIFIC_PID={workerId}")
@@ -25,6 +26,7 @@ def test_consent(page: Page):
     expect(page.locator("body")).to_contain_text("Attention")
 
 
+@pytest.mark.browser_context_args(user_agent="macintosh")
 def test_survey_complete(page: Page, request):
     workerId = get_new_workerid()
     page.goto(f"{TESTURL}?PROLIFIC_PID={workerId}")
@@ -67,6 +69,7 @@ def test_survey_complete(page: Page, request):
 
     assert saved_data[0]['response'] == expected_out
 
+@pytest.mark.browser_context_args(user_agent="macintosh")
 def test_survey_attn1(page: Page, request):
     workerId = get_new_workerid()
     page.goto(f"{TESTURL}?PROLIFIC_PID={workerId}")
@@ -112,6 +115,7 @@ def test_survey_attn1(page: Page, request):
             assert expected_out[k] == v
 
 
+@pytest.mark.browser_context_args(user_agent="macintosh")
 def test_survey_attn3(page: Page, request):
     workerId = get_new_workerid()
     page.goto(f"{TESTURL}?PROLIFIC_PID={workerId}")

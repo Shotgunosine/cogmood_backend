@@ -1,3 +1,6 @@
 numpy
 flask>=2.0
 gunicorn
+pytest
+playwright
+pytest-playwright
