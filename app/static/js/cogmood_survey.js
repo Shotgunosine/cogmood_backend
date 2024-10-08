@@ -72,8 +72,14 @@ const survey_json = {
           elements: [{
               type: "html",
               name: "ladder",
-              html: '',
+              html: "<img src='../static/img/LadderImage_hiRes.png'>",
               startWithNewLine: false
+          }, {
+              type: "radiogroup",
+              name: "ladder resp",
+              title: "Where would you place yourself on the ladder",
+              choices: ['Top rung', '2nd rung', '3rd rung', '4th rung', '5th rung', '6th rung', '7th rung', '8th rung', '9th rung', 'Bottom rung'],
+              isRequired: false,
           }],
       }, {
           name: "screen",
