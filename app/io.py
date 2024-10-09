@@ -32,7 +32,7 @@ def write_metadata(session, keys, mode='w'):
             f.write(f'{timestamp}\t{k}\t{session[k]}\n')
 
 
-def validate_checksum(checksum, expected_length=64):
+def validate_checksum(checksum, expected_length=128):
     if len(checksum) != expected_length:
         return False
     if not checksum.isalnum():
@@ -57,7 +57,7 @@ def initialize_taskdata(session):
     added_blocks = {bb: 0 for bb in blocks}
     for block in blocks:
         bdict = dict(
-            name=f"block_{added_blocks[block]}",
+            name=f"{block}_{added_blocks[block]}",
             checksum=None,
             uploaded=False
         )

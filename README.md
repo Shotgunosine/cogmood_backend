@@ -4,7 +4,7 @@
 
 # Cogmood Backend
 
-Backend for the NIMH MLC\'s CogMood experiments, adapted from the Niv
+Backend for the NIMH MLC's CogMood experiments, adapted from the Niv
 lab tools for securely serving and storing data from online
 computational psychiatry experiments.
 

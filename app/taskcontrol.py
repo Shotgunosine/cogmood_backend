@@ -34,7 +34,7 @@ def control_post():
 
     # load subject's task_db json
     try:
-        with open(os.path.join(CFG['t_db'], subId), 'r') as f:
+        with open(os.path.join(CFG['t_db'], f"{subId}.json"), 'r') as f:
             s_tdb = json.loads(f.read())
     except FileNotFoundError:
         data['error'] = 'Subjects task data not initialized'
@@ -49,7 +49,7 @@ def control_post():
         try:
             c_block_checksum = request.form[block['name']]
             if not validate_checksum(c_block_checksum):
-                data['error'] = f"Checksum for {block['name']} is not 64 character alpha numeric."
+                data['error'] = f"Checksum for {block['name']} is not 128 character alpha numeric."
                 return data, 400
         except KeyError:
             blocks_to_run.append(block['name'])
@@ -63,6 +63,11 @@ def control_post():
 
     if len(blocks_to_run) > 0:
         data['blocks_to_run'] = blocks_to_run
+
+    if len(blocks_to_run) == 0:
+        # TODO: save complete to sesion
+        # TODO: deal with failure to upload
+        pass
 
     return data, 200
 
@@ -88,7 +93,7 @@ def taskupload():
 
     # load subject's task_db json
     try:
-        with open(os.path.join(CFG['t_db'], subId), 'r') as f:
+        with open(os.path.join(CFG['t_db'], f'{subId}.json'), 'r') as f:
             s_tdb = json.loads(f.read())
             blocks_needed = [bb['name'] for bb in s_tdb if not bb['uploaded']]
     except FileNotFoundError:
@@ -109,7 +114,7 @@ def taskupload():
     try:
         r_checksum = request.form['checksum']
         if not validate_checksum(r_checksum):
-            data['error'] = f"Checksum is not 64 character alpha numeric."
+            data['error'] = f"Checksum is not 128 character alpha numeric."
             return data, 400
     except KeyError:
         data['error'] = "No checksum in request"
@@ -144,6 +149,6 @@ def taskupload():
                 block['checksum'] = checksum
                 break
 
-        write_taskdata(subId)
+        write_taskdata(subId, s_tdb)
 
     return data, 200

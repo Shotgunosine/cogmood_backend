@@ -72,7 +72,9 @@ const survey_json = {
           elements: [{
               type: "html",
               name: "ladder",
-              html: "<img src='../static/img/LadderImage_hiRes.png' usemap='#laddermap'> " +
+              html: "<svg version='1.1'" +
+                  "     xmlns='http://www.w3.org/2000/svg\'>" +
+                  "<img src='../static/img/LadderImage_hiRes.png' usemap='#laddermap'> " +
                   "<map name='laddermap'>" +
                   " <area shape='poly' alt='Top rung' coords='595,244,672,271,699,189,615,165'>"+
                   " <area shape='poly' alt='2nd rung' coords='580,330,652,358,672,271,595,244'>"+
