@@ -203,11 +203,11 @@ def test_taskcontrol(page: Page, request):
     serializer = Serializer(supreme_secret_key)
     h_workerId = blake2b(workerId.encode(), digest_size=24).hexdigest()
 
-    # test initial post
-    req = requests.post(url=f"{TESTURL}/taskcontrol",
-                  data={
-                      'workerId': serializer.dumps(h_workerId)
-                  })
+    # test initial get
+    req = requests.get(
+        url=f"{TESTURL}/taskcontrol",
+        params={'worker_id':serializer.dumps(h_workerId)}
+    )
     req_dat = req.json()
     assert req.status_code == 200
 
@@ -229,36 +229,40 @@ def test_taskcontrol(page: Page, request):
     for eb in expected_blocks:
         assert eb in req_dat['blocks_to_run']
 
-    # test second post
+    for bb in req_dat['blocks_to_run']:
+        assert bb in expected_blocks
+
+    # test upload
     completed_block = expected_blocks.pop()
     test_data_path = test_dir / 'data/test_task_data.zip'
     checksum = hash_file(test_data_path)
 
-    req = requests.post(url=f"{TESTURL}/taskcontrol",
-                        data={
-                            'workerId': serializer.dumps(h_workerId),
-                            completed_block: checksum
-                        })
-    req_dat = req.json()
+    with open(test_data_path, 'rb') as f:
+        req = requests.post(
+            url=f"{TESTURL}/taskcontrol",
+            params={'worker_id': serializer.dumps(h_workerId)},
+            data={
+                'block_name': completed_block,
+                'checksum': checksum
+            },
+            files={'file': f},
+        )
 
     assert req.status_code == 200
+
+    # test second get
+    req = requests.get(
+        url=f"{TESTURL}/taskcontrol",
+        params={'worker_id':serializer.dumps(h_workerId)}
+    )
+    req_dat = req.json()
+    assert req.status_code == 200
+
     for eb in expected_blocks:
         assert eb in req_dat['blocks_to_run']
 
-    # test upload
-    assert req_dat['blocks_to_upload'] == [completed_block]
-    with open(test_data_path, 'rb') as f:
-        req = requests.post(url=f"{TESTURL}/taskupload",
-                            data={
-                                'workerId': serializer.dumps(h_workerId),
-                                'block': completed_block,
-                                'checksum': checksum,
-                            },
-                            files={
-                                'file':f
-                            }
-                            )
-    assert req.status_code == 200
+    for bb in req_dat['blocks_to_run']:
+        assert bb in expected_blocks
 
     # confirm stdb updated
     with open(os.path.join(CFG['meta'], h_workerId), 'r') as f:
