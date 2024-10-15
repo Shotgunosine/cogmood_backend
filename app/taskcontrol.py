@@ -26,7 +26,7 @@ def taskcontrol():
         data['error'] = 'Invalid worker_id'
         return data, 400
 
-    # get correspondig subId
+    # get corresponding subId
     with open(os.path.join(CFG['meta'], h_workerId), 'r') as f:
         logs = f.read()
 

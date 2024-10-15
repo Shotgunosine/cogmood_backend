@@ -67,5 +67,6 @@ CFG = dict(
     exe=dl_dir,
     disallowed_agents=json.loads(cfg['FLASK']['DISALLOWED_AGENTS']),
     allowed_agents=json.loads(cfg['FLASK']['ALLOWED_AGENTS']),
-    blocks=json.loads(cfg['SUPREME']['BLOCKS'])
+    blocks=json.loads(cfg['SUPREME']['BLOCKS']),
+    nreps=json.loads(cfg['SUPREME']['NREPS'])
 )

@@ -12,7 +12,29 @@ import requests
 from itsdangerous.serializer import Serializer
 import configparser
 from ..io import hash_file
+from ..utils import pseudorandomize
 
+
+def test_pseudorandomize():
+    blocks = ['foo', 'bar', 'baz']
+    for nreps in range(5):
+        res = pseudorandomize(blocks, nreps)
+        fcount = 0
+        bcount = 0
+        zcount = 0
+        lastblock = ""
+        for bb in res:
+            if bb == 'foo':
+                fcount += 1
+            elif bb == 'bar':
+                bcount += 1
+            elif bb == 'baz':
+                zcount += 1
+            assert bb != lastblock
+            lastblock = bb
+        assert fcount == nreps
+        assert bcount == nreps
+        assert zcount == nreps
 
 TESTURL="http://127.0.0.1:5000/"
 def test_no_workerid(page: Page):
@@ -213,6 +235,7 @@ def test_taskcontrol(page: Page, request):
 
     # get expected response
     blocks = CFG['blocks']
+    blocks.extend(CFG['blocks'])
     blocks_json = []
     added_blocks = {bb: 0 for bb in blocks}
     for block in blocks:

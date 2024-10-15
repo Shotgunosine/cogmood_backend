@@ -52,7 +52,7 @@ def initialize_taskdata(session):
     ## Write metadata to disk.
     fout = os.path.join(CFG['t_db'], f"{session['subId']}.json")
 
-    blocks = pseudorandomize(CFG['blocks'])
+    blocks = pseudorandomize(CFG['blocks'], CFG['nreps'])
     blocks_json = []
     added_blocks = {bb: 0 for bb in blocks}
     for block in blocks:
