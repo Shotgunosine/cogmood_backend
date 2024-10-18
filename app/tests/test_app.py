@@ -78,6 +78,12 @@ def test_survey_complete(page: Page, request):
             elif qq['type'] == 'matrix':
                 qqname = f"row {qq['title']}, column {qq['answer']}"
                 page.get_by_role("cell", name=qqname).locator("label").click()
+            elif qq['type'] == 'ladder':
+                answer = qq['answer'].replace(' ', '-')
+                if qq['answer'] in ['Bottom rung', 'Top rung']:
+                    page.locator(f"#{answer}").click()
+                else:
+                    page.locator(f"[id=\"\\3{answer}\"]").click()
             elif qq['type'] == 'html':
                 continue
         if pgn + 1 == len(survey_input):
@@ -255,46 +261,56 @@ def test_taskcontrol(page: Page, request):
     for bb in req_dat['blocks_to_run']:
         assert bb in expected_blocks
 
-    # test upload
-    completed_block = expected_blocks.pop()
-    test_data_path = test_dir / 'data/test_task_data.zip'
-    checksum = hash_file(test_data_path)
+    while len(expected_blocks) != 0:
+        # test upload
+        completed_block = expected_blocks.pop()
+        test_data_path = test_dir / 'data/oneblock_test.zip'
+        checksum = hash_file(test_data_path)
 
-    with open(test_data_path, 'rb') as f:
-        req = requests.post(
+        with open(test_data_path, 'rb') as f:
+            req = requests.post(
+                url=f"{TESTURL}/taskcontrol",
+                params={'worker_id': serializer.dumps(h_workerId)},
+                data={
+                    'block_name': completed_block,
+                    'checksum': checksum
+                },
+                files={'file': f},
+            )
+
+        assert req.status_code == 200
+
+        # test next get
+        req = requests.get(
             url=f"{TESTURL}/taskcontrol",
-            params={'worker_id': serializer.dumps(h_workerId)},
-            data={
-                'block_name': completed_block,
-                'checksum': checksum
-            },
-            files={'file': f},
+            params={'worker_id':serializer.dumps(h_workerId)}
         )
+        req_dat = req.json()
+        assert req.status_code == 200
 
-    assert req.status_code == 200
+        for eb in expected_blocks:
+            assert eb in req_dat['blocks_to_run']
 
-    # test second get
-    req = requests.get(
-        url=f"{TESTURL}/taskcontrol",
-        params={'worker_id':serializer.dumps(h_workerId)}
-    )
-    req_dat = req.json()
-    assert req.status_code == 200
+        for bb in req_dat['blocks_to_run']:
+            assert bb in expected_blocks
 
-    for eb in expected_blocks:
-        assert eb in req_dat['blocks_to_run']
+        # confirm stdb updated
+        with open(os.path.join(CFG['meta'], h_workerId), 'r') as f:
+            logs = f.read()
+        subId = re.search('subId\t(.*)\n', logs).group(1)
+        with open(os.path.join(CFG['t_db'], f'{subId}.json'), 'r') as f:
+            s_tdb = json.loads(f.read())
 
-    for bb in req_dat['blocks_to_run']:
-        assert bb in expected_blocks
+        for bb in s_tdb:
+            if bb['name'] == completed_block:
+                assert bb['uploaded']
+                assert bb['checksum'] == checksum
+                assert bb['valid']
 
-    # confirm stdb updated
+    # confirm that task is marked as complete
     with open(os.path.join(CFG['meta'], h_workerId), 'r') as f:
         logs = f.read()
-    subId = re.search('subId\t(.*)\n', logs).group(1)
-    with open(os.path.join(CFG['t_db'], f'{subId}.json'), 'r') as f:
-        s_tdb = json.loads(f.read())
+    assert re.search('complete\t(.*)\n', logs).group(1) == 'success'
 
-    for bb in s_tdb:
-        if bb['name'] == completed_block:
-            assert bb['uploaded']
-            assert bb['checksum'] == checksum
+    page.goto(f"{TESTURL}?PROLIFIC_PID={workerId}")
+    expect(page.get_by_role("img", name="Prolific logo")).to_be_visible()

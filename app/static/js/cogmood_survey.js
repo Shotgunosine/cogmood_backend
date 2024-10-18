@@ -72,21 +72,61 @@ const survey_json = {
           elements: [{
               type: "html",
               name: "ladder",
-              html: "<svg version='1.1'" +
-                  "     xmlns='http://www.w3.org/2000/svg\'>" +
-                  "<img src='../static/img/LadderImage_hiRes.png' usemap='#laddermap'> " +
-                  "<map name='laddermap'>" +
-                  " <area shape='poly' alt='Top rung' coords='595,244,672,271,699,189,615,165'>"+
-                  " <area shape='poly' alt='2nd rung' coords='580,330,652,358,672,271,595,244'>"+
-                  " <area shape='poly' alt='3rd rung' coords='559,514,634,444,652,358,580,330'>"+
-                  " <area shape='poly' alt='4th rung' coords='541,498,619,529,634,444,559,514'>"+
-                  " <area shape='poly' alt='5th rung' coords='529,580,604,612,619,529,541,498'>"+
-                  " <area shape='poly' alt='6th rung' coords='510,669,586,697,604,612,529,580'>"+
-                  " <area shape='poly' alt='7th rung' coords='496,753,565,780,586,697,510,669'>"+
-                  " <area shape='poly' alt='8th rung' coords='478,838,550,868,565,780,496,753'>"+
-                  " <area shape='poly' alt='9th rung' coords='460,922,532,949,550,868,478,838'>"+
-                  " <area shape='poly' alt='Bottom rung' coords='440,1005,515,1033,532,949,460,922'>"+
-                  "</map>",
+              html: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 788 1079' width='100%' >" +
+    "<!-- Background image -->" +
+    "<image href='../static/img/LadderImage_hiRes.png' x='0' y='0' />" +
+
+    "<!-- Top rung -->" +
+    "<polygon id='Top-rung' points='598,241 673,270 690,190 619,168' fill='transparent'>" +
+        "<title>Top rung</title>" +
+    "</polygon>" +
+
+    "<!-- 2nd rung -->" +
+    "<polygon id='2nd-rung' points='581,327 656,354 673,270 598,241' fill='transparent'>" +
+        "<title>2nd rung</title>" +
+    "</polygon>" +
+
+    "<!-- 3rd rung -->" +
+    "<polygon id='3rd-rung' points='563,411 638,439 656,354 581,327' fill='transparent'>" +
+        "<title>3rd rung</title>" +
+    "</polygon>" +
+
+    "<!-- 4th rung -->" +
+    "<polygon id='4th-rung' points='546,496 620,523 638,439 563,411' fill='transparent'>" +
+        "<title>4th rung</title>" +
+    "</polygon>" +
+
+    "<!-- 5th rung -->" +
+    "<polygon id='5th-rung' points='529,580 603,608 620,523 546,496' fill='transparent'>" +
+        "<title>5th rung</title>" +
+    "</polygon>" +
+
+    "<!-- 6th rung -->" +
+    "<polygon id='6th-rung' points='510,665 585,693 603,608 529,580' fill='transparent'>" +
+        "<title>6th rung</title>" +
+    "</polygon>" +
+
+    "<!-- 7th rung -->" +
+    "<polygon id='7th-rung' points='493,749 568,777 585,693 510,665' fill='transparent'>" +
+        "<title>7th rung</title>" +
+    "</polygon>" +
+
+    "<!-- 8th rung -->" +
+    "<polygon id='8th-rung' points='477,833 551,862 568,777 493,749' fill='transparent'>" +
+        "<title>8th rung</title>" +
+    "</polygon>" +
+
+    "<!-- 9th rung -->" +
+    "<polygon id='9th-rung' points='458,917 533,946 551,862 477,833' fill='transparent'>" +
+        "<title>9th rung</title>" +
+    "</polygon>" +
+
+    "<!-- Bottom rung -->" +
+    "<polygon id='Bottom-rung' points='440,1005 515,1033 533,946 458,917' fill='transparent'>" +
+        "<title>Bottom rung</title>" +
+    "</polygon>" +
+"</svg>"
+,
               startWithNewLine: false
           }, {
               type: "radiogroup",

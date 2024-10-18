@@ -28,7 +28,7 @@
   ],
   [
     {
-      "type": "radiogroup",
+      "type": "ladder",
       "title": "Where would you place yourself on the ladder?",
       "answer": "5th rung"
     }

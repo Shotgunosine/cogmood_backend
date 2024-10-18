@@ -41,14 +41,21 @@ def complete():
         url = "https://app.prolific.co/submissions/complete?cc=" + CFG['code_reject']
         return redirect(url)
 
-    # Case 5: visit complete page with succesfull completion.
+    # Case 5: visit complete page after task failed validation
+    elif session['complete'] == 'task_invalid':
+
+        ## Redirect participant with decoy code.
+        url = "https://app.prolific.co/submissions/complete?cc=" + CFG['code_inval']
+        return redirect(url)
+
+    # Case 6: visit complete page with succesfull completion.
     elif session['complete'] == 'success':
 
         ## Redirect participant with completion code.
         url = "https://app.prolific.co/submissions/complete?cc=" + CFG['code_success']
         return redirect(url)
 
-    # Case 6: catch all
+    # Case 7: catch all
     else:
 
         ## Redirect participant to error (unusual activity).

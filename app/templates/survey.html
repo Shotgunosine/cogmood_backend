@@ -48,10 +48,22 @@
   };
 
   function add_onclick(_, options) {
+      if (options.htmlElement.getAttribute('data-name') == 'ladder_resp'){
+          options.htmlElement.setAttribute('style', 'display: none;')
+      }
       if (options.htmlElement.getAttribute('data-name') == 'ladder') {
-          options.htmlElement.querySelectorAll('area').forEach((el) => {
-              let rung_name=el.getAttribute('alt')
-              el.onclick = function () {document.querySelector(`input[value='` + rung_name + `']`).click()}
+          let og_style = options.htmlElement.parentElement.getAttribute('style')
+          og_style = og_style.replace('min-width: min(100%, 300px);', 'min-width: 600px;');
+          options.htmlElement.parentElement.setAttribute('style', og_style)
+          options.htmlElement.querySelectorAll('polygon').forEach((el) => {
+              let rung_name=el.getAttribute('id').replace('-', ' ');
+              el.onclick = function () {
+                  document.querySelector(`input[value='` + rung_name + `']`).click();
+                  document.querySelectorAll('polygon').forEach(function(p) {
+                        p.setAttribute('fill', 'transparent');
+                  });
+                  this.setAttribute('fill', 'rgba(0, 0, 255, 0.5)');
+              }
           })
       }
   }

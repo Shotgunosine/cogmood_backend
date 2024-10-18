@@ -19,13 +19,13 @@ def write_metadata(session, keys, mode='w'):
         Open file mode.
     """
 
-    ## Define timestamp.
+    # Define timestamp.
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     # hash workerid
     h_workerId = blake2b(session['workerId'].encode(), digest_size=24).hexdigest()
 
-    ## Write metadata to disk.
+    # Write metadata to disk.
     fout = os.path.join(CFG['meta'], h_workerId)
     with open(fout, mode) as f:
         for k in keys:
@@ -59,7 +59,9 @@ def initialize_taskdata(session):
         bdict = dict(
             name=f"{block}_{added_blocks[block]}",
             checksum=None,
-            uploaded=False
+            uploaded=False,
+            valid=False,
+            reason='unseen'
         )
         blocks_json.append(bdict)
         added_blocks[block] += 1
@@ -71,8 +73,10 @@ def write_taskdata(subId, blocks):
 
     Parameters
     ----------
-    session : flask session
-        Current user session.
+    subId : string
+        Current subject id
+    blocks : list
+        list of blocks
     """
 
     ## Write metadata to disk.
@@ -95,7 +99,7 @@ def write_surveydata(session, jsondat, method='pass'):
     ----------
     session : flask session
         Current user session.
-    json : object
+    jsondat : object
         Data object returned by jsPsych.
     method : pass | reject
         Designates target folder for data.

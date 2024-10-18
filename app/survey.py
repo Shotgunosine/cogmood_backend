@@ -156,7 +156,7 @@ def redirect_success():
 @bp.route('/redirect_reject', methods = ['POST'])
 def redirect_reject():
     """Save rejected jsPsych dataset to disk."""
-
+    # TODO: add paramters here so we can record the rejection reason
     if request.is_json:
 
         ## Retrieve jsPsych data.
