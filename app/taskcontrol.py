@@ -1,11 +1,9 @@
-import sys
 import os
 import re
 import json
-from hashlib import blake2b
 from flask import (Blueprint, request, current_app)
 from .config import CFG
-from .io import initialize_taskdata, write_taskdata, hash_file, validate_checksum
+from .io import write_taskdata, hash_file, validate_checksum
 from itsdangerous.exc import BadSignature
 from werkzeug.utils import secure_filename
 from datetime import datetime
@@ -13,6 +11,7 @@ from .validation import validate
 
 ## Initialize blueprint.
 bp = Blueprint('taskcontrol', __name__)
+
 
 @bp.route('/taskcontrol', methods=['GET','POST'])
 def taskcontrol():
