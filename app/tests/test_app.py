@@ -55,7 +55,7 @@ def test_consent(page: Page):
 
 
 @pytest.mark.browser_context_args(user_agent="macintosh")
-def test_survey_complete(page: Page, request):
+def test_survey_complete(server, page: Page, request):
     workerId = get_new_workerid()
     page.goto(f"{TESTURL}?PROLIFIC_PID={workerId}")
     expect(page).to_have_url(f'{TESTURL}consent?PROLIFIC_PID={workerId}')
@@ -92,19 +92,20 @@ def test_survey_complete(page: Page, request):
             page.get_by_role("button", name="Next").click()
     expect(page).to_have_url(f'{TESTURL}taskstart?PROLIFIC_PID={workerId}')
 
-    # get saved data and compare to expectation
-    h_workerId = blake2b(workerId.encode(), digest_size=24).hexdigest()
-    with open(os.path.join(CFG['meta'], h_workerId), 'r') as f:
-        logs = f.read()
-    subId = re.search('subId\t(.*)\n', logs).group(1)
-    fin = os.path.join(CFG['s_complete'], '%s.json' % subId)
-    with open(fin, 'r') as f:
-        saved_data = json.loads(f.read())
+    if server:
+        # get saved data and compare to expectation
+        h_workerId = blake2b(workerId.encode(), digest_size=24).hexdigest()
+        with open(os.path.join(CFG['meta'], h_workerId), 'r') as f:
+            logs = f.read()
+        subId = re.search('subId\t(.*)\n', logs).group(1)
+        fin = os.path.join(CFG['s_complete'], '%s.json' % subId)
+        with open(fin, 'r') as f:
+            saved_data = json.loads(f.read())
 
-    assert saved_data[0]['response'] == expected_out
+        assert saved_data[0]['response'] == expected_out
 
 @pytest.mark.browser_context_args(user_agent="macintosh")
-def test_survey_attn1(page: Page, request):
+def test_survey_attn1(server, page: Page, request):
     workerId = get_new_workerid()
     page.goto(f"{TESTURL}?PROLIFIC_PID={workerId}")
     expect(page).to_have_url(f'{TESTURL}consent?PROLIFIC_PID={workerId}')
@@ -135,22 +136,23 @@ def test_survey_attn1(page: Page, request):
             page.get_by_role("button", name="Next").click()
     expect(page).to_have_url(f'{TESTURL}error/1008')
 
-    # get saved data and compare to expectation
-    h_workerId = blake2b(workerId.encode(), digest_size=24).hexdigest()
-    with open(os.path.join(CFG['meta'], h_workerId), 'r') as f:
-        logs = f.read()
-    subId = re.search('subId\t(.*)\n', logs).group(1)
-    fin = os.path.join(CFG['s_reject'], '%s.json' % subId)
-    with open(fin, 'r') as f:
-        saved_data = json.loads(f.read())
+    if server:
+        # get saved data and compare to expectation
+        h_workerId = blake2b(workerId.encode(), digest_size=24).hexdigest()
+        with open(os.path.join(CFG['meta'], h_workerId), 'r') as f:
+            logs = f.read()
+        subId = re.search('subId\t(.*)\n', logs).group(1)
+        fin = os.path.join(CFG['s_reject'], '%s.json' % subId)
+        with open(fin, 'r') as f:
+            saved_data = json.loads(f.read())
 
-    for k,v in saved_data[0]['response'].items():
-        if v is not None:
-            assert expected_out[k] == v
+        for k,v in saved_data[0]['response'].items():
+            if v is not None:
+                assert expected_out[k] == v
 
 
 @pytest.mark.browser_context_args(user_agent="macintosh")
-def test_survey_attn3(page: Page, request):
+def test_survey_attn3(server, page: Page, request):
     workerId = get_new_workerid()
     page.goto(f"{TESTURL}?PROLIFIC_PID={workerId}")
     expect(page).to_have_url(f'{TESTURL}consent?PROLIFIC_PID={workerId}')
@@ -178,22 +180,23 @@ def test_survey_attn3(page: Page, request):
         page.get_by_role("button", name="Next").click()
     expect(page.get_by_role("img", name="Prolific logo")).to_be_visible()
 
-    # get saved data and compare to expectation
-    h_workerId = blake2b(workerId.encode(), digest_size=24).hexdigest()
-    with open(os.path.join(CFG['meta'], h_workerId), 'r') as f:
-        logs = f.read()
-    subId = re.search('subId\t(.*)\n', logs).group(1)
-    fin = os.path.join(CFG['s_reject'], '%s.json' % subId)
-    with open(fin, 'r') as f:
-        saved_data = json.loads(f.read())
+    if server:
+        # get saved data and compare to expectation
+        h_workerId = blake2b(workerId.encode(), digest_size=24).hexdigest()
+        with open(os.path.join(CFG['meta'], h_workerId), 'r') as f:
+            logs = f.read()
+        subId = re.search('subId\t(.*)\n', logs).group(1)
+        fin = os.path.join(CFG['s_reject'], '%s.json' % subId)
+        with open(fin, 'r') as f:
+            saved_data = json.loads(f.read())
 
-    for k,v in saved_data[0]['response'].items():
-        if v is not None:
-            assert expected_out[k] == v
+        for k,v in saved_data[0]['response'].items():
+            if v is not None:
+                assert expected_out[k] == v
 
 
 @pytest.mark.browser_context_args(user_agent="macintosh")
-def test_taskcontrol(page: Page, request):
+def test_taskcontrol(server, page: Page, request):
     workerId = get_new_workerid()
     page.goto(f"{TESTURL}?PROLIFIC_PID={workerId}")
     expect(page).to_have_url(f'{TESTURL}consent?PROLIFIC_PID={workerId}')
@@ -294,23 +297,25 @@ def test_taskcontrol(page: Page, request):
         for bb in req_dat['blocks_to_run']:
             assert bb in expected_blocks
 
-        # confirm stdb updated
+        if server:
+            # confirm stdb updated
+            with open(os.path.join(CFG['meta'], h_workerId), 'r') as f:
+                logs = f.read()
+            subId = re.search('subId\t(.*)\n', logs).group(1)
+            with open(os.path.join(CFG['t_db'], f'{subId}.json'), 'r') as f:
+                s_tdb = json.loads(f.read())
+
+            for bb in s_tdb:
+                if bb['name'] == completed_block:
+                    assert bb['uploaded']
+                    assert bb['checksum'] == checksum
+                    assert bb['valid']
+
+    if server:
+        # confirm that task is marked as complete
         with open(os.path.join(CFG['meta'], h_workerId), 'r') as f:
             logs = f.read()
-        subId = re.search('subId\t(.*)\n', logs).group(1)
-        with open(os.path.join(CFG['t_db'], f'{subId}.json'), 'r') as f:
-            s_tdb = json.loads(f.read())
+        assert re.search('complete\t(.*)\n', logs).group(1) == 'success'
 
-        for bb in s_tdb:
-            if bb['name'] == completed_block:
-                assert bb['uploaded']
-                assert bb['checksum'] == checksum
-                assert bb['valid']
-
-    # confirm that task is marked as complete
-    with open(os.path.join(CFG['meta'], h_workerId), 'r') as f:
-        logs = f.read()
-    assert re.search('complete\t(.*)\n', logs).group(1) == 'success'
-
-    page.goto(f"{TESTURL}?PROLIFIC_PID={workerId}")
-    expect(page.get_by_role("img", name="Prolific logo")).to_be_visible()
+        page.goto(f"{TESTURL}?PROLIFIC_PID={workerId}")
+        expect(page.get_by_role("img", name="Prolific logo")).to_be_visible()
