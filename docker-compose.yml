@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  flask:
+    build: .
+    volumes:
+      - ./data:/cogmood_backend/data
+      - ./metadata:/cogmood_backend/metadata
+    ports:
+      - "8000:8000"
+    expose:
+      - "8000"
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./app/static:/static
+    depends_on:
+      - flask

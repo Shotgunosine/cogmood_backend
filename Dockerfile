@@ -6,4 +6,4 @@ RUN pip install -r requirements.txt &&\
     playwright install && \
     playwright install-deps
 COPY . .
-CMD ["flask", "run", "--host", "0.0.0.0"]
+CMD ["gunicorn", "-b", "0.0.0.0:8000", "-w", "10", "app:app"]

@@ -21,11 +21,7 @@ def routing(ep):
 
     disallowed_agent = any([device in info['user_agent'] for device in CFG['disallowed_agents']])
     allowed_agent = any([device in info['user_agent'] for device in CFG['allowed_agents']])
-    print("running routing")
-    print(info)
-    print()
-    print("session")
-    print(session)
+
     # Case 1: workerId absent from URL.
     try:
         h_workerId = blake2b(info['workerId'].encode(), digest_size=24).hexdigest()
