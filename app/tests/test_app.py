@@ -37,14 +37,14 @@ def test_pseudorandomize():
         assert zcount == nreps
 
 def test_no_workerid(url, page: Page):
-    page.goto(url)
+    page.goto(f"http://{url}/")
     expect(page.locator("body")).to_contain_text("Sorry, there was an error. Sorry, we are missing your Prolific ID. Please start the experiment over from the Prolific link.")
 
 
 @pytest.mark.browser_context_args(user_agent="macintosh")
 def test_consent(url, page: Page):
     workerId = get_new_workerid()
-    page.goto(f"{url}?PROLIFIC_PID={workerId}")
+    page.goto(f"http://{url}/?PROLIFIC_PID={workerId}")
     expect(page.locator("body")).to_contain_text("Welcome to the mood and cognition tasks,")
 
     agree = page.get_by_role("button", name="I agree")
@@ -56,7 +56,7 @@ def test_consent(url, page: Page):
 @pytest.mark.browser_context_args(user_agent="macintosh")
 def test_survey_complete(url, server, page: Page, request):
     workerId = get_new_workerid()
-    page.goto(f"{url}?PROLIFIC_PID={workerId}")
+    page.goto(f"http://{url}/?PROLIFIC_PID={workerId}")
     expect(page).to_have_url(f'http://{url}/consent?PROLIFIC_PID={workerId}')
     page.get_by_role("button", name="I agree").click()
     expect(page).to_have_url(f'http://{url}/alert?PROLIFIC_PID={workerId}')
@@ -106,7 +106,7 @@ def test_survey_complete(url, server, page: Page, request):
 @pytest.mark.browser_context_args(user_agent="macintosh")
 def test_survey_attn1(url, server, page: Page, request):
     workerId = get_new_workerid()
-    page.goto(f"{url}?PROLIFIC_PID={workerId}")
+    page.goto(f"http://{url}/?PROLIFIC_PID={workerId}")
     expect(page).to_have_url(f'http://{url}/consent?PROLIFIC_PID={workerId}')
     page.get_by_role("button", name="I agree").click()
     expect(page).to_have_url(f'http://{url}/alert?PROLIFIC_PID={workerId}')
@@ -153,7 +153,7 @@ def test_survey_attn1(url, server, page: Page, request):
 @pytest.mark.browser_context_args(user_agent="macintosh")
 def test_survey_attn3(url, server, page: Page, request):
     workerId = get_new_workerid()
-    page.goto(f"{url}?PROLIFIC_PID={workerId}")
+    page.goto(f"http://{url}/?PROLIFIC_PID={workerId}")
     expect(page).to_have_url(f'http://{url}/consent?PROLIFIC_PID={workerId}')
     page.get_by_role("button", name="I agree").click()
     expect(page).to_have_url(f'http://{url}/alert?PROLIFIC_PID={workerId}')
@@ -197,7 +197,7 @@ def test_survey_attn3(url, server, page: Page, request):
 @pytest.mark.browser_context_args(user_agent="macintosh")
 def test_taskcontrol(url, server, page: Page, request):
     workerId = get_new_workerid()
-    page.goto(f"{url}?PROLIFIC_PID={workerId}")
+    page.goto(f"http://{url}/?PROLIFIC_PID={workerId}")
     expect(page).to_have_url(f'http://{url}/consent?PROLIFIC_PID={workerId}')
     page.get_by_role("button", name="I agree").click()
     expect(page).to_have_url(f'http://{url}/alert?PROLIFIC_PID={workerId}')
