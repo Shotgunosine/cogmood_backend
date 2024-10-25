@@ -13,7 +13,14 @@ from itsdangerous.serializer import Serializer
 import configparser
 from ..io import hash_file
 from ..utils import pseudorandomize
+import logging
 
+LOGGER = logging.getLogger(__name__)
+
+def logged_goto(page, url):
+    page.on('request', lambda request: LOGGER.info([request.method, request.url]))
+    page.on('response', lambda response: LOGGER.info([response.status, response.url]))
+    page.goto(url)
 
 def test_pseudorandomize():
     blocks = ['foo', 'bar', 'baz']
@@ -37,14 +44,16 @@ def test_pseudorandomize():
         assert zcount == nreps
 
 def test_no_workerid(url, page: Page):
-    page.goto(f"http://{url}/")
+    LOGGER.info('RUNNING: test_no_workerid')
+    logged_goto(page, url)
     expect(page.locator("body")).to_contain_text("Sorry, there was an error. Sorry, we are missing your Prolific ID. Please start the experiment over from the Prolific link.")
 
 
 @pytest.mark.browser_context_args(user_agent="macintosh")
 def test_consent(url, page: Page):
+    LOGGER.info('RUNNING: test_no_consent')
     workerId = get_new_workerid()
-    page.goto(f"http://{url}/?PROLIFIC_PID={workerId}")
+    logged_goto(page, f'{url}?PROLIFIC_PID={workerId}')
     expect(page.locator("body")).to_contain_text("Welcome to the mood and cognition tasks,")
 
     agree = page.get_by_role("button", name="I agree")
@@ -55,13 +64,14 @@ def test_consent(url, page: Page):
 
 @pytest.mark.browser_context_args(user_agent="macintosh")
 def test_survey_complete(url, server, page: Page, request):
+    LOGGER.info('RUNNING: test_survey_complete')
     workerId = get_new_workerid()
-    page.goto(f"http://{url}/?PROLIFIC_PID={workerId}")
-    expect(page).to_have_url(f'http://{url}/consent?PROLIFIC_PID={workerId}')
+    logged_goto(page, f"{url}?PROLIFIC_PID={workerId}")
+    expect(page).to_have_url(f'{url}consent?PROLIFIC_PID={workerId}')
     page.get_by_role("button", name="I agree").click()
-    expect(page).to_have_url(f'http://{url}/alert?PROLIFIC_PID={workerId}')
+    expect(page).to_have_url(f'{url}alert?PROLIFIC_PID={workerId}')
     page.get_by_role("button", name="I understand").click()
-    expect(page).to_have_url(f'http://{url}/survey?PROLIFIC_PID={workerId}')
+    expect(page).to_have_url(f'{url}survey?PROLIFIC_PID={workerId}')
     test_dir = Path(request.path).parent
     input_path = test_dir / 'data/surveyinput_1.json'
     survey_input = json.loads(input_path.read_text())
@@ -89,7 +99,7 @@ def test_survey_complete(url, server, page: Page, request):
             page.get_by_role("button", name="Complete").click()
         else:
             page.get_by_role("button", name="Next").click()
-    expect(page).to_have_url(f'http://{url}/taskstart?PROLIFIC_PID={workerId}')
+    expect(page).to_have_url(f'{url}taskstart?PROLIFIC_PID={workerId}')
 
     if server:
         # get saved data and compare to expectation
@@ -104,14 +114,15 @@ def test_survey_complete(url, server, page: Page, request):
         assert saved_data[0]['response'] == expected_out
 
 @pytest.mark.browser_context_args(user_agent="macintosh")
-def test_survey_attn1(url, server, page: Page, request):
+def test_survey_attn1(url, server, loadtest, page: Page, request):
+    LOGGER.info('RUNNING: test_survey_attn1')
     workerId = get_new_workerid()
-    page.goto(f"http://{url}/?PROLIFIC_PID={workerId}")
-    expect(page).to_have_url(f'http://{url}/consent?PROLIFIC_PID={workerId}')
+    logged_goto(page, f"{url}?PROLIFIC_PID={workerId}")
+    expect(page).to_have_url(f'{url}consent?PROLIFIC_PID={workerId}')
     page.get_by_role("button", name="I agree").click()
-    expect(page).to_have_url(f'http://{url}/alert?PROLIFIC_PID={workerId}')
+    expect(page).to_have_url(f'{url}alert?PROLIFIC_PID={workerId}')
     page.get_by_role("button", name="I understand").click()
-    expect(page).to_have_url(f'http://{url}/survey?PROLIFIC_PID={workerId}')
+    expect(page).to_have_url(f'{url}survey?PROLIFIC_PID={workerId}')
     test_dir = Path(request.path).parent
     input_path = test_dir / 'data/surveyinput_2.json'
     survey_input = json.loads(input_path.read_text())
@@ -130,10 +141,12 @@ def test_survey_attn1(url, server, page: Page, request):
             elif qq['type'] == 'html':
                 continue
         if pgn + 1 == len(survey_input):
-            page.get_by_role("button", name="Complete").click()
+            if not loadtest:
+                page.get_by_role("button", name="Complete").click()
         else:
             page.get_by_role("button", name="Next").click()
-    expect(page).to_have_url(f'http://{url}/error/1008')
+    if not loadtest:
+        expect(page).to_have_url(f'{url}error/1008')
 
     if server:
         # get saved data and compare to expectation
@@ -151,14 +164,15 @@ def test_survey_attn1(url, server, page: Page, request):
 
 
 @pytest.mark.browser_context_args(user_agent="macintosh")
-def test_survey_attn3(url, server, page: Page, request):
+def test_survey_attn3(url, server, loadtest, page: Page, request):
+    LOGGER.info('RUNNING: test_survey_attn3')
     workerId = get_new_workerid()
-    page.goto(f"http://{url}/?PROLIFIC_PID={workerId}")
-    expect(page).to_have_url(f'http://{url}/consent?PROLIFIC_PID={workerId}')
+    logged_goto(page, f"{url}?PROLIFIC_PID={workerId}")
+    expect(page).to_have_url(f'{url}consent?PROLIFIC_PID={workerId}')
     page.get_by_role("button", name="I agree").click()
-    expect(page).to_have_url(f'http://{url}/alert?PROLIFIC_PID={workerId}')
+    expect(page).to_have_url(f'{url}alert?PROLIFIC_PID={workerId}')
     page.get_by_role("button", name="I understand").click()
-    expect(page).to_have_url(f'http://{url}/survey?PROLIFIC_PID={workerId}')
+    expect(page).to_have_url(f'{url}survey?PROLIFIC_PID={workerId}')
     test_dir = Path(request.path).parent
     input_path = test_dir / 'data/surveyinput_3.json'
     survey_input = json.loads(input_path.read_text())
@@ -176,8 +190,13 @@ def test_survey_attn3(url, server, page: Page, request):
                 page.get_by_role("cell", name=qqname).locator("label").click()
             elif qq['type'] == 'html':
                 continue
-        page.get_by_role("button", name="Next").click()
-    expect(page.get_by_role("img", name="Prolific logo")).to_be_visible()
+        if pgn + 1 == len(survey_input):
+            if not loadtest:
+                page.get_by_role("button", name="Next").click()
+        else:
+            page.get_by_role("button", name="Next").click()
+    if not loadtest:
+        expect(page.get_by_role("img", name="Prolific logo")).to_be_visible()
 
     if server:
         # get saved data and compare to expectation
@@ -195,14 +214,15 @@ def test_survey_attn3(url, server, page: Page, request):
 
 
 @pytest.mark.browser_context_args(user_agent="macintosh")
-def test_taskcontrol(url, server, page: Page, request):
+def test_taskcontrol(url, server, loadtest, page: Page, request):
+    LOGGER.info('RUNNING: test_taskcontrol')
     workerId = get_new_workerid()
-    page.goto(f"http://{url}/?PROLIFIC_PID={workerId}")
-    expect(page).to_have_url(f'http://{url}/consent?PROLIFIC_PID={workerId}')
+    logged_goto(page, f"{url}?PROLIFIC_PID={workerId}")
+    expect(page).to_have_url(f'{url}consent?PROLIFIC_PID={workerId}')
     page.get_by_role("button", name="I agree").click()
-    expect(page).to_have_url(f'http://{url}/alert?PROLIFIC_PID={workerId}')
+    expect(page).to_have_url(f'{url}alert?PROLIFIC_PID={workerId}')
     page.get_by_role("button", name="I understand").click()
-    expect(page).to_have_url(f'http://{url}/survey?PROLIFIC_PID={workerId}')
+    expect(page).to_have_url(f'{url}survey?PROLIFIC_PID={workerId}')
     test_dir = Path(request.path).parent
     input_path = test_dir / 'data/surveyinput_1.json'
     survey_input = json.loads(input_path.read_text())
@@ -224,7 +244,7 @@ def test_taskcontrol(url, server, page: Page, request):
             page.get_by_role("button", name="Complete").click()
         else:
             page.get_by_role("button", name="Next").click()
-    expect(page).to_have_url(f'http://{url}/taskstart?PROLIFIC_PID={workerId}')
+    expect(page).to_have_url(f'{url}taskstart?PROLIFIC_PID={workerId}')
 
     # mock task communication with server
     cfg = configparser.ConfigParser()
@@ -235,7 +255,7 @@ def test_taskcontrol(url, server, page: Page, request):
 
     # test initial get
     req = requests.get(
-        url=f"http://{url}/taskcontrol",
+        url=f"{url}taskcontrol",
         params={'worker_id':serializer.dumps(h_workerId)}
     )
     req_dat = req.json()
@@ -271,7 +291,7 @@ def test_taskcontrol(url, server, page: Page, request):
 
         with open(test_data_path, 'rb') as f:
             req = requests.post(
-                url=f"http://{url}/taskcontrol",
+                url=f"{url}taskcontrol",
                 params={'worker_id': serializer.dumps(h_workerId)},
                 data={
                     'block_name': completed_block,
@@ -284,7 +304,7 @@ def test_taskcontrol(url, server, page: Page, request):
 
         # test next get
         req = requests.get(
-            url=f"http://{url}/taskcontrol",
+            url=f"{url}taskcontrol",
             params={'worker_id':serializer.dumps(h_workerId)}
         )
         req_dat = req.json()
@@ -316,5 +336,6 @@ def test_taskcontrol(url, server, page: Page, request):
             logs = f.read()
         assert re.search('complete\t(.*)\n', logs).group(1) == 'success'
 
-    page.goto(f"http://{url}/?PROLIFIC_PID={workerId}")
-    expect(page.get_by_role("img", name="Prolific logo")).to_be_visible()
+    if not loadtest:
+        page.goto(f"{url}?PROLIFIC_PID={workerId}")
+        expect(page.get_by_role("img", name="Prolific logo")).to_be_visible()

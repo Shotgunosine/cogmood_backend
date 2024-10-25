@@ -8,6 +8,11 @@ def pytest_addoption(parser):
              "run in the directory serving the website"
     )
     parser.addoption(
+        "--loadtest", action="store_true", default=False,
+        help="disable redirection to proflific pages,"
+             "for use during load testing"
+    )
+    parser.addoption(
         "--url", action="store", default="127.0.0.1:8000",
         help="url for the tests to run against"
     )
@@ -19,4 +24,8 @@ def server(request):
 
 @pytest.fixture
 def url(request):
-    return request.config.getoption("--url")
+    return f'http://{request.config.getoption("--url")}/'
+
+@pytest.fixture()
+def loadtest(request):
+    return request.config.getoption("--loadtest")
