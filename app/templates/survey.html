@@ -74,8 +74,8 @@
   }
   function augment_survey(survey) {
       survey.onTextMarkdown.add(convert_markdown);
-      survey.onValueChanged.add(ongoing_save);
-      survey.onValueChanged.add(save_current_page);
+      survey.onCurrentPageChanged.add(ongoing_save);
+      survey.onCurrentPageChanged.add(save_current_page);
       survey.onAfterRenderQuestion.add(add_onclick);
 
       {% if prev_data is not none %}
