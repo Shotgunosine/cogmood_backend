@@ -47,6 +47,7 @@ def test_no_workerid(url, page: Page):
     LOGGER.info('RUNNING: test_no_workerid')
     logged_goto(page, url)
     expect(page.locator("body")).to_contain_text("Sorry, there was an error. Sorry, we are missing your Prolific ID. Please start the experiment over from the Prolific link.")
+    LOGGER.info('PASSED: test_no_workerid')
 
 
 @pytest.mark.browser_context_args(user_agent="macintosh")
@@ -113,6 +114,9 @@ def test_survey_complete(url, server, page: Page, request):
 
         assert saved_data[0]['response'] == expected_out
 
+    LOGGER.info('PASSED: test_survey_complete')
+
+
 @pytest.mark.browser_context_args(user_agent="macintosh")
 def test_survey_attn1(url, server, loadtest, page: Page, request):
     LOGGER.info('RUNNING: test_survey_attn1')
@@ -161,6 +165,7 @@ def test_survey_attn1(url, server, loadtest, page: Page, request):
         for k,v in saved_data[0]['response'].items():
             if v is not None:
                 assert expected_out[k] == v
+    LOGGER.info('PASSED: test_survey_attn1')
 
 
 @pytest.mark.browser_context_args(user_agent="macintosh")
@@ -211,6 +216,7 @@ def test_survey_attn3(url, server, loadtest, page: Page, request):
         for k,v in saved_data[0]['response'].items():
             if v is not None:
                 assert expected_out[k] == v
+    LOGGER.info('PASSED: test_survey_attn3')
 
 
 @pytest.mark.browser_context_args(user_agent="macintosh")
@@ -254,10 +260,12 @@ def test_taskcontrol(url, server, loadtest, page: Page, request):
     h_workerId = blake2b(workerId.encode(), digest_size=24).hexdigest()
 
     # test initial get
+    LOGGER.info(['GET', f"{url}taskcontrol"])
     req = requests.get(
         url=f"{url}taskcontrol",
         params={'worker_id':serializer.dumps(h_workerId)}
     )
+    LOGGER.info([req.status_code, f"{url}taskcontrol"])
     req_dat = req.json()
     assert req.status_code == 200
 
@@ -290,6 +298,7 @@ def test_taskcontrol(url, server, loadtest, page: Page, request):
         checksum = hash_file(test_data_path)
 
         with open(test_data_path, 'rb') as f:
+            LOGGER.info(['POST', f"{url}taskcontrol"])
             req = requests.post(
                 url=f"{url}taskcontrol",
                 params={'worker_id': serializer.dumps(h_workerId)},
@@ -299,14 +308,17 @@ def test_taskcontrol(url, server, loadtest, page: Page, request):
                 },
                 files={'file': f},
             )
+            LOGGER.info([req.status_code, f"{url}taskcontrol"])
 
         assert req.status_code == 200
 
         # test next get
+        LOGGER.info(['GET', f"{url}taskcontrol"])
         req = requests.get(
             url=f"{url}taskcontrol",
-            params={'worker_id':serializer.dumps(h_workerId)}
+            params={'worker_id': serializer.dumps(h_workerId)}
         )
+        LOGGER.info([req.status_code, f"{url}taskcontrol"])
         req_dat = req.json()
         assert req.status_code == 200
 
@@ -339,3 +351,6 @@ def test_taskcontrol(url, server, loadtest, page: Page, request):
     if not loadtest:
         page.goto(f"{url}?PROLIFIC_PID={workerId}")
         expect(page.get_by_role("img", name="Prolific logo")).to_be_visible()
+
+    LOGGER.info('PASSED: test_taskcontrol')
+
