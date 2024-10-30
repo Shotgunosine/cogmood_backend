@@ -16,7 +16,6 @@ build/
 .DS_Store
 
 # project specific
-data/**
 metadata/**
 incomplete/**
 reject/**
@@ -26,3 +25,8 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# ignore all contents of data/ EXCEPT data/base_executables & contents of base_executables
+data/**
+!data/base_executables
+!data/base_executables/*
