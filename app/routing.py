@@ -9,7 +9,6 @@ from .utils import gen_code
 
 def routing(ep):
     """Unify the routing to reduce repetition"""
-    print(ep)
     info = dict(
         workerId     = request.args.get('PROLIFIC_PID'),    # Prolific metadata
         assignmentId = request.args.get('SESSION_ID'),      # Prolific metadata
@@ -143,7 +142,6 @@ def routing(ep):
 
     # case 7: Not consented
     elif 'consent' not in session:
-        print('8')
         if ep == 'consent':
             return
         else:
@@ -152,7 +150,6 @@ def routing(ep):
 
     # case 8: Not viewed alert
     elif ('alert' not in session) or not session['alert']:
-        print('9')
         if ep == 'alert':
             return
         else:
