@@ -1,4 +1,5 @@
 numpy
+pefile
 flask>=2.0
 gunicorn
 pytest
