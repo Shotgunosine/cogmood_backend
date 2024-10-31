@@ -61,7 +61,7 @@ def test_consent(url, page: Page):
     agree.click()
 
     expect(page.locator("body")).to_contain_text("Attention")
-
+    LOGGER.info('PASSED: test_no_consent')
 
 @pytest.mark.browser_context_args(user_agent="macintosh")
 def test_survey_complete(url, server, page: Page, request):
@@ -353,4 +353,3 @@ def test_taskcontrol(url, server, loadtest, page: Page, request):
         expect(page.get_by_role("img", name="Prolific logo")).to_be_visible()
 
     LOGGER.info('PASSED: test_taskcontrol')
-
