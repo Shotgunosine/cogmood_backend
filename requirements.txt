@@ -4,3 +4,4 @@ gunicorn
 pytest
 playwright
 pytest-playwright
+gevent
