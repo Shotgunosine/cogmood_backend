@@ -35,20 +35,14 @@ def taskstart():
     write_metadata(session, ['dlready'], 'a')
     initialize_taskdata(session)
 
-    if session['platform'] == 'mac':
-        platform_link = url_for('taskstart.download_mac')
-        other_platform = 'win'
-        other_link = url_for('taskstart.download_win')
-    else:
-        platform_link = url_for('taskstart.download_win')
-        other_platform = 'mac'
-        other_link = url_for('taskstart.download_mac')
+    mac_link = url_for('taskstart.download_mac')
+    win_link = url_for('taskstart.download_win')
+
     if rres is None:
         return render_template('taskstart.html',
                                platform=session['platform'],
-                               platform_link=platform_link,
-                               other_platform=other_platform,
-                               other_link=other_link)
+                               mac_link=mac_link,
+                               win_link=win_link)
     else:
         return rres
 

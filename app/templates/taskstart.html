@@ -5,7 +5,56 @@
 
   <title>CogMood - Task</title>
   <link rel="stylesheet" href="../static/css/tacit-css.min.css"/>
-
+  <style>
+    /* Basic styling for layout */
+    .tab-container {
+      display: flex;
+      margin-top: 20px;
+      border-bottom: 2px solid #ddd;
+    }
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      font-weight: bold;
+      border: 1px solid #ddd;
+      border-bottom: none;
+      background-color: #f9f9f9;
+    }
+    .tab.active {
+      background-color: white;
+      border-top: 2px solid #4CAF50;
+      color: #4CAF50;
+    }
+    .instructions {
+      display: none;
+      padding: 15px;
+      border: 1px solid #ddd;
+      margin-top: 10px;
+      background-color: #f9f9f9;
+    }
+    .download-button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .download-button:hover {
+      background-color: #45a049;
+    }
+.instruction-image {
+      max-width: 100%;
+      max-height: 400px;
+      margin-top: 10px;
+      border: 1px solid #ddd;
+      margin-left: auto;
+      margin-right: auto;
+    }
+.mac {
+    display: block;
+}
+  </style>
 
 </head>
 <style>
@@ -18,19 +67,69 @@
   <h1 style="color: rgb(51, 51, 51);">Mood and Cognition Task Download</h1>
 
   <p>
-      Placeholder
+      Thank you for completing the survey!
   </p>
-  <div id="buttons-box" class="box">
-      <button onclick="location.href='{{ platform_link }}';">
-          Download
-          <br>
-          <small> for {{ platform.title() }}</small>
-      </button>
+   <p>
+      Please download the task using the appropriate instructions for your operating system.
       <br>
-      <small><a href="{{other_link}}">Download for {{ other_platform.title() }}</a></small>
+      Feel free to take a short break while it is downloading.
+      When you are ready, follow the instructions to begin the cognitive tasks.
+  </p>
+  <!-- Tabs for OS Selection -->
+  <div class="tab-container">
+    <div class="tab" id="windows-tab" onclick="showTab('windows')">Windows</div>
+    <div class="tab" id="macos-tab" onclick="showTab('macos')">macOS</div>
   </div>
+
+  <!-- Windows Instructions -->
+  <div id="windows-instructions" class="instructions">
+    <h3>Windows Instructions:</h3>
+    <button class="download-button" onclick="window.location.href='{{ win_link }}'">Download for Windows</button>
+    <p>1. After downloading, locate the downloaded file and double-click it."</p>
+    <p>2. If prompted with a security warning, click "More info" and then "Run anyway."</p>
+    <img src="../static/img/win_inst_1.png" alt="Windows Step 2" class="instruction-image">
+    <img src="../static/img/win_inst_2.png" alt="Windows Step 2" class="instruction-image">
+
+  </div>
+
+  <!-- macOS Instructions -->
+  <div id="macos-instructions" class="instructions">
+    <h3>macOS Instructions:</h3>
+    <button class="download-button" onclick="window.location.href='{{ mac_link }}'">Download for macOS</button>
+    <p>1. After downloading, locate the .app file, usually in your Downloads folder.</p>
+    <p>2. Right-click the .app file and select "Open" to bypass macOS security restrictions.</p>
+    <img src="../static/img/mac_inst_1.png" alt="macOS Step 2" class="instruction-image mac">
+    <p>3. In the pop-up that appears, click "Open" again to confirm.</p>
+    <img src="../static/img/mac_inst_2.png" alt="macOS Step 3" class="instruction-image mac">
+  </div>
+
 
 </body>
 <script>
-  window.scrollTo(0,0);
+    function detectOS() {
+      const platform = navigator.platform.toLowerCase();
+      if (platform.includes("win")) {
+        showTab("windows");
+      } else if (platform.includes("mac") || platform.includes("darwin")) {
+        showTab("macos");
+      } else {
+        alert("Operating system not detected. Please select the correct tab.");
+        showTab("windows"); // Default to Windows
+      }
+    }
+
+    function showTab(os) {
+      // Hide all instructions and remove active class from tabs
+      document.getElementById("windows-instructions").style.display = "none";
+      document.getElementById("macos-instructions").style.display = "none";
+      document.getElementById("windows-tab").classList.remove("active");
+      document.getElementById("macos-tab").classList.remove("active");
+
+      // Show selected OS instructions and set active class on the tab
+      document.getElementById(`${os}-instructions`).style.display = "block";
+      document.getElementById(`${os}-tab`).classList.add("active");
+    }
+
+    // Run OS detection on page load
+    window.onload = detectOS;
 </script>
