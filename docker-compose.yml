@@ -1,4 +1,4 @@
-version: "3.8"
+version: '3.9'
 
 services:
   flask:
@@ -10,6 +10,8 @@ services:
       - "8000:8000"
     expose:
       - "8000"
+    mem_limit: "3g"
+    cpus: "4"
 
   nginx:
     image: nginx:latest
@@ -20,3 +22,6 @@ services:
       - ./app/static:/static
     depends_on:
       - flask
+    mem_limit: "3g"
+    cpus: "4"
+
