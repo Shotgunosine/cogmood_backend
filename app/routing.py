@@ -67,8 +67,11 @@ def routing(ep):
             with open(os.path.join(CFG['meta'], h_workerId), 'r') as f:
                 logs = f.read()
 
-            ## Extract subject ID.
-            info['subId'] = re.search('subId\t(.*)\n', logs).group(1)
+            try:
+                ## Extract subject ID.
+                info['subId'] = re.search('subId\t(.*)\n', logs).group(1)
+            except AttributeError:
+                return redirect(url_for('error.error', errornum=1009))
 
             # grab fields with potential boolean values from logs
             bool_fields = [
