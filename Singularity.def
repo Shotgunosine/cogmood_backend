@@ -16,9 +16,7 @@ playwright install-deps
 %environment
 export PLAYWRIGHT_BROWSERS_PATH=/pw-browsers
 
+
 %runscript
 cd /cogmood_backend
-exec /bin/bash flask run --host 0.0.0.0 "$@"
-%startscript
-cd /cogmood_backend
-exec /bin/bash flask run --host 0.0.0.0 "$@"
+pytest --url="technetium.nimh.nih.gov" --loadtest --disable-warnings --log-file=/testlog/$(date '+%Y_%m_%d_%H_%M_%S')
