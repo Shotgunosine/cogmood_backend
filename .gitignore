@@ -14,6 +14,8 @@ build/
 *.db
 *.csv
 .DS_Store
+*.key
+*.crt
 
 # project specific
 data/**
