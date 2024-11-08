@@ -117,7 +117,7 @@
         // Display jsPsych data in viewport.
         // jsPsych.data.displayData();
         if (csd['attn__1'] != 'Yes') {
-            nodl(1008);
+            nodl();
         } else if (csd['attn_fails'] < 2) {
             redirect_success("{{workerId}}", "{{assignmentId}}", "{{hitId}}", "{{code_success}}");
         } else if (csd['hitop_02']['attn__3'] != 2) {
@@ -140,7 +140,7 @@
   function pass_message(msg) {
 
     $.ajax({
-      url: "/survey",
+      url: "{{ url_for("survey.pass_message") }}",
       method: 'POST',
       data: JSON.stringify(msg),
       contentType: "application/json; charset=utf-8",
@@ -160,7 +160,7 @@
     var ogdata = survey.data;
     ogdata.pageNo = survey.currentPageNo;
     $.ajax({
-      url: "/ongoing_save",
+      url: "{{ url_for("survey.ongoing_save") }}",
       method: 'POST',
       data: JSON.stringify(ogdata),
       contentType: "application/json; charset=utf-8",
@@ -176,11 +176,11 @@
   }
 
   // Save an incomplete dataset when they are not willing to download and run task.
-  function nodl(error) {
-    var url = "/error/" + error;
+  function nodl() {
+    var url = "{{ url_for("error.error", errornum=1008) }}";
 
     $.ajax({
-      url: "/surveynodl",
+      url: "{{ url_for("survey.survey_nodl") }}",
       method: 'POST',
       data: JSON.stringify(jsPsych.data.get().json()),
       contentType: "application/json; charset=utf-8",
@@ -197,7 +197,7 @@
   function incomplete_save() {
 
     $.ajax({
-      url: "/incomplete_save",
+      url: "{{ url_for("survey.incomplete_save") }}",
       method: 'POST',
       data: JSON.stringify(jsPsych.data.get().json()),
       contentType: "application/json; charset=utf-8",
@@ -219,7 +219,7 @@
     var url = "{{ url_for("taskstart.taskstart") }}" +'?'+ window.location.href.split('?')[1]
 
     $.ajax({
-      url: "/redirect_success",
+      url: "{{ url_for("survey.redirect_success") }}",
       method: 'POST',
       data: JSON.stringify(jsPsych.data.get().json()),
       contentType: "application/json; charset=utf-8",
@@ -241,7 +241,7 @@
     var url = "https://app.prolific.co/submissions/complete?cc=" + code_reject;
 
     $.ajax({
-      url: "/redirect_reject",
+      url: "{{ url_for("survey.redirect_reject") }}",
       method: 'POST',
       data: JSON.stringify(jsPsych.data.get().json()),
       contentType: "application/json; charset=utf-8",
@@ -255,27 +255,6 @@
     });
   }
 
-  // Unsuccessful completion of experiment: redirect to error page.
-  function redirect_error(error) {
-
-    // error is the error number to redirect to.
-    var url = "/error/" + error;
-
-    $.ajax({
-      url: "/redirect_error",
-      method: 'POST',
-      data: JSON.stringify(jsPsych.data.get().json()),
-      contentType: "application/json; charset=utf-8",
-      xhrFields: {
-        withCredentials: true
-      }
-    }).done(function(data, textStatus, jqXHR) {
-      window.location.replace(url);
-    }).fail(function(error) {
-      window.location.replace(url);
-    });
-
-  }
 
 </script>
 </html>
