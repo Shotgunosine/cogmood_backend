@@ -17,6 +17,10 @@ def pytest_addoption(parser):
         help="url for the tests to run against"
     )
     parser.addoption(
+        "--protocol", action="store", default="https", choices=["https", "http"],
+        help="protocol to preprend to url for the tests to run against"
+    )
+    parser.addoption(
         "--ignore-https-errors", action="store_true", default=False,
         help="ignore https errors to enable testing with self-signed cert"
     )
@@ -28,7 +32,7 @@ def server(request):
 
 @pytest.fixture
 def url(request):
-    return f'https://{request.config.getoption("--url")}/'
+    return f'{request.config.getoption("--protocol")}://{request.config.getoption("--url")}/'
 
 @pytest.fixture()
 def loadtest(request):

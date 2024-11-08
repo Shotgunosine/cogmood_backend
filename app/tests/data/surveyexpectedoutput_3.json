@@ -14,6 +14,7 @@
   "experience_anxiety": "No",
   "have_adhd": "Yes",
   "attn__1": "Yes",
+  "fried": "Bad things happening in their life.",
   "mood_pro_diagnosis": "Yes",
   "mood_diagnoses": [
     "Bipolar II Disorder"
@@ -22,6 +23,7 @@
   "mood_treatment": [
     "Group therapy"
   ],
+  "mood_med_today": "Not applicable (Not taking medication for a mood disorder)",
   "mood_bothered": "Yes",
   "anxiety_pro_diagnosis": "Yes",
   "anxiety_diagnoses": [
@@ -31,6 +33,7 @@
   "anxiety_treatment": [
     "Serotonin and Norepinephrine Reuptake Inhibitor (SNRI), such as: Cymbalta (duloxetine), Effexor (venalfaxine)"
   ],
+  "anxiety_med_today": "Yes",
   "anxiety_bothered": "Yes",
   "attention_pro_diagnosis": "Yes",
   "attention_diagnoses": [
@@ -40,6 +43,7 @@
   "attention_treatment": [
     "Strattera (atomoxetine)"
   ],
+  "attention_med_today": "Yes",
   "attention_bothered": "Yes",
   "baaars_inattention": {
     "baars_inattentive_1": 1,

@@ -14,6 +14,7 @@
   "experience_anxiety": "No",
   "have_adhd": "No",
   "attn__1": "Yes",
+  "fried": "Bad things happening in their life.",
   "mood_pro_diagnosis": "Yes",
   "mood_diagnoses": [
     "Bipolar II Disorder"
@@ -22,6 +23,7 @@
   "mood_treatment": [
     "Monoamine Oxidase Inhibitor (MAOI), such as: Emsam (selegiline), Marplan (isocarboxaxid)"
   ],
+  "mood_med_today": "Yes",
   "mood_bothered": "Yes",
   "anxiety_pro_diagnosis": "Yes",
   "anxiety_diagnoses": [
@@ -31,6 +33,7 @@
   "anxiety_treatment": [
     "One-on-one talk therapy with a professional"
   ],
+  "anxiety_med_today": "Not applicable (Not taking medication for an anxiety disorder)",
   "anxiety_bothered": "Yes",
   "attention_pro_diagnosis": "Yes",
   "attention_diagnoses": [
@@ -40,6 +43,7 @@
   "attention_treatment": [
     "Amphetamine, such as Dexedrine (dextroamphetamine), Adderall (amphetamine salts), Vyvanse (lisdexamfetamine)"
   ],
+  "attention_med_today": "Yes",
   "attention_bothered": "Yes",
   "baaars_inattention": {
     "baars_inattentive_1": 4,

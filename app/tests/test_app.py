@@ -83,7 +83,7 @@ def test_survey_complete(url, server, page: Page, request):
         for qq in pg:
             if qq['type'] in ['radiogroup', 'checkbox']:
                 page.get_by_label(qq['title']).locator("label").filter(has_text=qq['answer']).click()
-            elif qq['type'] == 'text':
+            elif qq['type'] in ['text', 'comment']:
                 page.get_by_label(qq['title']).fill(str(qq['answer']))
             elif qq['type'] == 'matrix':
                 qqname = f"row {qq['title']}, column {qq['answer']}"
@@ -137,7 +137,7 @@ def test_survey_attn1(url, server, loadtest, page: Page, request):
         for qq in pg:
             if qq['type'] in ['radiogroup', 'checkbox']:
                 page.get_by_label(qq['title']).locator("label").filter(has_text=qq['answer']).click()
-            elif qq['type'] == 'text':
+            elif qq['type'] in ['text', 'comment']:
                 page.get_by_label(qq['title']).fill(str(qq['answer']))
             elif qq['type'] == 'matrix':
                 qqname = f"row {qq['title']}, column {qq['answer']}"
@@ -188,7 +188,7 @@ def test_survey_attn3(url, server, loadtest, page: Page, request):
         for qq in pg:
             if qq['type'] in ['radiogroup', 'checkbox']:
                 page.get_by_label(qq['title']).locator("label").filter(has_text=qq['answer']).click()
-            elif qq['type'] == 'text':
+            elif qq['type'] in ['text', 'comment']:
                 page.get_by_label(qq['title']).fill(str(qq['answer']))
             elif qq['type'] == 'matrix':
                 qqname = f"row {qq['title']}, column {qq['answer']}"
@@ -243,7 +243,7 @@ def test_taskcontrol(url, server, loadtest, ignore_https_errors, page: Page, req
         for qq in pg:
             if qq['type'] in ['radiogroup', 'checkbox']:
                 page.get_by_label(qq['title']).locator("label").filter(has_text=qq['answer']).click()
-            elif qq['type'] == 'text':
+            elif qq['type'] in ['text', 'comment']:
                 page.get_by_label(qq['title']).fill(str(qq['answer']))
             elif qq['type'] == 'matrix':
                 qqname = f"row {qq['title']}, column {qq['answer']}"

@@ -176,6 +176,18 @@ const survey_json = {
           }
           ]
       }, {
+          name: "fried",
+          elements: [{
+              type: "comment",
+              name: "fried",
+              title: "In the box below, please indicate what you think is the most important cause for someone developing depression.",
+              description: "There is no right or wrong answer, we would just like to know what you think.",
+              rows: 2,
+              autoGrow: true,
+              isRequired: false,
+          }
+          ]
+      }, {
           name: "diag_deets_1",
           title: "Mood disorder diagnosis",
           elements: [{
@@ -253,6 +265,12 @@ const survey_json = {
               otherText: "Other (please specify)",
               showNoneItem: true,
               noneText: "Prefer not to answer",
+              isRequired: false,
+          }, {
+              type: "radiogroup",
+              name: "mood_med_today",
+              title: "Have you taken medication for your mood disorder today?",
+              choices: ['Yes', 'No', 'Not applicable (Not taking medication for a mood disorder)'],
               isRequired: false,
           }, {
               type: "radiogroup",
@@ -339,6 +357,12 @@ const survey_json = {
               isRequired: false,
           }, {
               type: "radiogroup",
+              name: "anxiety_med_today",
+              title: "Have you taken medication for your anxiety disorder today?",
+              choices: ['Yes', 'No', 'Not applicable (Not taking medication for an anxiety disorder)'],
+              isRequired: false,
+          }, {
+              type: "radiogroup",
               name: "anxiety_bothered",
               title: "In the past two weeks have you been bothered by symptoms of your anxiety disorder(s)?",
               choices: ['Yes', 'No', 'Prefer not to answer'],
@@ -404,6 +428,12 @@ const survey_json = {
               otherText: "Other (please specify)",
               showNoneItem: true,
               noneText: "Prefer not to answer",
+              isRequired: false,
+          }, {
+              type: "radiogroup",
+              name: "attention_med_today",
+              title: "Have you taken medication for your attention disorder today?",
+              choices: ['Yes', 'No', 'Not applicable (Not taking medication for an attention disorder)'],
               isRequired: false,
           }, {
               type: "radiogroup",

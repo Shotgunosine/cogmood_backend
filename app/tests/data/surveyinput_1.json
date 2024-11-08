@@ -67,6 +67,13 @@
   ],
   [
     {
+      "type": "comment",
+      "title": "In the box below, please indicate what you think is the most important cause for someone developing depression.",
+      "answer": "Bad things happening in their life."
+    }
+  ],
+  [
+    {
       "type": "radiogroup",
       "title": "Have you been diagnosed with a mood disorder",
       "answer": "Yes"
@@ -87,6 +94,11 @@
       "type": "checkbox",
       "title": "Are you currently receiving treatment for this disorder, if so, which types? Please select all treatments that you have received in the last month that are intended to treat your mood disorder(s).",
       "answer": "Monoamine Oxidase Inhibitor (MAOI), such as: Emsam (selegiline), Marplan (isocarboxaxid)"
+    },
+    {
+      "type": "radiogroup",
+      "title": "Have you taken medication for your mood disorder today?",
+      "answer": "Yes"
     },
     {
       "type": "radiogroup",
@@ -119,6 +131,11 @@
     },
     {
       "type": "radiogroup",
+      "title": "Have you taken medication for your anxiety disorder today?",
+      "answer": "Not applicable (Not taking medication for an anxiety disorder)"
+    },
+    {
+      "type": "radiogroup",
       "title": "In the past two weeks have you been bothered by symptoms of your anxiety disorder(s)?",
       "answer": "Yes"
     }
@@ -145,6 +162,11 @@
       "type": "checkbox",
       "title": "Are you currently receiving treatment for this disorder, if so, which types? Please select all treatments that you have received in the last month that are intended to treat your anxiety disorder(s).",
       "answer": "Amphetamine, such as Dexedrine (dextroamphetamine), Adderall (amphetamine salts), Vyvanse (lisdexamfetamine)"
+    },
+    {
+      "type": "radiogroup",
+      "title": "Have you taken medication for your attention disorder today?",
+      "answer": "Yes"
     },
     {
       "type": "radiogroup",
