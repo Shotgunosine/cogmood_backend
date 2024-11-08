@@ -220,7 +220,7 @@ def test_survey_attn3(url, server, loadtest, page: Page, request):
 
 
 @pytest.mark.browser_context_args(user_agent="macintosh")
-def test_taskcontrol(url, server, loadtest, page: Page, request):
+def test_taskcontrol(url, server, loadtest, ignore_https_errors, page: Page, request):
     LOGGER.info('RUNNING: test_taskcontrol')
     workerId = get_new_workerid()
     logged_goto(page, f"{url}?PROLIFIC_PID={workerId}")
@@ -234,6 +234,10 @@ def test_taskcontrol(url, server, loadtest, page: Page, request):
     survey_input = json.loads(input_path.read_text())
     expected_out_path = test_dir / 'data/surveyexpectedoutput_1.json'
     expected_out = json.loads(expected_out_path.read_text())
+
+    verify = True
+    if ignore_https_errors:
+        verify = False
 
     for pgn, pg in enumerate(survey_input):
         for qq in pg:
@@ -263,7 +267,8 @@ def test_taskcontrol(url, server, loadtest, page: Page, request):
     LOGGER.info(['GET', f"{url}taskcontrol"])
     req = requests.get(
         url=f"{url}taskcontrol",
-        params={'worker_id':serializer.dumps(h_workerId)}
+        params={'worker_id':serializer.dumps(h_workerId)},
+        verify=verify
     )
     LOGGER.info([req.status_code, f"{url}taskcontrol"])
     req_dat = req.json()
@@ -307,6 +312,7 @@ def test_taskcontrol(url, server, loadtest, page: Page, request):
                     'checksum': checksum
                 },
                 files={'file': f},
+                verify=verify
             )
             LOGGER.info([req.status_code, f"{url}taskcontrol"])
 
@@ -316,7 +322,8 @@ def test_taskcontrol(url, server, loadtest, page: Page, request):
         LOGGER.info(['GET', f"{url}taskcontrol"])
         req = requests.get(
             url=f"{url}taskcontrol",
-            params={'worker_id': serializer.dumps(h_workerId)}
+            params={'worker_id': serializer.dumps(h_workerId)},
+            verify=verify
         )
         LOGGER.info([req.status_code, f"{url}taskcontrol"])
         req_dat = req.json()
