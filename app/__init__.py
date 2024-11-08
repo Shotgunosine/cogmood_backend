@@ -42,7 +42,7 @@ app = Flask(__name__)
 app.secret_key = secret_key
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 app.config['SUPREME_serializer'] = Serializer(supreme_secret_key)
-
+#app.config['APPLICATION_ROOT'] = '/cogmood'
 # load existing subjects into database
 # mds = sorted(Path(meta_dir).glob('*'))
 # to_insert = [[] for md in mds]
