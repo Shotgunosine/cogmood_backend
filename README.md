@@ -27,6 +27,18 @@ You can visit the site at 127.0.0.1:5000?PROLIFIC_PID=[some unused number].
 If you install all the requirements in a conda environment or some such, 
 you can also run pytest outside of docker.
 
+## Creating self signed certs for testing
+Fill in the appropriate URL and IP in the following command to create self-signed certs for testing.
+
+```
+openssl req -trustout -x509 -newkey ec -pkeyopt ec_paramgen_curve:secp384r1 -days 3650 \
+  -nodes -keyout cogmoodtest.key -out cogmoodtest.crt -subj "/CN={URL}" \
+  -addext "subjectAltName=DNS:{URL},IP:{IP}"
+```
+
+You'll also need to create a dhparam file, which can take about 20 minutes:
+`openssl dhparam -out /etc/nginx/cogmoodtest_dhparam.pem 4096`
+
 # Citation
 
 If you use this library in academic work, please cite the following:
