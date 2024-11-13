@@ -33,7 +33,7 @@ CAB_KEYS = {'appearL_time', 'appearL_error', 'appearR_time', 'appearR_error', 'd
 
 def validate_flkr(zipped_path):
     with tempfile.TemporaryDirectory() as tmpdir:
-        slog_file = ZipFile(zipped_path).extract('log_FL_0.slog', path=tmpdir)
+        slog_file = ZipFile(zipped_path).extract('FLKR_0.slog', path=tmpdir)
         lod = log.log2dl(slog_file)
     if len(lod) != FLKR_NTRIALS:
         return False, 'ntrials'
@@ -47,7 +47,7 @@ def validate_flkr(zipped_path):
 
 def validate_rdm(zipped_path):
     with tempfile.TemporaryDirectory() as tmpdir:
-        slog_file = ZipFile(zipped_path).extract('log_MD_0.slog', path=tmpdir)
+        slog_file = ZipFile(zipped_path).extract('RDM_0.slog', path=tmpdir)
         lod = log.log2dl(slog_file)
     if len(lod) != RDM_NTRIALS:
         return False, 'ntrials'
@@ -65,7 +65,7 @@ def validate_rdm(zipped_path):
 
 def validate_bart(zipped_path):
     with tempfile.TemporaryDirectory() as tmpdir:
-        slog_file = ZipFile(zipped_path).extract('log_OBART_1.slog', path=tmpdir)
+        slog_file = ZipFile(zipped_path).extract('BART_0.slog', path=tmpdir)
         lod =log.log2dl(slog_file)
     if lod[0].keys() != BART_KEYS:
         return False, 'keys'
@@ -88,7 +88,7 @@ def validate_bart(zipped_path):
 
 def validate_cab(zipped_path):
     with tempfile.TemporaryDirectory() as tmpdir:
-        slog_file = ZipFile(zipped_path).extract('log_cont_ass_bind_0.slog', path=tmpdir)
+        slog_file = ZipFile(zipped_path).extract('CAB_0.slog', path=tmpdir)
         lod = log.log2dl(slog_file)
     if len(lod) != CAB_NTRIALS:
         return False, 'ntrials'
