@@ -66,8 +66,7 @@ CFG = dict(
     s_complete=survey_complete_dir,
     download=dl_dir,
     base_exe=os.path.join(base_exe_dir, 'SUPREME.exe'),
-    # TODO: Add base app to the base_executables directory
-    # base_app=os.path.join(base_exe_dir, 'SUPREME.app'),
+    base_app=os.path.join(base_exe_dir, 'SUPREME.dmg'),
     disallowed_agents=json.loads(cfg['FLASK']['DISALLOWED_AGENTS']),
     allowed_agents=json.loads(cfg['FLASK']['ALLOWED_AGENTS']),
     blocks=json.loads(cfg['SUPREME']['BLOCKS']),

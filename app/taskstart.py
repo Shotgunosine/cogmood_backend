@@ -30,7 +30,7 @@ def taskstart():
     win_dlpath = os.path.join(CFG['download'], 'win_' + str(session['subId']) + '.exe')
     mac_dlpath = os.path.join(CFG['download'], 'mac_' + str(session['subId']) + '.app')
     edit_exe_worker_id(exe_file_path=CFG['base_exe'], new_worker_id=supreme_subid, output_file_path=win_dlpath)
-    # edit_app_worker_id(app_path=CFG['base_app'], new_worker_id=supreme_subid, output_app_path=mac_dlpath)
+    edit_app_worker_id(app_path=CFG['base_app'], new_worker_id=supreme_subid, output_app_path=mac_dlpath)
     session['dlready'] = True
     write_metadata(session, ['dlready'], 'a')
     initialize_taskdata(session)
