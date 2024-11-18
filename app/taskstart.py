@@ -35,8 +35,8 @@ def taskstart():
     write_metadata(session, ['dlready'], 'a')
     initialize_taskdata(session)
 
-    mac_link = url_for('taskstart.download_mac')
-    win_link = url_for('taskstart.download_win')
+    mac_link = url_for('taskstart.download_mac', **request.args)
+    win_link = url_for('taskstart.download_win', **request.args)
 
     if rres is None:
         return render_template('taskstart.html',
@@ -60,7 +60,7 @@ def download_mac():
             mimetype="inode/directory"
         )
     else:
-        return redirect(url_for('task.task', **request.args))
+        return redirect(url_for('taskstart.taskstart', **request.args))
 
 @bp.route('/download/win')
 def download_win():
@@ -76,4 +76,4 @@ def download_win():
             mimetype="application/vnd.microsoft.portable-executable"
         )
     else:
-        return redirect(url_for('task.task', **request.args))
+        return redirect(url_for('taskstart.taskstart', **request.args))

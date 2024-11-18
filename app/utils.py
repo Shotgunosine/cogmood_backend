@@ -137,6 +137,7 @@ def edit_app_worker_id(app_path: str, new_worker_id: str, output_dmg_path: str) 
                 img_path,
                 output_dmg_path
             ]
+            run(dmg_cmd, check=True)
 
     except Exception as e:
         raise ValueError(f"Failed to modify the plist file: {e}")
