@@ -5,6 +5,8 @@ import logging
 import os
 import plistlib
 import shutil
+from subprocess import run
+from tempfile import TemporaryDirectory
 from typing import Optional
 from pathlib import Path
 from pefile import PE, DIRECTORY_ENTRY
@@ -63,15 +65,14 @@ def pseudorandomize(inblocks, nreps, shuffle_blocks=True, nested_output=False):
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
-def edit_app_worker_id(app_path: str, new_worker_id: str, output_app_path: str) -> None:
+def edit_app_worker_id(app_path: str, new_worker_id: str, output_dmg_path: str) -> None:
     """
     Modifies the 'WorkerID' field in the Info.plist of a macOS .app bundle.
 
     Args:
         app_path (str): Path to the original .app bundle whose 'WorkerID' will be modified.
         new_worker_id (str): New 'WorkerID' value to replace the existing one.
-        output_app_path (Optional[str]): Path to save the modified .app bundle. If not provided, 
-                                         the original bundle will be overwritten.
+        output_app_path (Optional[str]): Path to save the modified .app bundle in a dmg.
 
     Raises:
         FileNotFoundError: If the specified .app bundle or Info.plist file does not exist.
@@ -86,33 +87,56 @@ def edit_app_worker_id(app_path: str, new_worker_id: str, output_app_path: str) 
         raise FileNotFoundError(f"The file {plist_path} does not exist.")
 
     try:
-        # If an output path is specified, copy the original .app bundle to the new location
-        output_path = Path(output_app_path)
-        if output_path.exists():
-            raise FileExistsError(
-                f"The output path {output_app_path} already exists.")
-        shutil.copytree(app_path, output_app_path)
-        # Update plist path to the new location
-        plist_path = output_path / 'Contents' / 'Info.plist'
+        # copy the app to a directory within a temp directory to create the dmg
+        with TemporaryDirectory() as tmpdir:
+            imgdir = Path(tmpdir) / 'SUPREME'
+            imgdir.mkdir()
+            img_path = tmpdir / 'SUPREME.img'
+            img_app_path = imgdir / 'SUPREME.app'
+            shutil.copytree(app_path, img_app_path)
 
+            plist_path = img_app_path / 'Contents' / 'Info.plist'
 
-        # Load the plist file
-        with plist_path.open('rb') as plist_file:
-            plist_data = plistlib.load(plist_file)
+            # Load the plist file
+            with plist_path.open('rb') as plist_file:
+                plist_data = plistlib.load(plist_file)
 
-        # Log current WorkerID, if present
-        current_worker_id = plist_data.get('WorkerID', None)
-        if current_worker_id:
-            logging.info(f"Current WorkerID: {current_worker_id}")
+            # Log current WorkerID, if present
+            current_worker_id = plist_data.get('WorkerID', None)
+            if current_worker_id:
+                logging.info(f"Current WorkerID: {current_worker_id}")
 
-        # Update the WorkerID
-        plist_data['WorkerID'] = new_worker_id
+            # Update the WorkerID
+            plist_data['WorkerID'] = new_worker_id
 
-        # Write the updated plist back
-        with plist_path.open('wb') as plist_file:
-            plistlib.dump(plist_data, plist_file)
+            # Write the updated plist back
+            with plist_path.open('wb') as plist_file:
+                plistlib.dump(plist_data, plist_file)
 
-        logging.info(f"Successfully updated WorkerID to {new_worker_id}")
+            logging.info(f"Successfully updated WorkerID to {new_worker_id}")
+
+            iso_cmd = [
+                'genisoimage',
+                '-D',
+                '-V',
+                '"SUPREME"',
+                '-no-pad',
+                '-r',
+                '-apple',
+                '-file-mode',
+                '0777',
+                '-o',
+                img_path,
+                imgdir
+            ]
+            run(iso_cmd, check=True)
+
+            dmg_cmd = [
+                'dmg',
+                'dmg',
+                img_path,
+                output_dmg_path
+            ]
 
     except Exception as e:
         raise ValueError(f"Failed to modify the plist file: {e}")

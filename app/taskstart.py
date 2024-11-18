@@ -28,7 +28,7 @@ def taskstart():
     h_workerId = blake2b(session['workerId'].encode(), digest_size=24).hexdigest()
     supreme_subid = current_app.config['SUPREME_serializer'].dumps(h_workerId)
     win_dlpath = os.path.join(CFG['download'], 'win_' + str(session['subId']) + '.exe')
-    mac_dlpath = os.path.join(CFG['download'], 'mac_' + str(session['subId']) + '.app')
+    mac_dlpath = os.path.join(CFG['download'], 'mac_' + str(session['subId']) + '.dmg')
     edit_exe_worker_id(exe_file_path=CFG['base_exe'], new_worker_id=supreme_subid, output_file_path=win_dlpath)
     edit_app_worker_id(app_path=CFG['base_app'], new_worker_id=supreme_subid, output_app_path=mac_dlpath)
     session['dlready'] = True
@@ -48,7 +48,7 @@ def taskstart():
 
 @bp.route('/download/mac')
 def download_mac():
-    dlpath = os.path.join(CFG['download'], 'mac_' + str(session['subId']) + '.app')
+    dlpath = os.path.join(CFG['download'], 'mac_' + str(session['subId']) + '.dmg')
 
     session['dlstarted'] = True
     write_metadata(session, ['dlstarted'], 'a')
