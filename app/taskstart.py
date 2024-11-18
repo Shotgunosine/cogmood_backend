@@ -56,8 +56,8 @@ def download_mac():
         return send_file(
             dlpath,
             as_attachment=True,
-            download_name='CogMood_task',
-            mimetype="inode/directory"
+            download_name='CogMood_task.dmg',
+            mimetype="application/octet-stream"
         )
     else:
         return redirect(url_for('taskstart.taskstart', **request.args))
