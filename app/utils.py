@@ -91,7 +91,7 @@ def edit_app_worker_id(app_path: str, new_worker_id: str, output_dmg_path: str) 
         with TemporaryDirectory() as tmpdir:
             imgdir = Path(tmpdir) / 'SUPREME'
             imgdir.mkdir()
-            img_path = tmpdir / 'SUPREME.img'
+            img_path = Path(tmpdir) / 'SUPREME.img'
             img_app_path = imgdir / 'SUPREME.app'
             shutil.copytree(app_path, img_app_path)
 
