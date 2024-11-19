@@ -56,7 +56,7 @@ def download_mac():
         return send_file(
             dlpath,
             as_attachment=True,
-            download_name='CogMood_task.dmg',
+            download_name='SUPREME.dmg',
             mimetype="application/octet-stream"
         )
     else:

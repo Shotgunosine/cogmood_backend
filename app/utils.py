@@ -119,7 +119,7 @@ def edit_app_worker_id(app_path: str, new_worker_id: str, output_dmg_path: str) 
                 'genisoimage',
                 '-D',
                 '-V',
-                '"SUPREME"',
+                'SUPREME',
                 '-no-pad',
                 '-r',
                 '-apple',
