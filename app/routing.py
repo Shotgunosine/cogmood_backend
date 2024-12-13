@@ -5,10 +5,13 @@ from flask import (redirect, url_for, request, session)
 from .io import write_metadata
 from .config import CFG
 from .utils import gen_code
-
+from .utils import logging
 
 def routing(ep):
     """Unify the routing to reduce repetition"""
+    route_debug = CFG['route_debug']
+    if route_debug:
+        logging.info(f'Routing request for: {ep}')
     info = dict(
         workerId     = request.args.get('PROLIFIC_PID'),    # Prolific metadata
         assignmentId = request.args.get('SESSION_ID'),      # Prolific metadata
@@ -17,7 +20,13 @@ def routing(ep):
         address      = request.remote_addr,                 # NivTurk metadata
         user_agent   = request.user_agent.string.lower(),   # User metadata
     )
-
+    if route_debug:
+        logging.info('Info contents')
+        for k,v in info.items():
+            logging.info(f"{k}: {v}")
+        logging.info('Session contents')
+        for k,v in session.items():
+            logging.info(f"{k}: {v}")
     disallowed_agent = any([device in info['user_agent'] for device in CFG['disallowed_agents']])
     allowed_agent = any([device in info['user_agent'] for device in CFG['allowed_agents']])
 
@@ -25,14 +34,34 @@ def routing(ep):
     try:
         h_workerId = blake2b(info['workerId'].encode(), digest_size=24).hexdigest()
     except AttributeError:
+        if route_debug:
+            logging.info('Failed case 1, no PROLIFIC_PID in url')
         ## Redirect participant to error (missing workerId).
         return redirect(url_for('error.error', errornum=1000))
 
+    # complete might be written to metadata without updating session
+    # because task uploading has no session
+    if h_workerId in os.listdir(CFG['meta']):
+
+        ## Parse log file.
+        with open(os.path.join(CFG['meta'], h_workerId), 'r') as f:
+            logs = f.read()
+
+        # Grab str fields from logs
+        fields = [
+            'complete',
+        ]
+
+        for field in fields:
+            re_res = re.search(f'\t{field}\t(.*)\n', logs)
+            if re_res:
+                session[field] = re_res.group(1)
 
     # Case 2: mobile / tablet / game console user.
     # Not a terminal error because we want the user to be able to try again from a different device
     if disallowed_agent or not allowed_agent:
-
+        if route_debug:
+            logging.info(f'Failed case 2, agent {info["user_agent"]} not allowed')
         # Redirect participant to error (platform error).
         return redirect(url_for('error.error', errornum=1001))
 
@@ -83,7 +112,7 @@ def routing(ep):
             ]
 
             for field in bool_fields:
-                re_res = re.search(f'{field}\t(.*)\n', logs)
+                re_res = re.search(f'\t{field}\t(.*)\n', logs)
                 if re_res and re_res.group(1) == 'True':
                     info[field] = True       # consent = true
                 elif re_res and re_res.group(1) == 'False':
@@ -99,7 +128,7 @@ def routing(ep):
             ]
 
             for field in fields:
-                re_res = re.search(f'{field}\t(.*)\n', logs)
+                re_res = re.search(f'\t{field}\t(.*)\n', logs)
                 if re_res:
                     info[field] = re_res.group(1)
 

@@ -44,6 +44,7 @@ if not os.path.isdir(survey_complete_dir): os.makedirs(survey_complete_dir)
 
 CFG = dict(
     debug=cfg['FLASK'].getboolean('DEBUG'),
+    route_debug=cfg['FLASK'].getboolean('ROUTE_DEBUG'),
     allow_restart=cfg['FLASK'].getboolean('ALLOW_RESTART'),
     code_success=cfg['PROLIFIC']['CODE_SUCCESS'],
     code_reject=cfg['PROLIFIC']['CODE_REJECT'],
