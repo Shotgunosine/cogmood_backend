@@ -255,7 +255,7 @@ def test_taskcontrol(url, server, loadtest, ignore_https_errors, page: Page, req
         else:
             page.get_by_role("button", name="Next").click()
     expect(page).to_have_url(f'{url}taskstart?PROLIFIC_PID={workerId}', timeout=10000)
-
+    page.get_by_role("button").click()
     # mock task communication with server
     cfg = configparser.ConfigParser()
     cfg.read(os.path.join(ROOT_DIR, 'app.ini'))
