@@ -28,7 +28,7 @@ def taskstart():
     if rres is None:
         h_workerId = blake2b(session['workerId'].encode(), digest_size=24).hexdigest()
         supreme_subid = current_app.config['SUPREME_serializer'].dumps(h_workerId)
-        if not session['dlready']:
+        if 'dlready' not in session or not session['dlready']:
             win_dlpath = os.path.join(CFG['download'], 'win_' + str(session['subId']) + '.exe')
             mac_dlpath = os.path.join(CFG['download'], 'mac_' + str(session['subId']) + '.dmg')
             edit_exe_worker_id(exe_file_path=CFG['base_exe'], new_worker_id=supreme_subid, output_file_path=win_dlpath)
