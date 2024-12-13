@@ -115,6 +115,13 @@ def edit_app_worker_id(app_path: str, new_worker_id: str, output_dmg_path: str) 
 
             logging.info(f"Successfully updated WorkerID to {new_worker_id}")
 
+            sign_cmd = [
+                '/root/.cargo/bin/rcodesign',
+                'sign',
+                img_app_path
+            ]
+            run(sign_cmd)
+
             iso_cmd = [
                 'genisoimage',
                 '-D',
