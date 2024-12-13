@@ -25,20 +25,21 @@ def taskstart():
     """Present download to participant."""
 
     rres = routing('taskstart')
-    h_workerId = blake2b(session['workerId'].encode(), digest_size=24).hexdigest()
-    supreme_subid = current_app.config['SUPREME_serializer'].dumps(h_workerId)
-    win_dlpath = os.path.join(CFG['download'], 'win_' + str(session['subId']) + '.exe')
-    mac_dlpath = os.path.join(CFG['download'], 'mac_' + str(session['subId']) + '.dmg')
-    edit_exe_worker_id(exe_file_path=CFG['base_exe'], new_worker_id=supreme_subid, output_file_path=win_dlpath)
-    edit_app_worker_id(app_path=CFG['base_app'], new_worker_id=supreme_subid, output_dmg_path=mac_dlpath)
-    session['dlready'] = True
-    write_metadata(session, ['dlready'], 'a')
-    initialize_taskdata(session)
-
-    mac_link = url_for('taskstart.download_mac', **request.args)
-    win_link = url_for('taskstart.download_win', **request.args)
-
     if rres is None:
+        h_workerId = blake2b(session['workerId'].encode(), digest_size=24).hexdigest()
+        supreme_subid = current_app.config['SUPREME_serializer'].dumps(h_workerId)
+        if not session['dlready']:
+            win_dlpath = os.path.join(CFG['download'], 'win_' + str(session['subId']) + '.exe')
+            mac_dlpath = os.path.join(CFG['download'], 'mac_' + str(session['subId']) + '.dmg')
+            edit_exe_worker_id(exe_file_path=CFG['base_exe'], new_worker_id=supreme_subid, output_file_path=win_dlpath)
+            edit_app_worker_id(app_path=CFG['base_app'], new_worker_id=supreme_subid, output_dmg_path=mac_dlpath)
+            session['dlready'] = True
+            write_metadata(session, ['dlready'], 'a')
+            initialize_taskdata(session)
+
+        mac_link = url_for('taskstart.download_mac', **request.args)
+        win_link = url_for('taskstart.download_win', **request.args)
+
         return render_template('taskstart.html',
                                platform=session['platform'],
                                mac_link=mac_link,
