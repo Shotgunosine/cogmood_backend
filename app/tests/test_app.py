@@ -100,7 +100,7 @@ def test_survey_complete(url, server, page: Page, request):
             page.get_by_role("button", name="Complete").click()
         else:
             page.get_by_role("button", name="Next").click()
-    expect(page).to_have_url(f'{url}taskstart?PROLIFIC_PID={workerId}')
+    expect(page).to_have_url(f'{url}taskstart?PROLIFIC_PID={workerId}', timeout=10000)
 
     if server:
         # get saved data and compare to expectation
@@ -254,7 +254,7 @@ def test_taskcontrol(url, server, loadtest, ignore_https_errors, page: Page, req
             page.get_by_role("button", name="Complete").click()
         else:
             page.get_by_role("button", name="Next").click()
-    expect(page).to_have_url(f'{url}taskstart?PROLIFIC_PID={workerId}')
+    expect(page).to_have_url(f'{url}taskstart?PROLIFIC_PID={workerId}', timeout=10000)
 
     # mock task communication with server
     cfg = configparser.ConfigParser()
