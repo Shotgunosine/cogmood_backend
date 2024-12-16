@@ -17,7 +17,6 @@ def routing(ep):
         assignmentId = request.args.get('SESSION_ID'),      # Prolific metadata
         hitId        = request.args.get('STUDY_ID'),        # Prolific metadata
         subId        = gen_code(24),                        # NivTurk metadata
-        address      = request.remote_addr,                 # NivTurk metadata
         user_agent   = request.user_agent.string.lower(),   # User metadata
     )
     if route_debug:
@@ -144,7 +143,6 @@ def routing(ep):
                 'hitId',
                 'assignmentId',
                 'subId',
-                'address',
                 'user_agent',
                 'platform'
             ], 'w')
@@ -165,7 +163,6 @@ def routing(ep):
                 'hitId',
                 'assignmentId',
                 'subId',
-                'address',
                 'user_agent',
                 'platform'
             ], 'w')
