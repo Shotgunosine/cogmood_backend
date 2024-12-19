@@ -68,8 +68,11 @@ CFG = dict(
     download=dl_dir,
     base_exe=os.path.join(base_exe_dir, 'SUPREME.exe'),
     base_app=os.path.join(base_exe_dir, 'SUPREME.app'),
+    base_dmg=os.path.join(base_exe_dir, 'SUPREME.dmg'),
     disallowed_agents=json.loads(cfg['FLASK']['DISALLOWED_AGENTS']),
     allowed_agents=json.loads(cfg['FLASK']['ALLOWED_AGENTS']),
     blocks=json.loads(cfg['SUPREME']['BLOCKS']),
-    nreps=json.loads(cfg['SUPREME']['NREPS'])
+    nreps=json.loads(cfg['SUPREME']['NREPS']),
+    custom_exes=cfg['SUPREME'].getboolean('CUSTOM_EXES'),
+    salt=cfg['SUPREME']['SALT']
 )

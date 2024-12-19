@@ -5,6 +5,8 @@ from flask import (Blueprint, request, current_app)
 from .config import CFG
 from .io import write_taskdata, hash_file, validate_checksum
 from itsdangerous.exc import BadSignature
+from hashlib import blake2b
+
 from werkzeug.utils import secure_filename
 from datetime import datetime
 from .validation import validate
@@ -16,15 +18,30 @@ bp = Blueprint('taskcontrol', __name__)
 @bp.route('/taskcontrol', methods=['GET','POST'])
 def taskcontrol():
     data = {}
-    # validate seqId
-    try:
-        h_workerId = current_app.config['SUPREME_serializer'].loads(request.args['worker_id'])
-    except KeyError:
-        data['error'] = 'No worker_id'
-        return data, 400
-    except BadSignature:
-        data['error'] = 'Invalid worker_id'
-        return data, 400
+
+    if CFG['custom_exes']:
+        # validate seqId
+        try:
+            h_workerId = current_app.config['SUPREME_serializer'].loads(request.args['worker_id'])
+        except KeyError:
+            data['error'] = 'No worker_id'
+            return data, 400
+        except BadSignature:
+            data['error'] = 'Invalid worker_id'
+            return data, 400
+    else:
+        try:
+            workerId = request.args['worker_id']
+            code = request.args['code']
+        except KeyError:
+            data['error'] = 'No worker_id'
+            return data, 400
+        expected_code = blake2b(workerId.encode(), digest_size=4, salt=CFG['salt'].encode()).hexdigest()[:4]
+        print(code, expected_code)
+        if code != expected_code:
+            data['error'] = 'Invalid worker_id'
+            return data, 400
+        h_workerId = blake2b(workerId.encode(), digest_size=24).hexdigest()
 
     # get corresponding subId
     with open(os.path.join(CFG['meta'], h_workerId), 'r') as f:
