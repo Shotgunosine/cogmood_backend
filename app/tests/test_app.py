@@ -263,11 +263,20 @@ def test_taskcontrol(url, server, loadtest, ignore_https_errors, page: Page, req
     serializer = Serializer(supreme_secret_key)
     h_workerId = blake2b(workerId.encode(), digest_size=24).hexdigest()
 
-    # test initial get
+    if CFG['custom_exes']:
+        # test initial get
+        params = {'worker_id': serializer.dumps(h_workerId)}
+    else:
+        subject_code = blake2b(workerId.encode(),
+                               digest_size=4,
+                               salt=CFG['salt'].encode()).hexdigest()[:4]
+        params = {'worker_id': workerId,
+                    'code': subject_code}
+
     LOGGER.info(['GET', f"{url}taskcontrol"])
     req = requests.get(
         url=f"{url}taskcontrol",
-        params={'worker_id':serializer.dumps(h_workerId)},
+        params=params,
         verify=verify
     )
     LOGGER.info([req.status_code, f"{url}taskcontrol"])
@@ -306,7 +315,7 @@ def test_taskcontrol(url, server, loadtest, ignore_https_errors, page: Page, req
             LOGGER.info(['POST', f"{url}taskcontrol"])
             req = requests.post(
                 url=f"{url}taskcontrol",
-                params={'worker_id': serializer.dumps(h_workerId)},
+                params=params,
                 data={
                     'block_name': completed_block,
                     'checksum': checksum
@@ -322,7 +331,7 @@ def test_taskcontrol(url, server, loadtest, ignore_https_errors, page: Page, req
         LOGGER.info(['GET', f"{url}taskcontrol"])
         req = requests.get(
             url=f"{url}taskcontrol",
-            params={'worker_id': serializer.dumps(h_workerId)},
+            params=params,
             verify=verify
         )
         LOGGER.info([req.status_code, f"{url}taskcontrol"])
