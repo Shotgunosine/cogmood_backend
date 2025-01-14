@@ -29,8 +29,8 @@ task_badupload_dir = os.path.join(task_dir, 'bad_upload')
 if not os.path.isdir(task_badupload_dir): os.makedirs(task_badupload_dir)
 dl_dir = os.path.join(data_dir, 'download')
 if not os.path.isdir(dl_dir): os.makedirs(dl_dir)
-exe_dir = os.path.join(data_dir, 'exe')
-if not os.path.isdir(exe_dir): os.makedirs(exe_dir)
+base_exe_dir = os.path.join(data_dir, 'base_executables')
+if not os.path.isdir(base_exe_dir): os.makedirs(base_exe_dir)
 survey_dir = os.path.join(data_dir, 'survey')
 if not os.path.isdir(survey_dir): os.makedirs(survey_dir)
 survey_incomplete_dir = os.path.join(survey_dir, 'incomplete')
@@ -44,6 +44,7 @@ if not os.path.isdir(survey_complete_dir): os.makedirs(survey_complete_dir)
 
 CFG = dict(
     debug=cfg['FLASK'].getboolean('DEBUG'),
+    route_debug=cfg['FLASK'].getboolean('ROUTE_DEBUG'),
     allow_restart=cfg['FLASK'].getboolean('ALLOW_RESTART'),
     code_success=cfg['PROLIFIC']['CODE_SUCCESS'],
     code_reject=cfg['PROLIFIC']['CODE_REJECT'],
@@ -65,9 +66,13 @@ CFG = dict(
     s_reject=survey_reject_dir,
     s_complete=survey_complete_dir,
     download=dl_dir,
-    exe=dl_dir,
+    base_exe=os.path.join(base_exe_dir, 'SUPREME.exe'),
+    base_app=os.path.join(base_exe_dir, 'SUPREME.app'),
+    base_dmg=os.path.join(base_exe_dir, 'SUPREME.dmg'),
     disallowed_agents=json.loads(cfg['FLASK']['DISALLOWED_AGENTS']),
     allowed_agents=json.loads(cfg['FLASK']['ALLOWED_AGENTS']),
     blocks=json.loads(cfg['SUPREME']['BLOCKS']),
-    nreps=json.loads(cfg['SUPREME']['NREPS'])
+    nreps=json.loads(cfg['SUPREME']['NREPS']),
+    custom_exes=cfg['SUPREME'].getboolean('CUSTOM_EXES'),
+    salt=cfg['SUPREME']['SALT']
 )

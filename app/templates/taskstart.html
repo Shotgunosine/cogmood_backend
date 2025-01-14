@@ -75,6 +75,13 @@
       Feel free to take a short break while it is downloading.
       When you are ready, follow the instructions to begin the cognitive tasks.
   </p>
+  {% if subject_task_code is not none %}
+  <p>
+      Your 4 character task code is {{ subject_task_code }}.
+      <br>
+      Please make a note of this code so that you can enter it in the task along with your Prolific Worker ID.
+  </p>
+  {% endif %}
   <!-- Tabs for OS Selection -->
   <div class="tab-container">
     <div class="tab" id="windows-tab" onclick="showTab('windows')">Windows</div>
@@ -93,6 +100,8 @@
   </div>
 
   <!-- macOS Instructions -->
+  <!-- TODO: update with system settings instructions -->
+  <!-- TODO: update with message about how long it takes to start -->
   <div id="macos-instructions" class="instructions">
     <h3>macOS Instructions:</h3>
     <button class="download-button" onclick="window.location.href='{{ mac_link }}'">Download for macOS</button>

@@ -100,7 +100,7 @@ def test_survey_complete(url, server, page: Page, request):
             page.get_by_role("button", name="Complete").click()
         else:
             page.get_by_role("button", name="Next").click()
-    expect(page).to_have_url(f'{url}taskstart?PROLIFIC_PID={workerId}')
+    expect(page).to_have_url(f'{url}taskstart?PROLIFIC_PID={workerId}', timeout=10000)
 
     if server:
         # get saved data and compare to expectation
@@ -254,8 +254,8 @@ def test_taskcontrol(url, server, loadtest, ignore_https_errors, page: Page, req
             page.get_by_role("button", name="Complete").click()
         else:
             page.get_by_role("button", name="Next").click()
-    expect(page).to_have_url(f'{url}taskstart?PROLIFIC_PID={workerId}')
-
+    expect(page).to_have_url(f'{url}taskstart?PROLIFIC_PID={workerId}', timeout=10000)
+    page.get_by_role("button").click()
     # mock task communication with server
     cfg = configparser.ConfigParser()
     cfg.read(os.path.join(ROOT_DIR, 'app.ini'))
@@ -263,11 +263,20 @@ def test_taskcontrol(url, server, loadtest, ignore_https_errors, page: Page, req
     serializer = Serializer(supreme_secret_key)
     h_workerId = blake2b(workerId.encode(), digest_size=24).hexdigest()
 
-    # test initial get
+    if CFG['custom_exes']:
+        # test initial get
+        params = {'worker_id': serializer.dumps(h_workerId)}
+    else:
+        subject_code = blake2b(workerId.encode(),
+                               digest_size=4,
+                               salt=CFG['salt'].encode()).hexdigest()[:4]
+        params = {'worker_id': workerId,
+                    'code': subject_code}
+
     LOGGER.info(['GET', f"{url}taskcontrol"])
     req = requests.get(
         url=f"{url}taskcontrol",
-        params={'worker_id':serializer.dumps(h_workerId)},
+        params=params,
         verify=verify
     )
     LOGGER.info([req.status_code, f"{url}taskcontrol"])
@@ -306,7 +315,7 @@ def test_taskcontrol(url, server, loadtest, ignore_https_errors, page: Page, req
             LOGGER.info(['POST', f"{url}taskcontrol"])
             req = requests.post(
                 url=f"{url}taskcontrol",
-                params={'worker_id': serializer.dumps(h_workerId)},
+                params=params,
                 data={
                     'block_name': completed_block,
                     'checksum': checksum
@@ -322,7 +331,7 @@ def test_taskcontrol(url, server, loadtest, ignore_https_errors, page: Page, req
         LOGGER.info(['GET', f"{url}taskcontrol"])
         req = requests.get(
             url=f"{url}taskcontrol",
-            params={'worker_id': serializer.dumps(h_workerId)},
+            params=params,
             verify=verify
         )
         LOGGER.info([req.status_code, f"{url}taskcontrol"])

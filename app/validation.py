@@ -7,7 +7,7 @@ FLKR_NTRIALS = 48
 FLKR_KEYS = {'run_num', 'appear_time_time', 'appear_time_error', 'disappear_time', 'pressed',
              'press_time_time','press_time_error', 'rt', 'block', 'trial_id', 'correct',
              'fmri_tr_time', 'eeg_pulse_time', 'log_time','loc_x', 'loc_y', 'condition',
-             'stim', 'dir', 'corr_resp', 'log_num'}
+             'dir', 'corr_resp', 'log_num'}
 RDM_THR = 13
 RDM_NTRIALS = 68
 RDM_KEYS = {'run_num', 'appear_time_time', 'appear_time_error', 'disappear_time_time',
@@ -35,7 +35,7 @@ def validate_flkr(zipped_path):
     with tempfile.TemporaryDirectory() as tmpdir:
         slog_file = ZipFile(zipped_path).extract('log_flkr_0.slog', path=tmpdir)
         lod = log.log2dl(slog_file)
-    if len(lod) != FLKR_NTRIALS:
+    if len(lod) <= FLKR_NTRIALS:
         return False, 'ntrials'
     if lod[0].keys() != FLKR_KEYS:
         return False, 'keys'
@@ -49,7 +49,7 @@ def validate_rdm(zipped_path):
     with tempfile.TemporaryDirectory() as tmpdir:
         slog_file = ZipFile(zipped_path).extract('log_rdm_0.slog', path=tmpdir)
         lod = log.log2dl(slog_file)
-    if len(lod) != RDM_NTRIALS:
+    if len(lod) <= RDM_NTRIALS:
         return False, 'ntrials'
     if lod[0].keys() != RDM_KEYS:
         return False, 'keys'
@@ -66,7 +66,7 @@ def validate_rdm(zipped_path):
 def validate_bart(zipped_path):
     with tempfile.TemporaryDirectory() as tmpdir:
         slog_file = ZipFile(zipped_path).extract('log_bart_0.slog', path=tmpdir)
-        lod =log.log2dl(slog_file)
+        lod = log.log2dl(slog_file)
     if lod[0].keys() != BART_KEYS:
         return False, 'keys'
     pressed_j = False
@@ -90,7 +90,7 @@ def validate_cab(zipped_path):
     with tempfile.TemporaryDirectory() as tmpdir:
         slog_file = ZipFile(zipped_path).extract('log_cab_0.slog', path=tmpdir)
         lod = log.log2dl(slog_file)
-    if len(lod) != CAB_NTRIALS:
+    if len(lod) <= CAB_NTRIALS:
         return False, 'ntrials'
     if lod[0].keys() != CAB_KEYS:
         return False, 'keys'
