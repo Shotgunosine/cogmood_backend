@@ -16,6 +16,9 @@ build/
 .DS_Store
 *.key
 *.crt
+*.pass
+*.pem
+*.csr
 
 # project specific
 data/**
