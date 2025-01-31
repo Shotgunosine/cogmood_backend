@@ -41,6 +41,7 @@ connection_string = os.getenv('CMBEDB_CONNECT')
 app = Flask(__name__)
 app.secret_key = secret_key
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['SESSION_COOKIE_SECURE'] = True
 app.config['SUPREME_serializer'] = Serializer(supreme_secret_key)
 
 # load existing subjects into database
