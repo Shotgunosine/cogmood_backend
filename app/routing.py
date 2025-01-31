@@ -49,6 +49,7 @@ def routing(ep):
         # Grab str fields from logs
         fields = [
             'complete',
+            'terminalerror'
         ]
 
         for field in fields:
@@ -66,14 +67,20 @@ def routing(ep):
 
     # Case 3: session has a terminal error
     elif 'terminalerror' in session:
-
+        if route_debug:
+            logging.info(f"Failed case 3, terminalerror {session['terminalerror']}")
         return redirect(url_for('error.error', errornum=int(session['terminalerror'])))
 
     # Case 4: previous complete.
     elif 'complete' in session:
+        if route_debug:
+            logging.info(f"Failed case 4, complete {session['complete']}")
+            logging.info('Session contents')
+            for k,v in session.items():
+                logging.info(f"{k}: {v}")
 
         # Redirect participant to complete page.
-        return redirect(url_for('complete.complete'))
+        return redirect(url_for('complete.complete', **request.args))
 
     # Case 5 repeat visit, manually changed workerId.
     elif 'workerId' in session and session['workerId'] != info['workerId']:
@@ -88,6 +95,8 @@ def routing(ep):
 
     # Case 6: workerid not in session
     elif not 'workerId' in session:
+        if route_debug:
+            logging.info("workerId not in session, rebuilding session")
         # Case 6a: metadata exists for workerid
         if h_workerId in os.listdir(CFG['meta']):
 
@@ -148,6 +157,10 @@ def routing(ep):
             ], 'w')
             # Just a little recursion, once the session is updated, the routing rules will work.
             # This way we don't have to repeat the rules
+            if route_debug:
+                logging.info('Rebuilt Session contents')
+                for k,v in session.items():
+                    logging.info(f"{k}: {v}")
             return routing(ep)
 
         # case 6b: first visit, workerID present
