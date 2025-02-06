@@ -40,16 +40,6 @@ const survey_json = {
               noneText: "Prefer not to answer",
           }, {
               type: "radiogroup",
-              name: "gender",
-              title: "Which most closely describes your gender?",
-              choices: ['Woman', 'Man', 'Transgender Woman', 'Transgender Man', 'Non-Binary', "Agender/I don't identify with any gender"],
-              isRequired: false,
-              showOtherItem: true,
-              otherText: "Gender not listed. My gender is ...",
-              showNoneItem: true,
-              noneText: "Prefer not to answer",
-          }, {
-              type: "radiogroup",
               name: "sex_at_birth",
               title: "What was your biological sex at birth?",
               choices: ['Female', 'Male', 'Intersex', 'None of these describe me', 'Prefer not to answer'],

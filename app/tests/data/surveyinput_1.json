@@ -12,11 +12,6 @@
     },
     {
       "type": "radiogroup",
-      "title": "Which most closely describes your gender?",
-      "answer": "Prefer not to answer"
-    },
-    {
-      "type": "radiogroup",
       "title": "What was your biological sex at birth?",
       "answer": "Prefer not to answer"
     },
