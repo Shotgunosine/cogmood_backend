@@ -42,7 +42,7 @@ const survey_json = {
               type: "radiogroup",
               name: "sex_at_birth",
               title: "What was your biological sex at birth?",
-              choices: ['Female', 'Male', 'Intersex', 'None of these describe me', 'Prefer not to answer'],
+              choices: ['Female', 'Male', 'Prefer not to answer'],
               isRequired: false,
           }, {
               type: "text",
