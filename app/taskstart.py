@@ -82,7 +82,7 @@ def download_win():
         return send_file(
             dlpath,
             as_attachment=True,
-            download_name='CogMood_task',
+            download_name='CogMood_task.exe',
             mimetype="application/vnd.microsoft.portable-executable"
         )
     else:
