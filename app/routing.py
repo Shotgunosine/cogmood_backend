@@ -49,7 +49,8 @@ def routing(ep):
         # Grab str fields from logs
         fields = [
             'complete',
-            'terminalerror'
+            'terminalerror',
+            'taskinprogress'
         ]
 
         for field in fields:
@@ -227,4 +228,4 @@ def routing(ep):
 
     # case 12: not complete
     else:
-        return redirect(url_for('task.task', **request.args))
+        return redirect(url_for('taskstart.taskstart', **request.args))

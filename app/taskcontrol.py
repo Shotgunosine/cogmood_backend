@@ -144,5 +144,12 @@ def taskcontrol():
             fout = os.path.join(CFG['meta'], h_workerId)
             with open(fout, 'a') as f:
                 f.write(f'{timestamp}\tcomplete\t{complete_code}\n')
+        else:
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+            # Write metadata to disk.
+            fout = os.path.join(CFG['meta'], h_workerId)
+            with open(fout, 'a') as f:
+                f.write(f'{timestamp}\ttaskinprogress\tinprogress\n')
 
         return data, 200

@@ -55,6 +55,24 @@
 .mac {
     display: block;
 }
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+.alert-warning {
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+  color: #8a6d3b;
+}
+
+.alert-danger {
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  color: #a94442;
+}
+
   </style>
 
 </head>
@@ -70,11 +88,36 @@
   <p>
       Thank you for completing the survey!
   </p>
-   <p>
-      Please download the task using the appropriate instructions for your operating system.
+  {% if button_before_dl%}
+  <div class="alert-danger">
+      Please download and complete the task before clicking the "I have completed the tasks" button.
+  </div>
+
+  {% if n_blocks_needed is not none%}
+  <div class="alert-warning">
+      Please complete the task before clicking the "I have completed the tasks" button.
       <br>
-      Feel free to take a short break while it is downloading.
-      When you are ready, follow the instructions to begin the cognitive tasks.
+      You have {{ n_blocks_needed }} tasks remaining.
+  </div>
+  <p>
+
+  </p>
+   <p>
+       Please download the task using the appropriate instructions for your operating system.
+       <br>
+       Feel free to take a short break while it is downloading.
+       When you are ready, follow the instructions to begin the cognitive tasks.
+       <br>
+       The cognitive tasks may take several minutes to begin once you have double-clicked on the executable.
+       Please be patient and do not double-click more than once.
+       <br>
+       Once you have completed the tasks, please click "I have completed the tasks" below.
+       <br>
+       If the task data has been uploaded successfully, you will be redirected to Prolific.
+       <br>
+       If you have trouble completing the tasks, please send a message through Prolific.
+       You may also contact the study team by emailing Dylan.Nielson@nih.gov.
+       Please be aware that emailing the study team directly will disclose your email address to the study team.
   </p>
   {% if subject_task_code is not none %}
   <p>
@@ -112,6 +155,10 @@
     <p>3. In the pop-up that appears, click "Open" again to confirm.</p>
     <img src="../static/img/mac_inst_2.png" alt="macOS Step 3" class="instruction-image mac">
   </div>
+
+  <form method="post">
+      <button type="submit" name="task_completed" value=1>I have completed the tasks</button>
+  </form>
 
 
 </body>

@@ -1,4 +1,5 @@
 import os
+import json
 from flask import (
     Blueprint,
     redirect,
@@ -42,11 +43,24 @@ def taskstart():
         initialize_taskdata(session)
         mac_link = url_for('taskstart.download_mac', **request.args)
         win_link = url_for('taskstart.download_win', **request.args)
+        if session['complete_button'] and not session['dlstarted']:
+            button_before_dl = True
+        else:
+            button_before_dl = False
+        if session['complete_button'] and session['taskinprogess']:
+            taskinprogress = True
+            with open(os.path.join(CFG['t_db'], f"{session['subId']}.json"), 'r') as f:
+                s_tdb = json.loads(f.read())
+                n_blocks_needed = len([bb['name'] for bb in s_tdb if not bb['uploaded']])
+        else:
+            n_blocks_needed = None
         return render_template('taskstart.html',
                                platform=session['platform'],
                                mac_link=mac_link,
                                win_link=win_link,
-                               subject_task_code=subject_task_code)
+                               subject_task_code=subject_task_code,
+                               button_before_dl=button_before_dl,
+                               n_blocks_needed=n_blocks_needed)
     else:
         return rres
 
@@ -87,3 +101,10 @@ def download_win():
         )
     else:
         return redirect(url_for('taskstart.taskstart', **request.args))
+
+
+@bp.route('/taskstart', methods=['POST'])
+def taskstart_post():
+    session['complete_button'] = True
+    write_metadata(session, ['complete_button'], 'a')
+    return redirect(url_for('taskstart.taskstart', **request.args))
