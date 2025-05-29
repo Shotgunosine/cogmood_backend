@@ -102,7 +102,7 @@
   {% endif %}
   {% if n_blocks_needed is not none%}
       <div class="alert-warning">
-          Please complete the task before clicking the "I have completed the tasks" button.
+          Please complete the all the tasks before clicking the "I have completed the tasks" button.
           <br>
           You have {{ n_blocks_needed }} blocks remaining.
       </div>
@@ -135,11 +135,13 @@
     <h3>Windows Instructions:</h3>
     <button class="download-button" onclick="window.location.href='{{ win_link }}'">Download for Windows</button>
     <p>After downloading, locate the downloaded file in your Downloads directory and double-click it.</p>
+    <p>
+       The cognitive tasks may take several minutes to begin once you have double-clicked on the executable.
+       Please be patient and do not double-click more than once.
+   </p>
   </div>
 
   <!-- macOS Instructions -->
-  <!-- TODO: update with system settings instructions -->
-  <!-- TODO: update with message about how long it takes to start -->
   <div id="macos-instructions" class="instructions">
     <h3>macOS Instructions:</h3>
     <button class="download-button" onclick="window.location.href='{{ mac_link }}'">Download for macOS</button>
