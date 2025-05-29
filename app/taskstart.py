@@ -43,11 +43,11 @@ def taskstart():
         initialize_taskdata(session)
         mac_link = url_for('taskstart.download_mac', **request.args)
         win_link = url_for('taskstart.download_win', **request.args)
-        if session['complete_button'] and not session['dlstarted']:
+        if 'complete_button' in session  and not 'dlstarted' in session:
             button_before_dl = True
         else:
             button_before_dl = False
-        if session['complete_button'] and session['taskinprogess']:
+        if 'complete_button' in session and 'taskinprogess' in session:
             taskinprogress = True
             with open(os.path.join(CFG['t_db'], f"{session['subId']}.json"), 'r') as f:
                 s_tdb = json.loads(f.read())
