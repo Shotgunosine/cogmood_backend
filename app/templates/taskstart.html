@@ -89,16 +89,23 @@
       Thank you for completing the survey!
   </p>
   {% if button_before_dl%}
-  <div class="alert-danger">
-      Please download and complete the task before clicking the "I have completed the tasks" button.
-  </div>
+      <div class="alert-danger">
+          Please download and complete the task before clicking
+          the "I have completed the tasks" button.
+      </div>
+  {% endif %}
+  {% if button_before_dl%}
+      <div class="alert-danger">
+          Please run the downloaded executable and complete the tasks
+          before clicking the "I have completed the tasks" button.
+      </div>
   {% endif %}
   {% if n_blocks_needed is not none%}
-  <div class="alert-warning">
-      Please complete the task before clicking the "I have completed the tasks" button.
-      <br>
-      You have {{ n_blocks_needed }} tasks remaining.
-  </div>
+      <div class="alert-warning">
+          Please complete the task before clicking the "I have completed the tasks" button.
+          <br>
+          You have {{ n_blocks_needed }} blocks remaining.
+      </div>
   {% endif %}
 
    <p>Please download the task using the appropriate instructions for your operating system.</p>

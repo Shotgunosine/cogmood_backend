@@ -43,23 +43,26 @@ def taskstart():
         initialize_taskdata(session)
         mac_link = url_for('taskstart.download_mac', **request.args)
         win_link = url_for('taskstart.download_win', **request.args)
+
+        button_before_dl = False
+        button_before_running = False
+        n_blocks_needed = None
         if 'complete_button' in session  and not 'dlstarted' in session:
             button_before_dl = True
-        else:
-            button_before_dl = False
+        if 'complete_button' in session and not 'taskinprogess' in session:
+            button_before_running = True
         if 'complete_button' in session and 'taskinprogess' in session:
-            taskinprogress = True
             with open(os.path.join(CFG['t_db'], f"{session['subId']}.json"), 'r') as f:
                 s_tdb = json.loads(f.read())
                 n_blocks_needed = len([bb['name'] for bb in s_tdb if not bb['uploaded']])
-        else:
-            n_blocks_needed = None
+
         return render_template('taskstart.html',
                                platform=session['platform'],
                                mac_link=mac_link,
                                win_link=win_link,
                                subject_task_code=subject_task_code,
                                button_before_dl=button_before_dl,
+                               button_before_running=button_before_running,
                                n_blocks_needed=n_blocks_needed)
     else:
         return rres
