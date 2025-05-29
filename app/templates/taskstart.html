@@ -100,28 +100,15 @@
       You have {{ n_blocks_needed }} tasks remaining.
   </div>
   {% endif %}
-  <p>
 
-  </p>
-   <p>
-       Please download the task using the appropriate instructions for your operating system.
-   </p>
+   <p>Please download the task using the appropriate instructions for your operating system.</p>
    <p>
        Feel free to take a short break while it is downloading.
        When you are ready, follow the instructions to begin the cognitive tasks.
    </p>
-   <p>
-       The cognitive tasks may take several minutes to begin once you have double-clicked on the executable.
-       Please be patient and do not double-click more than once.
-   </p>
+
    <p>
        Once you have completed the tasks, please click "I have completed the tasks" below.
-       <br><br>
-       If the task data has been uploaded successfully, you will be redirected to Prolific.
-       <br><br>
-       If you have trouble completing the tasks, please send a message through Prolific.
-       You may also contact the study team by emailing Dylan.Nielson@nih.gov.
-       Please be aware that emailing the study team directly will disclose your email address to the study team.
   </p>
   {% if subject_task_code is not none %}
   <p>
@@ -140,11 +127,7 @@
   <div id="windows-instructions" class="instructions">
     <h3>Windows Instructions:</h3>
     <button class="download-button" onclick="window.location.href='{{ win_link }}'">Download for Windows</button>
-    <p>1. After downloading, locate the downloaded file and double-click it."</p>
-    <p>2. If prompted with a security warning, click "More info" and then "Run anyway."</p>
-    <img src="../static/img/win_inst_1.png" alt="Windows Step 2" class="instruction-image">
-    <img src="../static/img/win_inst_2.png" alt="Windows Step 2" class="instruction-image">
-
+    <p>After downloading, locate the downloaded file in your Downloads directory and double-click it.</p>
   </div>
 
   <!-- macOS Instructions -->
@@ -153,12 +136,20 @@
   <div id="macos-instructions" class="instructions">
     <h3>macOS Instructions:</h3>
     <button class="download-button" onclick="window.location.href='{{ mac_link }}'">Download for macOS</button>
-    <p>1. After downloading, locate the .app file, usually in your Downloads folder.</p>
-    <p>2. Right-click the .app file and select "Open" to bypass macOS security restrictions.</p>
-    <img src="../static/img/mac_inst_1.png" alt="macOS Step 2" class="instruction-image mac">
-    <p>3. In the pop-up that appears, click "Open" again to confirm.</p>
-    <img src="../static/img/mac_inst_2.png" alt="macOS Step 3" class="instruction-image mac">
+    <p>After downloading, locate the .app file, usually in your Downloads folder and double click it.</p>
+    <p>
+       The cognitive tasks may take several minutes to begin once you have double-clicked on the executable.
+       Please be patient and do not double-click more than once.
+   </p>
   </div>
+  <p>
+        <br>
+       If the task data has been uploaded successfully, you will be redirected to Prolific once you click the button below.
+       <br>
+       If you have trouble completing the tasks, please send a message through Prolific.
+       You may also contact the study team by emailing Dylan.Nielson@nih.gov.
+       Please be aware that emailing the study team directly will disclose your email address to the study team.
+  </p>
   <p>
   <center>
   <form method="post">
