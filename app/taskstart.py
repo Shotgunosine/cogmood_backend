@@ -38,8 +38,9 @@ def taskstart():
                 edit_app_worker_id(app_path=CFG['base_app'], new_worker_id=supreme_subid, output_dmg_path=mac_dlpath)
         else:
             subject_task_code = blake2b(session['workerId'].encode(), digest_size=4, salt=CFG['salt'].encode()).hexdigest()[:4]
-        session['dlready'] = True
-        write_metadata(session, ['dlready'], 'a')
+        if 'dlready' not in session or not session['dlready']:
+            session['dlready'] = True
+            write_metadata(session, ['dlready'], 'a')
         initialize_taskdata(session)
         mac_link = url_for('taskstart.download_mac', **request.args)
         win_link = url_for('taskstart.download_win', **request.args)
@@ -49,9 +50,9 @@ def taskstart():
         n_blocks_needed = None
         if 'complete_button' in session  and not 'dlstarted' in session:
             button_before_dl = True
-        if 'complete_button' in session and not 'taskinprogess' in session:
+        if 'complete_button' in session and not 'taskinprogress' in session:
             button_before_running = True
-        if 'complete_button' in session and 'taskinprogess' in session:
+        if 'complete_button' in session and 'taskinprogress' in session:
             with open(os.path.join(CFG['t_db'], f"{session['subId']}.json"), 'r') as f:
                 s_tdb = json.loads(f.read())
                 n_blocks_needed = len([bb['name'] for bb in s_tdb if not bb['uploaded']])
