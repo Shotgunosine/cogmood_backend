@@ -48,11 +48,11 @@ def taskstart():
         button_before_dl = False
         button_before_running = False
         n_blocks_needed = None
-        if 'complete_button' in session  and not 'dlstarted' in session:
+        if 'complete_button' in session and not 'dlstarted' in session:
             button_before_dl = True
-        if 'complete_button' in session and not 'taskinprogress' in session:
+        elif 'complete_button' in session and not 'taskinprogress' in session:
             button_before_running = True
-        if 'complete_button' in session and 'taskinprogress' in session:
+        elif 'complete_button' in session and 'taskinprogress' in session:
             with open(os.path.join(CFG['t_db'], f"{session['subId']}.json"), 'r') as f:
                 s_tdb = json.loads(f.read())
                 n_blocks_needed = len([bb['name'] for bb in s_tdb if not bb['uploaded']])
