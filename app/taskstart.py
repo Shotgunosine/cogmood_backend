@@ -81,7 +81,7 @@ def download_mac():
         return send_file(
             dlpath,
             as_attachment=True,
-            download_name='SUPREME.dmg',
+            download_name='NIMHCogMood.dmg',
             mimetype="application/octet-stream"
         )
     else:
@@ -100,7 +100,7 @@ def download_win():
         return send_file(
             dlpath,
             as_attachment=True,
-            download_name='CogMood_task.exe',
+            download_name='NIMHCogMood.exe',
             mimetype="application/vnd.microsoft.portable-executable"
         )
     else:
