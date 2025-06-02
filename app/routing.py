@@ -148,14 +148,7 @@ def routing(ep):
                 session['platform'] = 'mac'
             else:
                 session['platform'] = 'win'
-            write_metadata(session, [
-                'workerId',
-                'hitId',
-                'assignmentId',
-                'subId',
-                'user_agent',
-                'platform'
-            ], 'w')
+            write_metadata(session, list(session.keys()), 'w')
             # Just a little recursion, once the session is updated, the routing rules will work.
             # This way we don't have to repeat the rules
             if route_debug:
