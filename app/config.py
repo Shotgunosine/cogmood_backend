@@ -72,6 +72,7 @@ CFG = dict(
     disallowed_agents=json.loads(cfg['FLASK']['DISALLOWED_AGENTS']),
     allowed_agents=json.loads(cfg['FLASK']['ALLOWED_AGENTS']),
     blocks=json.loads(cfg['SUPREME']['BLOCKS']),
+    bonusblocks=json.loads(cfg['SUPREME']['BONUSBLOCKS']),
     nreps=json.loads(cfg['SUPREME']['NREPS']),
     custom_exes=cfg['SUPREME'].getboolean('CUSTOM_EXES'),
     salt=cfg['SUPREME']['SALT']

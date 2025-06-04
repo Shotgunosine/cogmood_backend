@@ -17,7 +17,7 @@ def gen_code(N):
     return ''.join(random.choices(string.ascii_lowercase + string.digits, k=N))
 
 
-def pseudorandomize(inblocks, nreps, shuffle_blocks=True, nested_output=False):
+def pseudorandomize(inblocks, nreps, bonusblocks=None, shuffle_blocks=True, nested_output=False):
     """
     pseudorandomize the input blocks so that each task occurs once before
     any task is repeated and no tasks occur back to back. Will trigger an
@@ -29,6 +29,8 @@ def pseudorandomize(inblocks, nreps, shuffle_blocks=True, nested_output=False):
     ==========
     inblocks : list of strings or list of list of strings
         list of tasks to randomize
+    bonusblocks : list of strings
+        list of tasks to add an additional block of
     nreps : int
         number of repetitions of each task
     shuffle blocks : bool
@@ -42,16 +44,32 @@ def pseudorandomize(inblocks, nreps, shuffle_blocks=True, nested_output=False):
     if not isinstance(these_tasks[0], list):
         these_tasks = [these_tasks]
     random.shuffle(these_tasks)
-    for i in range(nreps):
-        tasks = copy.deepcopy(these_tasks)
-        for task_block in tasks:
-            if shuffle_blocks:
-                random.shuffle(task_block)
-                if len(blocks) > 0:
-                    while ((blocks[-1][-1] == task_block[0]) or task_block in blocks):
-                        random.shuffle(task_block)
-            blocks.append(task_block)
-
+    if bonusblocks is not None:
+        for i in range(nreps):
+            tasks = copy.deepcopy(these_tasks)
+            for task_block in tasks:
+                if shuffle_blocks:
+                    random.shuffle(task_block)
+                    if len(blocks) > 0:
+                        while ((blocks[-1][-1] == task_block[0]) or (task_block in blocks) or (task_block[-1] == bonusblocks[0])):
+                            random.shuffle(task_block)
+                blocks.append(task_block)
+        if shuffle_blocks:
+            random.shuffle(bonusblocks)
+            if len(blocks) > 0:
+                while ((blocks[-1][-1] == bonusblocks[0])):
+                    random.shuffle(bonusblocks)
+        blocks.append(bonusblocks)
+    else:
+        for i in range(nreps):
+            tasks = copy.deepcopy(these_tasks)
+            for task_block in tasks:
+                if shuffle_blocks:
+                    random.shuffle(task_block)
+                    if len(blocks) > 0:
+                        while ((blocks[-1][-1] == task_block[0]) or (task_block in blocks)):
+                            random.shuffle(task_block)
+                blocks.append(task_block)
     if nested_output:
         return blocks
     else:
