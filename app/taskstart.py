@@ -109,6 +109,9 @@ def download_win():
 
 @bp.route('/taskstart', methods=['POST'])
 def taskstart_post():
-    session['complete_button'] = True
-    write_metadata(session, ['complete_button'], 'a')
-    return redirect(url_for('taskstart.taskstart', **request.args))
+    if not 'workerId' in session:
+        return redirect(url_for('taskstart.taskstart', **request.args))
+    else:
+        session['complete_button'] = True
+        write_metadata(session, ['complete_button'], 'a')
+        return redirect(url_for('taskstart.taskstart', **request.args))
