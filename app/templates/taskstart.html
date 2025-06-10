@@ -127,7 +127,7 @@
   <!-- Tabs for OS Selection -->
   <div class="tab-container">
     <div class="tab" id="windows-tab" onclick="showTab('windows')">Windows</div>
-    <div class="tab" id="macos-tab" onclick="showTab('macos')">macOS</div>
+{#    <div class="tab" id="macos-tab" onclick="showTab('macos')">macOS</div>#}
   </div>
 
   <!-- Windows Instructions -->
@@ -142,15 +142,15 @@
   </div>
 
   <!-- macOS Instructions -->
-  <div id="macos-instructions" class="instructions">
-    <h3>macOS Instructions:</h3>
-    <button class="download-button" onclick="window.location.href='{{ mac_link }}'">Download for macOS</button>
-    <p>After downloading, locate the .app file, usually in your Downloads folder and double click it.</p>
-    <p>
-       The cognitive tasks may take several minutes to begin once you have double-clicked on the executable.
-       Please be patient and do not double-click more than once.
-   </p>
-  </div>
+{#  <div id="macos-instructions" class="instructions">#}
+{#    <h3>macOS Instructions:</h3>#}
+{#    <button class="download-button" onclick="window.location.href='{{ mac_link }}'">Download for macOS</button>#}
+{#    <p>After downloading, locate the .app file, usually in your Downloads folder and double click it.</p>#}
+{#    <p>#}
+{#       The cognitive tasks may take several minutes to begin once you have double-clicked on the executable.#}
+{#       Please be patient and do not double-click more than once.#}
+{#   </p>#}
+{#  </div>#}
   <p>
         <br>
        If the task data has been uploaded successfully, you will be redirected to Prolific once you click the button below.
@@ -167,31 +167,31 @@
   </center>
   </p>
 </body>
-<script>
-    function detectOS() {
-      const platform = navigator.platform.toLowerCase();
-      if (platform.includes("win")) {
-        showTab("windows");
-      } else if (platform.includes("mac") || platform.includes("darwin")) {
-        showTab("macos");
-      } else {
-        alert("Operating system not detected. Please select the correct tab.");
-        showTab("windows"); // Default to Windows
-      }
-    }
-
-    function showTab(os) {
-      // Hide all instructions and remove active class from tabs
-      document.getElementById("windows-instructions").style.display = "none";
-      document.getElementById("macos-instructions").style.display = "none";
-      document.getElementById("windows-tab").classList.remove("active");
-      document.getElementById("macos-tab").classList.remove("active");
-
-      // Show selected OS instructions and set active class on the tab
-      document.getElementById(`${os}-instructions`).style.display = "block";
-      document.getElementById(`${os}-tab`).classList.add("active");
-    }
-
-    // Run OS detection on page load
-    window.onload = detectOS;
-</script>
+{#<script>#}
+{#    function detectOS() {#}
+{#      const platform = navigator.platform.toLowerCase();#}
+{#      if (platform.includes("win")) {#}
+{#        showTab("windows");#}
+{#      } else if (platform.includes("mac") || platform.includes("darwin")) {#}
+{#        showTab("macos");#}
+{#      } else {#}
+{#        alert("Operating system not detected. Please select the correct tab.");#}
+{#        showTab("windows"); // Default to Windows#}
+{#      }#}
+{#    }#}
+{##}
+{#    function showTab(os) {#}
+{#      // Hide all instructions and remove active class from tabs#}
+{#      document.getElementById("windows-instructions").style.display = "none";#}
+{#      document.getElementById("macos-instructions").style.display = "none";#}
+{#      document.getElementById("windows-tab").classList.remove("active");#}
+{#      document.getElementById("macos-tab").classList.remove("active");#}
+{##}
+{#      // Show selected OS instructions and set active class on the tab#}
+{#      document.getElementById(`${os}-instructions`).style.display = "block";#}
+{#      document.getElementById(`${os}-tab`).classList.add("active");#}
+{#    }#}
+{##}
+{#    // Run OS detection on page load#}
+{#    window.onload = detectOS;#}
+{#</script>#}
