@@ -160,7 +160,7 @@ const survey_json = {
           }, {
               type: "radiogroup",
               name: "attn__1",
-              title: "Are you willing to download and run tasks on your computer? If not, the survey will complete after this page. Please return the study on Prolific.",
+              title: "Are you willing to download and run tasks on your computer? If not, the survey will complete after this page and you will be redirected to Prolific.",
               choices: ['Yes', 'No'],
               isRequired: true,
           }
