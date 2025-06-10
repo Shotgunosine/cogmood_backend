@@ -38,6 +38,7 @@ def survey():
             assignmentId=session['assignmentId'],
             hitId=session['hitId'],
             code_success=CFG['code_success'],
+            code_nodl=CFG['code_nodl'],
             code_attn3=CFG['code_attn3'],
             code_attn4=CFG['code_attn4'],
             code_attn5=CFG['code_attn5'],

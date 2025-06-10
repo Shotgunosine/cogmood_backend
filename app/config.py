@@ -48,6 +48,7 @@ CFG = dict(
     allow_restart=cfg['FLASK'].getboolean('ALLOW_RESTART'),
     code_success=cfg['PROLIFIC']['CODE_SUCCESS'],
     code_reject=cfg['PROLIFIC']['CODE_REJECT'],
+    code_nodl=cfg['PROLIFIC']['CODE_NODL'],
     code_attn3=cfg['PROLIFIC']['CODE_ATTN3'],
     code_attn4=cfg['PROLIFIC']['CODE_ATTN4'],
     code_attn5=cfg['PROLIFIC']['CODE_ATTN5'],
