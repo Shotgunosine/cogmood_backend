@@ -66,6 +66,9 @@ def taskcontrol():
         try:
             r_block = request.form['block_name']
             r_task = r_block.split('_')[0]
+            happy_slog = False
+            if 'happy' in r_task:
+                happy_slog = True
         except KeyError:
             data['error'] = 'No block name'
             return data, 400
@@ -74,7 +77,7 @@ def taskcontrol():
         except ValueError:
             data['error'] = 'Bad block num, run number misformatted'
             return data, 400
-        if request.form['block_name'] not in blocks_needed:
+        if (request.form['block_name'] not in blocks_needed) and ('happy' not in request.form['block_name']):
             data['error'] = 'Block already uploaded'
             return data, 400
 
@@ -116,27 +119,28 @@ def taskcontrol():
             return data, 409
         else:
             # validate uploaded data
-            try:
-                valid, reason = validate(block_filename, r_task, r_runnum)
+            if not happy_slog:
+                try:
+                    valid, reason = validate(block_filename, r_task, r_runnum)
 
-            except (NameError, RecursionError):
-                valid = False
-                reason = 'format'
+                except (NameError, RecursionError):
+                    valid = False
+                    reason = 'format'
 
-            for block in s_tdb:
-                if block['name'] == r_block:
-                    block['uploaded'] = True
-                    block['checksum'] = checksum
-                    block['valid'] = valid
-                    block['reason'] = reason
-                # faster than &= based on timeit
-                if not block['uploaded']:
-                    all_uploaded = False
-                if not block['valid']:
-                    all_valid = False
-                    n_invalid += 1
+                for block in s_tdb:
+                    if block['name'] == r_block:
+                        block['uploaded'] = True
+                        block['checksum'] = checksum
+                        block['valid'] = valid
+                        block['reason'] = reason
+                    # faster than &= based on timeit
+                    if not block['uploaded']:
+                        all_uploaded = False
+                    if not block['valid']:
+                        all_valid = False
+                        n_invalid += 1
 
-            write_taskdata(subId, s_tdb)
+                write_taskdata(subId, s_tdb)
 
         if all_uploaded:
             # set metadata to complete
