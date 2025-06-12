@@ -141,26 +141,26 @@ def taskcontrol():
                         n_invalid += 1
 
                 write_taskdata(subId, s_tdb)
+        if not happy_slog:
+            if all_uploaded:
+                # set metadata to complete
+                # not using write_metadata because we don't have a session object
+                timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        if all_uploaded:
-            # set metadata to complete
-            # not using write_metadata because we don't have a session object
-            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-            if n_invalid > 1:
-                complete_code = 'task_invalid'
+                if n_invalid > 1:
+                    complete_code = 'task_invalid'
+                else:
+                    complete_code = 'success'
+                # Write metadata to disk.
+                fout = os.path.join(CFG['meta'], h_workerId)
+                with open(fout, 'a') as f:
+                    f.write(f'{timestamp}\tcomplete\t{complete_code}\n')
             else:
-                complete_code = 'success'
-            # Write metadata to disk.
-            fout = os.path.join(CFG['meta'], h_workerId)
-            with open(fout, 'a') as f:
-                f.write(f'{timestamp}\tcomplete\t{complete_code}\n')
-        else:
-            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-            # Write metadata to disk.
-            fout = os.path.join(CFG['meta'], h_workerId)
-            with open(fout, 'a') as f:
-                f.write(f'{timestamp}\ttaskinprogress\tinprogress\n')
+                # Write metadata to disk.
+                fout = os.path.join(CFG['meta'], h_workerId)
+                with open(fout, 'a') as f:
+                    f.write(f'{timestamp}\ttaskinprogress\tinprogress\n')
 
         return data, 200
