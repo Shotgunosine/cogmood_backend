@@ -18,7 +18,7 @@ RDM_KEYS = {'run_num', 'appear_time_time', 'appear_time_error', 'disappear_time_
             'incorrect_resp', 'log_num'}
 BART_NTRIALS = 17
 BART_KEYS = {'subject', 'run_num', 'balloon_number_session', 'set_number', 'balloon_number',
-             'block', 'balloon_id', 'bag_ID_number', 'balloon_in_bag', 'trial', 'pop_range_0',
+             'block', 'balloon_id', 'bag_ID_number', 'balloon_in_bag', 'trial', 'max_pumps', 'pop_range_0',
              'pop_range_1', 'pop_status', 'reward_appear_time_time', 'reward_appear_time_error',
              'invis_appear_time_time', 'invis_appear_time_error', 'rt_start_time', 'rt',
              'press_time_time', 'press_time_error', 'key_pressed', 'total', 'grand_total',
