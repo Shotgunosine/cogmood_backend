@@ -2,20 +2,20 @@ from zipfile import ZipFile
 import tempfile
 from . import log
 
+# all the below ntrials are actually 1-ntrials to simplifiy the test
 FLKR_THR = 12
-FLKR_NTRIALS = 48
+FLKR_NTRIALS = 47
 FLKR_KEYS = {'run_num', 'appear_time_time', 'appear_time_error', 'disappear_time', 'pressed',
              'press_time_time','press_time_error', 'rt', 'block', 'trial_id', 'correct',
              'fmri_tr_time', 'eeg_pulse_time', 'log_time','loc_x', 'loc_y', 'condition',
              'dir', 'corr_resp', 'log_num'}
 RDM_THR = 13
-RDM_NTRIALS = 68
+RDM_NTRIALS = 73
 RDM_KEYS = {'run_num', 'appear_time_time', 'appear_time_error', 'disappear_time_time',
             'disappear_time_error', 'pressed', 'press_time_time', 'press_time_error', 'rt',
             'block', 'trial_id', 'correct', 'refresh_rate', 'fmri_tr_time', 'eeg_pulse_time',
             'log_time', 'left_coherence', 'right_coherence', 'correct_resp',
             'incorrect_resp', 'log_num'}
-# this is actually 1 - ntrials, just to make the test easier later
 BART_NTRIALS = 17
 BART_KEYS = {'subject', 'run_num', 'balloon_number_session', 'set_number', 'balloon_number',
              'block', 'balloon_id', 'bag_ID_number', 'balloon_in_bag', 'trial', 'pop_range_0',
@@ -24,20 +24,26 @@ BART_KEYS = {'subject', 'run_num', 'balloon_number_session', 'set_number', 'ball
              'press_time_time', 'press_time_error', 'key_pressed', 'total', 'grand_total',
              'rewards', 'balloon_size', 'trkp_press_time', 'eeg_pulse_time', 'log_time', 'log_num'}
 CAB_THR = 14
-CAB_NTRIALS = 48
+CAB_NTRIALS = 47
 CAB_KEYS = {'appearL_time', 'appearL_error', 'appearR_time', 'appearR_error', 'disappearL',
             'disappearR', 'resp_acc', 'resp_rt', 'press_time', 'press_error', 'pressed', 'block',
-            'trial_id', 'fmri_tr_time', 'eeg_pulse_time', 'log_time', 'pair_inds_0', 'pair_inds_1',
-            'cond_strength', 'cond_trial', 'resp_correct', 'num_trial', 'lag_L', 'lag_R', 'img_L',
-            'img_R', 'log_num'}
+            'trial_id', 'fmri_tr_time', 'eeg_pulse_time', 'old_key', 'new_key', 'log_time',
+            'pair_inds_0', 'pair_inds_1', 'cond_strength', 'cond_trial', 'resp_correct',
+            'num_trial', 'lag_L', 'lag_R', 'img_L', 'img_R', 'log_num'}
 
-def validate_flkr(zipped_path):
+def validate_flkr(zipped_path, run_num):
     with tempfile.TemporaryDirectory() as tmpdir:
         slog_file = ZipFile(zipped_path).extract('log_flkr_0.slog', path=tmpdir)
         lod = log.log2dl(slog_file)
+    lod = [d for d in lod if int(d['run_num']) == run_num]
     if len(lod) <= FLKR_NTRIALS:
         return False, 'ntrials'
-    if lod[0].keys() != FLKR_KEYS:
+    one_valid_trial = False
+    for dd in lod:
+        if dd.keys() == FLKR_KEYS:
+            one_valid_trial = True
+            break
+    if not one_valid_trial:
         return False, 'keys'
     corrects = [int(dd['correct']) for dd in lod if (dd['condition'] == '+') and (dd['correct'])]
     if len(corrects) < FLKR_THR:
@@ -45,13 +51,19 @@ def validate_flkr(zipped_path):
     return True, 'valid'
 
 
-def validate_rdm(zipped_path):
+def validate_rdm(zipped_path, run_num):
     with tempfile.TemporaryDirectory() as tmpdir:
         slog_file = ZipFile(zipped_path).extract('log_rdm_0.slog', path=tmpdir)
         lod = log.log2dl(slog_file)
+    lod = [d for d in lod if int(d['run_num']) == run_num]
     if len(lod) <= RDM_NTRIALS:
         return False, 'ntrials'
-    if lod[0].keys() != RDM_KEYS:
+    one_valid_trial = False
+    for dd in lod:
+        if dd.keys() == RDM_KEYS:
+            one_valid_trial = True
+            break
+    if not one_valid_trial:
         return False, 'keys'
     corrects = [
         int(dd['correct'])
@@ -63,11 +75,17 @@ def validate_rdm(zipped_path):
     return True, 'valid'
 
 
-def validate_bart(zipped_path):
+def validate_bart(zipped_path, run_num):
     with tempfile.TemporaryDirectory() as tmpdir:
         slog_file = ZipFile(zipped_path).extract('log_bart_0.slog', path=tmpdir)
         lod = log.log2dl(slog_file)
-    if lod[0].keys() != BART_KEYS:
+    lod = [d for d in lod if int(d['run_num']) == run_num]
+    one_valid_trial = False
+    for dd in lod:
+        if dd.keys() == BART_KEYS:
+            one_valid_trial = True
+            break
+    if not one_valid_trial:
         return False, 'keys'
     pressed_j = False
     pressed_f = False
@@ -86,13 +104,19 @@ def validate_bart(zipped_path):
     return True, 'valid'
 
 
-def validate_cab(zipped_path):
+def validate_cab(zipped_path, run_num):
     with tempfile.TemporaryDirectory() as tmpdir:
         slog_file = ZipFile(zipped_path).extract('log_cab_0.slog', path=tmpdir)
         lod = log.log2dl(slog_file)
+    lod = [d for d in lod if int(d['block']) == run_num]
     if len(lod) <= CAB_NTRIALS:
         return False, 'ntrials'
-    if lod[0].keys() != CAB_KEYS:
+    one_valid_trial = False
+    for dd in lod:
+        if dd.keys() == CAB_KEYS:
+            one_valid_trial = True
+            break
+    if not one_valid_trial:
         return False, 'keys'
     corrects = [
         int(dd['resp_acc'])
@@ -108,14 +132,14 @@ def validate_cab(zipped_path):
     return True, 'valid'
 
 
-def validate(zipped_path, task):
+def validate(zipped_path, task, run_num):
     if task == 'flkr':
-        return validate_flkr(zipped_path)
+        return validate_flkr(zipped_path, run_num)
     elif task == 'rdm':
-        return validate_rdm(zipped_path)
+        return validate_rdm(zipped_path, run_num)
     elif task == 'bart':
-        return validate_bart(zipped_path)
+        return validate_bart(zipped_path, run_num)
     elif task == 'cab':
-        return validate_cab(zipped_path)
+        return validate_cab(zipped_path, run_num)
     else:
         raise NotImplementedError(f'No validation implemented for {task}.')

@@ -69,6 +69,11 @@ def taskcontrol():
         except KeyError:
             data['error'] = 'No block name'
             return data, 400
+        try:
+            r_runnum = int(r_block.split('_')[1])
+        except ValueError:
+            data['error'] = 'Bad block num, run number misformatted'
+            return data, 400
         if request.form['block_name'] not in blocks_needed:
             data['error'] = 'Block already uploaded'
             return data, 400
@@ -100,6 +105,7 @@ def taskcontrol():
         checksum = hash_file(block_filename)
         all_uploaded = True
         all_valid = True
+        n_invalid = 0
         valid = False
         if r_checksum != checksum:
             sub_bul_dir = os.path.join(CFG['t_badupload'], subId)
@@ -111,7 +117,7 @@ def taskcontrol():
         else:
             # validate uploaded data
             try:
-                valid, reason = validate(block_filename, r_task)
+                valid, reason = validate(block_filename, r_task, r_runnum)
 
             except (NameError, RecursionError):
                 valid = False
@@ -128,6 +134,7 @@ def taskcontrol():
                     all_uploaded = False
                 if not block['valid']:
                     all_valid = False
+                    n_invalid += 1
 
             write_taskdata(subId, s_tdb)
 
@@ -136,7 +143,7 @@ def taskcontrol():
             # not using write_metadata because we don't have a session object
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-            if not all_valid:
+            if n_invalid > 1:
                 complete_code = 'task_invalid'
             else:
                 complete_code = 'success'
