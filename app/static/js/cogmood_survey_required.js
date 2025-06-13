@@ -1869,6 +1869,58 @@ const survey_json = {
               }],
               isRequired: true,
           }],
-      }
+      }, {
+          name: "fatigue_hunger",
+          title: "CogMood Surveys",
+          elements: [{
+              type: "radiogroup",
+              name: "fatigue",
+              title: "How tired do you feel right now?",
+              choices: [
+                  "1: Well rested",
+                  "2",
+                  "3",
+                  "4",
+                  "5: Tired",
+                  "6",
+                  "7",
+                  "8",
+                  "9: Having trouble staying awake"
+              ],
+              isRequired: true,
+          }, {
+              type: "text",
+              name: "meal_hours",
+              title: "How long has it been since you last ate (in hours)?",
+              maskType: "numeric",
+              maskSettings: {
+                  allowNegativeValues: false,
+                  min: 0
+              },
+              isRequired: true,
+          }, {
+              type: "radiogroup",
+              name: "meal_type",
+              title: "The last time you ate, would you consider it a snack or a meal?",
+              choices: ["Snack", "Meal", "Can't remember"],
+              isRequired: true,
+          }, {
+              type: "radiogroup",
+              name: "hunger",
+              title: "How hungry do you feel right now?",
+              choices: [
+                  "1: Not at all",
+                  "2",
+                  "3",
+                  "4",
+                  "5: Hungry",
+                  "6",
+                  "7",
+                  "8",
+                  "9: Having trouble concentrating"
+              ],
+              isRequired: true,
+          }]
+      },
       ]
   }
