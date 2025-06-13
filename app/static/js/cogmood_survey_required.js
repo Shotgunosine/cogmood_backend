@@ -268,7 +268,13 @@ const survey_json = {
               title: "In the past two weeks have you been bothered by symptoms of your mood disorder(s)?",
               choices: ['Yes', 'No', 'Prefer not to answer'],
               isRequired: true,
-          },
+          }, {
+              type: "radiogroup",
+              name: "mood_bothered_today",
+              title: "Have you been bothered by symptoms of your mood disorder(s) today?",
+              choices: ['Yes', 'No', 'Prefer not to answer'],
+              isRequired: true,
+          }
           ]
 
       }, {
@@ -357,7 +363,13 @@ const survey_json = {
               title: "In the past two weeks have you been bothered by symptoms of your anxiety disorder(s)?",
               choices: ['Yes', 'No', 'Prefer not to answer'],
               isRequired: true,
-          },
+          }, {
+              type: "radiogroup",
+              name: "anxiety_bothered_today",
+              title: "Have you been bothered by symptoms of your anxiety disorder(s) today?",
+              choices: ['Yes', 'No', 'Prefer not to answer'],
+              isRequired: true,
+          }
           ]
 
       }, {
@@ -431,7 +443,13 @@ const survey_json = {
               title: "In the past two weeks have you been bothered by symptoms of your attention disorder(s)?",
               choices: ['Yes', 'No', 'Prefer not to answer'],
               isRequired: true,
-          },
+          }, {
+              type: "radiogroup",
+              name: "attention_bothered_today",
+              title: "Have you been bothered by symptoms of your attention disorder(s) today?",
+              choices: ['Yes', 'No', 'Prefer not to answer'],
+              isRequired: true,
+          }
           ]
 
       }, {
@@ -739,7 +757,7 @@ const survey_json = {
           elements: [{
               type: "html",
               name: "hitopintro2",
-              html: 'Some statements will ask you to select a specific response. For example, if you see the statement "I felt like selecting a little" please select "<strong>A Little</strong>". <p><p>We include these checks to ensure that we are collecting high quality data from real humans who are paying attention to the questions. Poor data quality will make it harder to for us to learn about the relationships between how people think and symptoms of mental health disorders. If you miss too many of these check questions, you will only be compensated for completing the survey and will not be asked to complete the cognitive tasks.',
+              html: 'Some statements will ask you to select a specific response. For example, if you see the statement <strong> "I felt like selecting a little" </strong> please select "<strong>A Little</strong>". <p><p>These statements do blend in with the other statements, so <strong> please read each statement carefully </strong>. We include these checks to ensure that we are collecting high quality data from real humans who are paying attention to the questions. Poor data quality will make it harder to for us to learn about the relationships between how people think and symptoms of mental health disorders. If you miss too many of these check questions, you will only be compensated for completing the survey and will not be asked to complete the cognitive tasks.',
               startWithNewLine: false
           }],
       }, {
