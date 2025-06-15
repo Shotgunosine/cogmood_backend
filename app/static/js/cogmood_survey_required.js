@@ -1877,47 +1877,37 @@ const survey_json = {
               name: "fatigue",
               title: "How tired do you feel right now?",
               choices: [
-                  "1: Well rested",
+                  "1: Not Tired",
                   "2",
                   "3",
                   "4",
-                  "5: Tired",
+                  "5",
                   "6",
                   "7",
                   "8",
-                  "9: Having trouble staying awake"
+                  "9: Very Tired"
               ],
-              isRequired: true,
-          }, {
-              type: "text",
-              name: "meal_hours",
-              title: "How long has it been since you last ate (in hours)?",
-              maskType: "numeric",
-              maskSettings: {
-                  allowNegativeValues: false,
-                  min: 0
-              },
               isRequired: true,
           }, {
               type: "radiogroup",
               name: "meal_type",
-              title: "The last time you ate, would you consider it a snack or a meal?",
-              choices: ["Snack", "Meal", "Can't remember"],
+              title: "By this time today, have you eaten more, less, or about the same as you usually have by this time??",
+              choices: ["More", "Less", "About the same"],
               isRequired: true,
           }, {
               type: "radiogroup",
               name: "hunger",
               title: "How hungry do you feel right now?",
               choices: [
-                  "1: Not at all",
+                  "1: Not hungry",
                   "2",
                   "3",
                   "4",
-                  "5: Hungry",
+                  "5",
                   "6",
                   "7",
                   "8",
-                  "9: Having trouble concentrating"
+                  "9: Very Hungry"
               ],
               isRequired: true,
           }]
