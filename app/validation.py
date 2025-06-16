@@ -22,7 +22,8 @@ BART_KEYS = {'subject', 'run_num', 'balloon_number_session', 'set_number', 'ball
              'pop_range_1', 'pop_status', 'reward_appear_time_time', 'reward_appear_time_error',
              'invis_appear_time_time', 'invis_appear_time_error', 'rt_start_time', 'rt',
              'press_time_time', 'press_time_error', 'key_pressed', 'total', 'grand_total',
-             'rewards', 'balloon_size', 'trkp_press_time', 'eeg_pulse_time', 'log_time', 'log_num'}
+             'rewards', 'balloon_size', 'trkp_press_time', 'eeg_pulse_time',
+             'pump_button', 'collect_button', 'log_time', 'log_num'}
 CAB_THR = 14
 CAB_NTRIALS = 47
 CAB_KEYS = {'appearL_time', 'appearL_error', 'appearR_time', 'appearR_error', 'disappearL',
