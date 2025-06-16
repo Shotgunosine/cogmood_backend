@@ -61,6 +61,7 @@ def taskstart():
                                platform=session['platform'],
                                mac_link=mac_link,
                                win_link=win_link,
+                               workerId=session['workerId'],
                                subject_task_code=subject_task_code,
                                button_before_dl=button_before_dl,
                                button_before_running=button_before_running,

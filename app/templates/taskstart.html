@@ -119,6 +119,8 @@
   </p>
   {% if subject_task_code is not none %}
   <p>
+      Your Prolific Workker ID is <strong> {{ workerId }} </strong>
+      <br>
       Your 4 character task code is <strong> {{ subject_task_code }} </strong>
       <br>
       <strong>Please make a note of this code so that you can enter it in the task along with your Prolific Worker ID.</strong>
@@ -168,6 +170,9 @@
   </p>
 </body>
 {#<script>#}
+{#    var urlp=[];s=location.toString().split('?');s=s[1].split('&');for(i=0;i<s.length;i++){u=s[i].split('=');urlp[u[0]]=u[1];}#}
+{##}
+
 {#    function detectOS() {#}
 {#      const platform = navigator.platform.toLowerCase();#}
 {#      if (platform.includes("win")) {#}
