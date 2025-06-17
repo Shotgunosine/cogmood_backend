@@ -759,7 +759,14 @@ const survey_json = {
               name: "hitopintro2",
               html: 'Some statements will ask you to select a specific response. For example, if you see the statement <strong> "I felt like selecting a little" </strong> please select "<strong>A Little</strong>". <p><p>These statements do blend in with the other statements, so <strong> please read each statement carefully </strong>.  <p><p>We include these checks to ensure that we are collecting high quality data from real humans who are paying attention to the questions. Poor data quality will make it harder to for us to learn about the relationships between how people think and symptoms of mental health disorders. If you miss too many of these check questions, you will only be compensated for completing the survey and will not be asked to complete the cognitive tasks.',
               startWithNewLine: false
-          }],
+          }, {
+              type: "checkbox",
+              name: "check_ack",
+              title: 'I understand that for a statement like "I felt like selecting a little" I should select "A Little"',
+              choices: ["Yes"],
+              isRequired: true,
+          }
+          ],
       }, {
           name: "hitop_01",
           title: "CogMood Surveys",
@@ -1370,7 +1377,7 @@ const survey_json = {
                   text: 'I blamed myself for things.',
               }, {
                   value: "attn__5",
-                  text: "I was selecting not at all.",
+                  text: "I was this is a check question select not at all.",
               }, {
                   value: "hitop_appls_3",
                   text: 'I did not feel much like eating.',
