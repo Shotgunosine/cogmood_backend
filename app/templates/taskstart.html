@@ -144,15 +144,16 @@
   </div>
 
   <!-- macOS Instructions -->
-{#  <div id="macos-instructions" class="instructions">#}
-{#    <h3>macOS Instructions:</h3>#}
-{#    <button class="download-button" onclick="window.location.href='{{ mac_link }}'">Download for macOS</button>#}
-{#    <p>After downloading, locate the .app file, usually in your Downloads folder and double click it.</p>#}
-{#    <p>#}
-{#       The cognitive tasks may take several minutes to begin once you have double-clicked on the executable.#}
-{#       Please be patient and do not double-click more than once.#}
-{#   </p>#}
-{#  </div>#}
+  <div id="macos-instructions" class="instructions">
+    <h3>macOS Instructions:</h3>
+    <button class="download-button" onclick="window.location.href='{{ mac_link }}'">Download for macOS</button>
+    <p>After downloading, locate the NIMHCogMood.zip file, usually in your Downloads folder and double click it.</p>
+    <p>This will unzip NIMHCogMood.app into the same directory. Double click it to start the app.</p>
+    <p>
+       The cognitive tasks may take several minutes to begin once you have double-clicked on NIMHCogMood.app.
+       Please be patient and do not double-click more than once.
+   </p>
+  </div>
   <p>
         <br>
        If the task data has been uploaded successfully, you will be redirected to Prolific once you click the button below.
@@ -169,34 +170,34 @@
   </center>
   </p>
 </body>
-{#<script>#}
-{#    var urlp=[];s=location.toString().split('?');s=s[1].split('&');for(i=0;i<s.length;i++){u=s[i].split('=');urlp[u[0]]=u[1];}#}
-{##}
+<script>
+    var urlp=[];s=location.toString().split('?');s=s[1].split('&');for(i=0;i<s.length;i++){u=s[i].split('=');urlp[u[0]]=u[1];}
 
-{#    function detectOS() {#}
-{#      const platform = navigator.platform.toLowerCase();#}
-{#      if (platform.includes("win")) {#}
-{#        showTab("windows");#}
-{#      } else if (platform.includes("mac") || platform.includes("darwin")) {#}
-{#        showTab("macos");#}
-{#      } else {#}
-{#        alert("Operating system not detected. Please select the correct tab.");#}
-{#        showTab("windows"); // Default to Windows#}
-{#      }#}
-{#    }#}
-{##}
-{#    function showTab(os) {#}
-{#      // Hide all instructions and remove active class from tabs#}
-{#      document.getElementById("windows-instructions").style.display = "none";#}
-{#      document.getElementById("macos-instructions").style.display = "none";#}
-{#      document.getElementById("windows-tab").classList.remove("active");#}
-{#      document.getElementById("macos-tab").classList.remove("active");#}
-{##}
-{#      // Show selected OS instructions and set active class on the tab#}
-{#      document.getElementById(`${os}-instructions`).style.display = "block";#}
-{#      document.getElementById(`${os}-tab`).classList.add("active");#}
-{#    }#}
-{##}
-{#    // Run OS detection on page load#}
-{#    window.onload = detectOS;#}
-{#</script>#}
+
+    function detectOS() {
+      const platform = navigator.platform.toLowerCase();
+      if (platform.includes("win")) {
+        showTab("windows");
+      } else if (platform.includes("mac") || platform.includes("darwin")) {
+        showTab("macos");
+      } else {
+        alert("Operating system not detected. Please select the correct tab.");
+        showTab("windows"); // Default to Windows
+      }
+    }
+
+    function showTab(os) {
+      // Hide all instructions and remove active class from tabs
+      document.getElementById("windows-instructions").style.display = "none";
+      document.getElementById("macos-instructions").style.display = "none";
+      document.getElementById("windows-tab").classList.remove("active");
+      document.getElementById("macos-tab").classList.remove("active");
+
+      // Show selected OS instructions and set active class on the tab
+      document.getElementById(`${os}-instructions`).style.display = "block";
+      document.getElementById(`${os}-tab`).classList.add("active");
+    }
+
+    // Run OS detection on page load
+    window.onload = detectOS;
+</script>

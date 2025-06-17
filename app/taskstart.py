@@ -74,7 +74,7 @@ def download_mac():
     if CFG['custom_exes']:
         dlpath = os.path.join(CFG['download'], 'mac_' + str(session['subId']) + '.dmg')
     else:
-        dlpath = CFG['base_dmg']
+        dlpath = CFG['base_zip']
 
     session['dlstarted'] = True
     write_metadata(session, ['dlstarted'], 'a')
@@ -82,7 +82,7 @@ def download_mac():
         return send_file(
             dlpath,
             as_attachment=True,
-            download_name='NIMHCogMood.dmg',
+            download_name='NIMHCogMood.zip',
             mimetype="application/octet-stream"
         )
     else:
