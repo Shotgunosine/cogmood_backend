@@ -1877,9 +1877,19 @@ const survey_json = {
               isRequired: true,
           }],
       }, {
-          name: "fatigue_hunger",
+          name: "handedness_fatigue_hunger",
           title: "CogMood Surveys",
           elements: [{
+              type: "radiogroup",
+              name: "handedness",
+              title: "Are you right handed or left handed?",
+              choices: [
+                  "Right Handed",
+                  "Ambidextrous",
+                  "Left Handed"
+              ],
+              isRequired: true,
+          }, {
               type: "radiogroup",
               name: "fatigue",
               title: "How tired do you feel right now?",
