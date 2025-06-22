@@ -183,7 +183,7 @@ const survey_json = {
           elements: [{
               type: "radiogroup",
               name: "mood_pro_diagnosis",
-              title: "Have you been diagnosed with a mood disorder by a mental health professional? This includes: " +
+              title: "Have you ever been diagnosed with a mood disorder by a mental health professional? This includes: " +
                   "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Depression, " +
                   "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Major Depressive Disorder, " +
                   "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bipolar Disorder type I or II, " +
@@ -283,7 +283,7 @@ const survey_json = {
           elements: [{
               type: "radiogroup",
               name: "anxiety_pro_diagnosis",
-              title: "Have you been diagnosed with an anxiety disorder by a mental health professional? This includes:" +
+              title: "Have you ever been diagnosed with an anxiety disorder by a mental health professional? This includes:" +
                   "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Generalized Anxiety Disorder," +
                   "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Separation Anxiety Disorder," +
                   "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Agoraphobia," +
@@ -378,7 +378,7 @@ const survey_json = {
           elements: [{
               type: "radiogroup",
               name: "attention_pro_diagnosis",
-              title: "Have you been diagnosed with attention-deficit/hyperactivity disorder (ADHD) or attention-deficit disorder (ADD)?",
+              title: "Have you ever been diagnosed with attention-deficit/hyperactivity disorder (ADHD) or attention-deficit disorder (ADD)?",
               choices: ['Yes', 'No', 'Prefer not to answer'],
               isRequired: true,
           },
