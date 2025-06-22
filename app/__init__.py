@@ -2,7 +2,7 @@ from pathlib import Path
 import os, sys, re, configparser, warnings
 from flask import (Flask, redirect, render_template, request, session, url_for)
 from hashlib import blake2b
-from app import consent, alert, survey, complete, error, taskstart, task, taskcontrol
+from app import consent, alert, survey, complete, error, taskstart, task, taskcontrol, reset
 from .config import CFG
 from .io import write_metadata
 from .utils import gen_code
@@ -59,6 +59,7 @@ app.register_blueprint(task.bp)
 app.register_blueprint(taskcontrol.bp)
 app.register_blueprint(complete.bp)
 app.register_blueprint(error.bp)
+app.register_blueprint(reset.bp)
 
 ## Define root node.
 @app.route('/')
