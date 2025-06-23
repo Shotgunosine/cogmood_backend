@@ -1908,7 +1908,7 @@ const survey_json = {
           }, {
               type: "radiogroup",
               name: "meal_type",
-              title: "By this time today, have you eaten more, less, or about the same as you usually have by this time??",
+              title: "By this time today, have you eaten more, less, or about the same as you usually have by this time?",
               choices: ["More", "Less", "About the same"],
               isRequired: true,
           }, {
