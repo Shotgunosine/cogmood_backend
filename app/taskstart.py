@@ -131,4 +131,4 @@ def taskstart_post():
     else:
         session['unknown_taskstart_post'] = True
         write_metadata(session, ['unknown_taskstart_post'], 'a')
-    return {}, 200
+    return {}, 204
