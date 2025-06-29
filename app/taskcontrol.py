@@ -60,6 +60,11 @@ def taskcontrol():
 
     if request.method == 'GET':
         data['blocks_to_run'] = blocks_needed
+        n_blocks_needed = str(len(blocks_needed))
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        fout = os.path.join(CFG['meta'], h_workerId)
+        with open(fout, 'a') as f:
+            f.write(f'{timestamp}\tblocksneeded\t{n_blocks_needed}\n')
         return data, 200
     else:
         # confirm that block needs to be uploaded

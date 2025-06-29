@@ -112,7 +112,22 @@ def download_win():
 def taskstart_post():
     if not 'workerId' in session:
         return redirect(url_for('taskstart.taskstart', **request.args))
-    else:
+    elif request.form.get('task_completed', 0) == 1:
         session['complete_button'] = True
         write_metadata(session, ['complete_button'], 'a')
         return redirect(url_for('taskstart.taskstart', **request.args))
+    elif request.form.get('app_broke', 0) == 1:
+        session['app_broke'] = True
+        write_metadata(session, ['app_broke'], 'a')
+    elif request.form.get('no_id', 0) == 1:
+        session['no_id'] = True
+        write_metadata(session, ['no_id'], 'a')
+    elif request.form.get('no_upload', 0) == 1:
+        session['no_upload'] = True
+        write_metadata(session, ['no_upload'], 'a')
+    elif request.form.get('other_problem', 0) == 1:
+        session['other_problem'] = True
+        write_metadata(session, ['other_problem'], 'a')
+    else:
+        session['unknown_taskstart_post'] = True
+        write_metadata(session, ['unknown_taskstart_post'], 'a')

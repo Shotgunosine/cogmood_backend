@@ -66,13 +66,26 @@
   border-color: #faebcc;
   color: #8a6d3b;
 }
-
 .alert-danger {
   background-color: #f2dede;
   border-color: #ebccd1;
   color: #a94442;
 }
-
+#helpFormContainer {
+  display: none;
+}
+#appBrokeContainer {
+  display: none;
+}
+#noIdContainer {
+  display: none;
+}
+#noUploadContainer {
+  display: none;
+}
+#otherProblemContainer {
+  display: none;
+}
   </style>
 
 </head>
@@ -123,7 +136,7 @@
       <br>
       Your 4 character task code is <strong> {{ subject_task_code }} </strong>
       <br>
-      <strong>Please make a note of this code so that you can enter it in the task along with your Prolific Worker ID.</strong>
+      <strong>Please make a note of your ID and code so that you can enter them in the task</strong>
   </p>
   {% endif %}
   <!-- Tabs for OS Selection -->
@@ -167,12 +180,46 @@
   <form method="post">
       <button type="submit" name="task_completed" value=1>I have completed the tasks</button>
   </form>
+
+  <button id="needHelp"> Something went wrong</button>
+  <div id="helpFormContainer">
+      We're sorry you're having trouble with the NIMHCogMood app.
+      Please select the button corresponding to the issue you are having.
+      <form id="helpForm" method="post">
+          <button id="appBrokeButton" type="submit" name="app_broke" value=1>NIMHCogMood had an error.</button>
+          <button id="noIdButton" type="submit" name="no_id" value=1>I can't find my worker ID or code.</button>
+          <button id="noUploadButton" type="submit" name="no_upload" value=1>The last block didn't upload.</button>
+          <button id="otherProblemButton" type="submit" name="other_problem" value=1>I had a different problem.</button>
+      </form>
+  </div>
+  <div id="appBrokeContainer">
+      Please make sure you wait for the app to open after double clicking it.
+      It may take several minutes to open.
+      <br>
+      If you get an error message or you screen flashes before returning to the desktop with nothing starting please send a message through Prolific describing the problem.
+  </div>
+  <div id="noIdContainer" class="alert-warning">
+      <p>
+      Your Prolific Worker ID is <strong> {{ workerId }} </strong>
+      <br>
+      Your 4 character task code is <strong> {{ subject_task_code }} </strong>
+      <br>
+      <strong>Please make a note of your ID and code so that you can enter them in the task.</strong>
+      </p>
+  </div>
+  <div id="noUploadContainer">
+      We're sorry that you were not able to upload the results of your last block.
+      Please run NIMHCogMood again when you have a more stable internet connection.
+      You will need to complete the block that failed to uplaod again, but all of your prior work will be saved.
+  </div>
+  <div id="otherProblemContainer">
+      Please send us a message through Prolific describing the problem.
+  </div>
   </center>
   </p>
 </body>
 <script>
     var urlp=[];s=location.toString().split('?');s=s[1].split('&');for(i=0;i<s.length;i++){u=s[i].split('=');urlp[u[0]]=u[1];}
-
 
     function detectOS() {
       const platform = navigator.platform.toLowerCase();
@@ -197,6 +244,51 @@
       document.getElementById(`${os}-instructions`).style.display = "block";
       document.getElementById(`${os}-tab`).classList.add("active");
     }
+
+    document.getElementById('needHelp').addEventListener('click', function() {
+      var formContainer = document.getElementById('helpFormContainer');
+      if (formContainer.style.display === 'none') {
+        formContainer.style.display = 'block'; // Show the form
+      } else {
+        formContainer.style.display = 'none'; // Hide the form
+      }
+    });
+
+    document.getElementById('appBrokeButton').addEventListener('click', function() {
+      var formContainer = document.getElementById('appBrokeContainer');
+      if (formContainer.style.display === 'none') {
+        formContainer.style.display = 'block'; // Show help
+      } else {
+        formContainer.style.display = 'none'; // Hide help
+      }
+    });
+
+    document.getElementById('noIdButton').addEventListener('click', function() {
+      var formContainer = document.getElementById('noIdContainer');
+      if (formContainer.style.display === 'none') {
+        formContainer.style.display = 'block'; // Show help
+      } else {
+        formContainer.style.display = 'none'; // Hide help
+      }
+    });
+
+    document.getElementById('noUploadButton').addEventListener('click', function() {
+      var formContainer = document.getElementById('noUploadContainer');
+      if (formContainer.style.display === 'none') {
+        formContainer.style.display = 'block'; // Show help
+      } else {
+        formContainer.style.display = 'none'; // Hide help
+      }
+    });
+
+    document.getElementById('otherProblemButton').addEventListener('click', function() {
+      var formContainer = document.getElementById('otherProblemContainer');
+      if (formContainer.style.display === 'none') {
+        formContainer.style.display = 'block'; // Show help
+      } else {
+        formContainer.style.display = 'none'; // Hide help
+      }
+    });
 
     // Run OS detection on page load
     window.onload = detectOS;
