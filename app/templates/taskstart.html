@@ -72,7 +72,7 @@
   color: #a94442;
 }
 .button-problem{
-    background-color: #f2dede;
+    background-color: #f2dede !important;
 }
 #helpFormContainer {
   display: none;
@@ -263,7 +263,7 @@
 
     document.getElementById('appBrokeButton').addEventListener('click', function() {
       var formContainer = document.getElementById('appBrokeContainer');
-      var otherContainerIds = ['appBrokeContainer', 'noIdContainer', 'noUploadContainer', 'otherProblemContainer']
+      var otherContainerIds = ['noIdContainer', 'noUploadContainer', 'otherProblemContainer']
 
       if (formContainer.style.display === 'none' || formContainer.style.display === '') {
         formContainer.style.display = 'block'; // Show help
@@ -272,8 +272,8 @@
       }
       otherContainerIds.forEach(function(ContainerId, index){
           otherContainer = document.getElementById(ContainerId);
-          if (formContainer.style.display === 'block') {
-            formContainer.style.display = 'none'; // Show help
+          if (otherContainer.style.display === 'block') {
+            otherContainer.style.display = 'none'; // Show help
           }
       })
     });
@@ -289,8 +289,8 @@
       }
       otherContainerIds.forEach(function(ContainerId, index){
           otherContainer = document.getElementById(ContainerId);
-          if (formContainer.style.display === 'block') {
-            formContainer.style.display = 'none'; // Show help
+          if (otherContainer.style.display === 'block') {
+            otherContainer.style.display = 'none'; // Show help
           }
       })
     });
@@ -306,8 +306,8 @@
       }
       otherContainerIds.forEach(function(ContainerId, index){
           otherContainer = document.getElementById(ContainerId);
-          if (formContainer.style.display === 'block') {
-            formContainer.style.display = 'none'; // Show help
+          if (otherContainer.style.display === 'block') {
+            otherContainer.style.display = 'none'; // Show help
           }
       })
     });
@@ -323,8 +323,8 @@
       }
       otherContainerIds.forEach(function(ContainerId, index){
           otherContainer = document.getElementById(ContainerId);
-          if (formContainer.style.display === 'block') {
-            formContainer.style.display = 'none'; // Show help
+          if (otherContainer.style.display === 'block') {
+            otherContainer.style.display = 'none'; // Show help
           }
       })
     });
