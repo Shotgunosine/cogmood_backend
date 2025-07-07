@@ -5,6 +5,7 @@ import tempfile
 from . import log
 from .validation import validate
 import pandas as pd
+import numpy as np
 
 def print_task_performance(sub_id):
     for task_name in ['flkr', 'cab', 'rdm']:
@@ -17,7 +18,7 @@ def print_task_performance(sub_id):
                 lod = log.log2dl(slog_file)
                 loddf = pd.DataFrame(lod)
             print()
-            print(f'task_name: {task_name}, run: {runnum}')
+            print(f'task_name: {task_name}, run: {runnum}, valid: {validate(zipped_path, task_name, runnum)}')
             if task_name == 'cab':
                 print(loddf.groupby(['cond_strength', 'cond_trial']).resp_acc.mean())
                 print(loddf.groupby(['cond_strength', 'cond_trial']).resp_rt.mean())
@@ -31,13 +32,12 @@ def print_task_performance(sub_id):
                 print(loddf.groupby('coh_dif').rt.mean())
 
 if __name__ == "__main__":
-
     parser = ArgumentParser(description = 'Print performance stats')
     parser.add_argument('--workerId', help='Optional: Worker id of the participant to'
                                            ' print performance stats.', default=None)
     args = parser.parse_args()
-    data_dir = Path('../data')
-    md_dir = Path('../metadata')
+    data_dir = Path('./data')
+    md_dir = Path('./metadata')
     survey_dir = data_dir / 'survey'
     task_data_dir = data_dir / 'task/upload'
     task_db_dir = data_dir / 'task/db'
@@ -52,27 +52,27 @@ if __name__ == "__main__":
             'subId',
             'complete'
         ]
-        try:
-            md = {}
-            for mdl in md_lines:
-                for field in fields_to_capture:
+        md = {}
+        for mdl in md_lines:
+            for field in fields_to_capture:
+                try:
                     if mdl[1] == field:
                         md[field] = mdl[2]
-            if args.workerId is not None:
-                if md.get('workerId', None) == args.workerId:
-                    print('###################################')
-                    print("Worker ID:", md['workerId'])
-                    print('###################################')
-                    print_task_performance(md['subId'])
-                    print()
-                    print()
-            elif md.get('complete', None) == 'task_invalid':
-                # print performance information for all tasks for folks with an invalid task
+                except IndexError:
+                    continue
+        if args.workerId is not None:
+            if md.get('workerId', None) == args.workerId:
                 print('###################################')
                 print("Worker ID:", md['workerId'])
                 print('###################################')
                 print_task_performance(md['subId'])
                 print()
                 print()
-        except IndexError:
-            continue
+        elif md.get('complete', None) == 'task_invalid':
+            # print performance information for all tasks for folks with an invalid task
+            print('###################################')
+            print("Worker ID:", md['workerId'])
+            print('###################################')
+            print_task_performance(md['subId'])
+            print()
+            print()
