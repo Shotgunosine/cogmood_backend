@@ -35,3 +35,4 @@ services:
       - ./data:/cogmood_backend/data:ro
       - ./metadata:/cogmood_backend/metadata:ro
     network_mode: none
+    command: ["ls"]

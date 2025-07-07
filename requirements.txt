@@ -7,3 +7,4 @@ playwright
 pytest-playwright
 pytest-timestamper
 gevent
+pandas
