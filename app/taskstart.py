@@ -13,7 +13,7 @@ from flask import (
 from .io import write_metadata, initialize_taskdata
 from .config import CFG
 from .routing import routing
-from .utils import edit_exe_worker_id, edit_app_worker_id
+from .utils import edit_exe_worker_id, edit_app_worker_id, logging
 from hashlib import blake2b
 
 
@@ -110,25 +110,29 @@ def download_win():
 
 @bp.route('/taskstart', methods=['POST'])
 def taskstart_post():
+    logging.info('taskstart post keys and values to follow')
+    for k,v in request.form:
+        logging.info(f'{k}:{v}{type(v)}')
     if not 'workerId' in session:
         return redirect(url_for('taskstart.taskstart', **request.args))
-    elif request.form.get('task_completed', 0) == 1:
+    elif int(request.form.get('task_completed', 0)) == 1:
         session['complete_button'] = True
         write_metadata(session, ['complete_button'], 'a')
         return redirect(url_for('taskstart.taskstart', **request.args))
-    elif request.form.get('app_broke', 0) == 1:
+    elif int(request.form.get('app_broke', 0)) == 1:
         session['app_broke'] = True
         write_metadata(session, ['app_broke'], 'a')
-    elif request.form.get('no_id', 0) == 1:
+    elif int(request.form.get('no_id', 0)) == 1:
         session['no_id'] = True
         write_metadata(session, ['no_id'], 'a')
-    elif request.form.get('no_upload', 0) == 1:
+    elif int(request.form.get('no_upload', 0)) == 1:
         session['no_upload'] = True
         write_metadata(session, ['no_upload'], 'a')
-    elif request.form.get('other_problem', 0) == 1:
+    elif int(request.form.get('other_problem', 0)) == 1:
         session['other_problem'] = True
         write_metadata(session, ['other_problem'], 'a')
     else:
         session['unknown_taskstart_post'] = True
         write_metadata(session, ['unknown_taskstart_post'], 'a')
+        return redirect(url_for('taskstart.taskstart', **request.args))
     return {}, 204
