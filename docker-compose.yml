@@ -29,3 +29,9 @@ services:
     mem_limit: "3g"
     cpus: "4"
 
+  util:
+    build: .
+    volumes:
+      - ./data:/cogmood_backend/data:ro
+      - ./metadata:/cogmood_backend/metadata:ro
+    network_mode: none
