@@ -1,7 +1,5 @@
 [![image](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/nivlab/NivLink/blob/master/LICENSE)
 
-[![image](https://zenodo.org/badge/15857265.svg)](https://zenodo.org/badge/latestdoi/15857265)
-
 # Cogmood Backend
 
 Backend for the NIMH MLC's CogMood experiments, adapted from the Niv
