@@ -66,34 +66,72 @@
                   this.setAttribute('fill', 'rgba(0, 0, 255, 0.5)');
               }
           })
-      }
+      }      
   }
 
   function save_current_page(survey) {
       currentpage = survey.currentPage.name
-      console.log(currentpage)
   }
 
   function start_question_timer(sender, options) {
       const questionName = options.question.name;
+      const pageTime = new Date().getTime();
       console.log(options);
-      questionTimers[questionName] = {
-          startTimes: [new Date().getTime()],
-          durations: [],
-          responses: []
-      };
+      if (!questionTimers.hasOwnProperty(questionName)) {
+          if (options.question.constructor.name === "QuestionMatrix"){
+              const rowTimers = {};
+              const rows = options.question.rows;
+              for (let row=0; row < rows.length; row++) {
+                  console.log(rows[row]);
+                  rowTimers[rows[row].value] = {
+                      pageTime: [pageTime],
+                      responseTimes: [],
+                      responses: []
+                  };
+              }
+              questionTimers[questionName] = rowTimers;
+          } else {
+              questionTimers[questionName] = {
+                pageTime: [pageTime],
+                responseTimes: [],
+                responses: []
+              };
+          }
+      } else {
+          if (options.question.constructor.name === "QuestionMatrix"){
+              const rowTimers = questionTimers[questionName]
+              const rows = options.question.rows;
+              for (let row=0; row < rows.length; row++) {
+                  rowTimers[rows[row].value].pageTime.push(pageTime);
+              }
+          } else {
+              questionTimers[questionName].pageTime.push(pageTime);
+          }
+      }
+
   }
 
-  function stop_question_time(sender, options) {
+  function stop_question_timer(sender, options) {
       const questionName = options.name;
-      console.log(options);
+      const qtime =  new Date().getTime();
+
       if (questionTimers[questionName]) {
-          const qtime =  new Date().getTime();
-          const startTimes = questionTimers[questionName].startTimes
-          const stime = startTimes[startTimes.length - 1];
-          questionTimers[questionName].startTimes.push(qtime)
-          questionTimers[questionName].durations.push(qtime - stime)
+          if (options.question.constructor.name === "QuestionMatrix"){
+              for (const rk of Object.keys(options.value)) {
+                  const row = questionTimers[questionName][rk];
+                  const rowresps = row.responses;
+                  if (rowresps[rowresps.length - 1] !== options.value[rk]) {
+                     row.responseTimes.push(qtime);
+                     row.responses.push(options.value[rk]);
+                  }
+              }
+          } else {
+              questionTimers[questionName].responseTimes.push(qtime);
+              questionTimers[questionName].responses.push(options.value);
+          }
       }
+      document.querySelectorAll('.sd-item--error', '.sd-radio').forEach(element => {element.classList.remove('sd-item--error')});
+
   }
 
   function augment_survey(survey) {
@@ -102,6 +140,7 @@
       survey.onCurrentPageChanged.add(save_current_page);
       survey.onAfterRenderQuestion.add(add_onclick);
       survey.onAfterRenderQuestion.add(start_question_timer);
+      survey.onValueChanged.add(stop_question_timer);
 
       {% if prev_data is not none %}
           let parsed_data = JSON.parse({{ prev_data|tojson|safe }});
