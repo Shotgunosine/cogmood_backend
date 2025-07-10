@@ -76,13 +76,11 @@
   function start_question_timer(sender, options) {
       const questionName = options.question.name;
       const pageTime = new Date().getTime();
-      console.log(options);
       if (!questionTimers.hasOwnProperty(questionName)) {
           if (options.question.constructor.name === "QuestionMatrix"){
               const rowTimers = {};
               const rows = options.question.rows;
               for (let row=0; row < rows.length; row++) {
-                  console.log(rows[row]);
                   rowTimers[rows[row].value] = {
                       pageTime: [pageTime],
                       responseTimes: [],
@@ -130,8 +128,8 @@
               questionTimers[questionName].responses.push(options.value);
           }
       }
+      {#keep radio bubles on questionmatrix questions from turning pink#}
       document.querySelectorAll('.sd-item--error', '.sd-radio').forEach(element => {element.classList.remove('sd-item--error')});
-
   }
 
   function augment_survey(survey) {
