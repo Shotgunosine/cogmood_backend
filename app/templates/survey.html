@@ -73,11 +73,35 @@
       currentpage = survey.currentPage.name
       console.log(currentpage)
   }
+
+  function start_question_timer(sender, options) {
+      const questionName = options.question.name;
+      console.log(options);
+      questionTimers[questionName] = {
+          startTimes: [new Date().getTime()],
+          durations: [],
+          responses: []
+      };
+  }
+
+  function stop_question_time(sender, options) {
+      const questionName = options.name;
+      console.log(options);
+      if (questionTimers[questionName]) {
+          const qtime =  new Date().getTime();
+          const startTimes = questionTimers[questionName].startTimes
+          const stime = startTimes[startTimes.length - 1];
+          questionTimers[questionName].startTimes.push(qtime)
+          questionTimers[questionName].durations.push(qtime - stime)
+      }
+  }
+
   function augment_survey(survey) {
       survey.onTextMarkdown.add(convert_markdown);
       survey.onCurrentPageChanged.add(ongoing_save);
       survey.onCurrentPageChanged.add(save_current_page);
       survey.onAfterRenderQuestion.add(add_onclick);
+      survey.onAfterRenderQuestion.add(start_question_timer);
 
       {% if prev_data is not none %}
           let parsed_data = JSON.parse({{ prev_data|tojson|safe }});
@@ -90,13 +114,14 @@
 
   // Define global variables.
   var currentpage = ""
+  const questionTimers = {};
 
   const survey_trial = {
     type: jsPsychSurvey,
     survey_json: survey_json,
     survey_function:  augment_survey,
     on_start: function(data) {
-      pass_message('message to pass to nivturk')
+      pass_message('Survey Started')
     },
   };
 
@@ -114,6 +139,7 @@
         // Add interactions to the data variable
         var interaction_data = jsPsych.data.getInteractionData();
         jsPsych.data.get().addToLast({interactions: interaction_data.json()});
+        jsPsych.data.get().addToLast({timings: JSON.stringify(questionTimers)});
 
         // Display jsPsych data in viewport.
         // jsPsych.data.displayData();
@@ -160,6 +186,7 @@
   function ongoing_save(survey) {
     var ogdata = survey.data;
     ogdata.pageNo = survey.currentPageNo;
+    ogdata.timings = questionTimers;
     $.ajax({
       url: "{{ url_for("survey.ongoing_save") }}",
       method: 'POST',
