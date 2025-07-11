@@ -82,17 +82,17 @@
               const rows = options.question.rows;
               for (let row=0; row < rows.length; row++) {
                   rowTimers[rows[row].value] = {
-                      pageTime: [pageTime],
-                      responseTimes: [],
-                      responses: []
+                      pt: [pageTime],
+                      rts: [],
+                      rrs: []
                   };
               }
               questionTimers[questionName] = rowTimers;
           } else {
               questionTimers[questionName] = {
-                pageTime: [pageTime],
-                responseTimes: [],
-                responses: []
+                pt: [pageTime],
+                rts: [],
+                rrs: []
               };
           }
       } else {
@@ -100,10 +100,10 @@
               const rowTimers = questionTimers[questionName]
               const rows = options.question.rows;
               for (let row=0; row < rows.length; row++) {
-                  rowTimers[rows[row].value].pageTime.push(pageTime);
+                  rowTimers[rows[row].value].pt.push(pageTime);
               }
           } else {
-              questionTimers[questionName].pageTime.push(pageTime);
+              questionTimers[questionName].pt.push(pageTime);
           }
       }
 
@@ -117,15 +117,15 @@
           if (options.question.constructor.name === "QuestionMatrix"){
               for (const rk of Object.keys(options.value)) {
                   const row = questionTimers[questionName][rk];
-                  const rowresps = row.responses;
+                  const rowresps = row.rrs;
                   if (rowresps[rowresps.length - 1] !== options.value[rk]) {
-                     row.responseTimes.push(qtime);
-                     row.responses.push(options.value[rk]);
+                     row.rts.push(qtime);
+                     row.rrs.push(options.value[rk]);
                   }
               }
           } else {
-              questionTimers[questionName].responseTimes.push(qtime);
-              questionTimers[questionName].responses.push(options.value);
+              questionTimers[questionName].rts.push(qtime);
+              questionTimers[questionName].rrs.push(options.value);
           }
       }
       {#keep radio bubles on questionmatrix questions from turning pink#}
@@ -176,7 +176,7 @@
         // Add interactions to the data variable
         var interaction_data = jsPsych.data.getInteractionData();
         jsPsych.data.get().addToLast({interactions: interaction_data.json()});
-        jsPsych.data.get().addToLast({timings: JSON.stringify(questionTimers)});
+        jsPsych.data.get().addToLast({timings: questionTimers});
 
         // Display jsPsych data in viewport.
         // jsPsych.data.displayData();

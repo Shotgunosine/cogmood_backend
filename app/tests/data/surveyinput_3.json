@@ -70,7 +70,7 @@
   [
     {
       "type": "radiogroup",
-      "title": "Have you been diagnosed with a mood disorder",
+      "title": "Have you ever been diagnosed with a mood disorder",
       "answer": "Yes"
     }
   ],
@@ -99,12 +99,17 @@
       "type": "radiogroup",
       "title": "In the past two weeks have you been bothered by symptoms of your mood disorder(s)?",
       "answer": "Yes"
+    },
+    {
+      "type": "radiogroup",
+      "title": "Have you been bothered by symptoms of your mood disorder(s) today?",
+      "answer": "Yes"
     }
   ],
   [
     {
       "type": "radiogroup",
-      "title": "Have you been diagnosed with an anxiety disorder",
+      "title": "Have you ever been diagnosed with an anxiety disorder",
       "answer": "Yes"
     }
   ],
@@ -133,12 +138,17 @@
       "type": "radiogroup",
       "title": "In the past two weeks have you been bothered by symptoms of your anxiety disorder(s)?",
       "answer": "Yes"
+    },
+    {
+      "type": "radiogroup",
+      "title": "Have you been bothered by symptoms of your anxiety disorder(s) today?",
+      "answer": "Yes"
     }
   ],
   [
     {
       "type": "radiogroup",
-      "title": "Have you been diagnosed with attention-deficit/hyperactivity disorder (ADHD) or attention-deficit disorder (ADD)?",
+      "title": "Have you ever been diagnosed with attention-deficit/hyperactivity disorder (ADHD) or attention-deficit disorder (ADD)?",
       "answer": "Yes"
     }
   ],
@@ -166,6 +176,11 @@
     {
       "type": "radiogroup",
       "title": "In the past two weeks have you been bothered by symptoms of your attention disorder(s)?",
+      "answer": "Yes"
+    },
+    {
+      "type": "radiogroup",
+      "title": "Have you been bothered by symptoms of your attention disorder(s) today?",
       "answer": "Yes"
     }
   ],
@@ -397,7 +412,11 @@
     }
   ],
   [],
-  [],
+  [{
+    "type": "checkbox",
+    "title": "I understand that for a statement like",
+    "answer": "Yes"
+  }],
   [
     {
       "type": "matrix",
