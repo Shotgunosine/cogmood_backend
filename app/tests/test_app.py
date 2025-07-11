@@ -142,6 +142,12 @@ def test_survey_attn1(url, server, loadtest, page: Page, request):
             elif qq['type'] == 'matrix':
                 qqname = f"row {qq['title']}, column {qq['answer']}"
                 page.get_by_role("cell", name=qqname).locator("label").click()
+            elif qq['type'] == 'ladder':
+                answer = qq['answer'].replace(' ', '-')
+                if qq['answer'] in ['Bottom rung', 'Top rung']:
+                    page.locator(f"#{answer}").click()
+                else:
+                    page.locator(f"[id=\"\\3{answer}\"]").click()
             elif qq['type'] == 'html':
                 continue
         if pgn + 1 == len(survey_input):
@@ -150,7 +156,7 @@ def test_survey_attn1(url, server, loadtest, page: Page, request):
         else:
             page.get_by_role("button", name="Next").click()
     if not loadtest:
-        expect(page).to_have_url(f'{url}error/1008')
+        expect(page.get_by_role("img", name="Prolific logo")).to_be_visible()
 
     if server:
         # get saved data and compare to expectation
@@ -193,6 +199,12 @@ def test_survey_attn3(url, server, loadtest, page: Page, request):
             elif qq['type'] == 'matrix':
                 qqname = f"row {qq['title']}, column {qq['answer']}"
                 page.get_by_role("cell", name=qqname).locator("label").click()
+            elif qq['type'] == 'ladder':
+                answer = qq['answer'].replace(' ', '-')
+                if qq['answer'] in ['Bottom rung', 'Top rung']:
+                    page.locator(f"#{answer}").click()
+                else:
+                    page.locator(f"[id=\"\\3{answer}\"]").click()
             elif qq['type'] == 'html':
                 continue
         if pgn + 1 == len(survey_input):
@@ -248,6 +260,12 @@ def test_taskcontrol(url, server, loadtest, ignore_https_errors, page: Page, req
             elif qq['type'] == 'matrix':
                 qqname = f"row {qq['title']}, column {qq['answer']}"
                 page.get_by_role("cell", name=qqname).locator("label").click()
+            elif qq['type'] == 'ladder':
+                answer = qq['answer'].replace(' ', '-')
+                if qq['answer'] in ['Bottom rung', 'Top rung']:
+                    page.locator(f"#{answer}").click()
+                else:
+                    page.locator(f"[id=\"\\3{answer}\"]").click()
             elif qq['type'] == 'html':
                 continue
         if pgn + 1 == len(survey_input):
@@ -255,7 +273,7 @@ def test_taskcontrol(url, server, loadtest, ignore_https_errors, page: Page, req
         else:
             page.get_by_role("button", name="Next").click()
     expect(page).to_have_url(f'{url}taskstart?PROLIFIC_PID={workerId}', timeout=10000)
-    page.get_by_role("button").click()
+    page.get_by_role("button", name="Download for macOS").click()
     # mock task communication with server
     cfg = configparser.ConfigParser()
     cfg.read(os.path.join(ROOT_DIR, 'app.ini'))
@@ -286,6 +304,7 @@ def test_taskcontrol(url, server, loadtest, ignore_https_errors, page: Page, req
     # get expected response
     blocks = CFG['blocks']
     blocks.extend(CFG['blocks'])
+    blocks.append('rdm')
     blocks_json = []
     added_blocks = {bb: 0 for bb in blocks}
     for block in blocks:
@@ -365,7 +384,7 @@ def test_taskcontrol(url, server, loadtest, ignore_https_errors, page: Page, req
         assert re.search('complete\t(.*)\n', logs).group(1) == 'success'
 
     if not loadtest:
-        page.goto(f"{url}?PROLIFIC_PID={workerId}")
+        page.get_by_role("button", name="I have completed the tasks").click()
         expect(page.get_by_role("img", name="Prolific logo")).to_be_visible()
 
     LOGGER.info('PASSED: test_taskcontrol')

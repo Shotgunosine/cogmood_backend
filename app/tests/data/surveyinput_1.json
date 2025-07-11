@@ -70,7 +70,7 @@
   [
     {
       "type": "radiogroup",
-      "title": "Have you been diagnosed with a mood disorder",
+      "title": "Have you ever been diagnosed with a mood disorder by a mental health professional?",
       "answer": "Yes"
     }
   ],
@@ -99,12 +99,17 @@
       "type": "radiogroup",
       "title": "In the past two weeks have you been bothered by symptoms of your mood disorder(s)?",
       "answer": "Yes"
+    },
+    {
+      "type": "radiogroup",
+      "title": "Have you been bothered by symptoms of your mood disorder(s) today?",
+      "answer": "Yes"
     }
   ],
   [
     {
       "type": "radiogroup",
-      "title": "Have you been diagnosed with an anxiety disorder",
+      "title": "Have you ever been diagnosed with an anxiety disorder",
       "answer": "Yes"
     }
   ],
@@ -133,12 +138,17 @@
       "type": "radiogroup",
       "title": "In the past two weeks have you been bothered by symptoms of your anxiety disorder(s)?",
       "answer": "Yes"
+    },
+    {
+      "type": "radiogroup",
+      "title": "Have you been bothered by symptoms of your anxiety disorder(s) today?",
+      "answer": "Yes"
     }
   ],
   [
     {
       "type": "radiogroup",
-      "title": "Have you been diagnosed with attention-deficit/hyperactivity disorder (ADHD) or attention-deficit disorder (ADD)?",
+      "title": "Have you ever been diagnosed with attention-deficit/hyperactivity disorder (ADHD) or attention-deficit disorder (ADD)?",
       "answer": "Yes"
     }
   ],
@@ -166,6 +176,11 @@
     {
       "type": "radiogroup",
       "title": "In the past two weeks have you been bothered by symptoms of your attention disorder(s)?",
+      "answer": "Yes"
+    },
+    {
+      "type": "radiogroup",
+      "title": "Have you been bothered by symptoms of your attention disorder(s) today?",
       "answer": "Yes"
     }
   ],
@@ -397,7 +412,11 @@
     }
   ],
   [],
-  [],
+  [{
+    "type": "checkbox",
+    "title": "I understand that for a statement like",
+    "answer": "Yes"
+  }],
   [
     {
       "type": "matrix",
@@ -837,7 +856,7 @@
     },
     {
       "type": "matrix",
-      "title": "I was selecting not at all.",
+      "title": "I was this is a check question select not at all.",
       "answer": "Not at all"
     },
     {
@@ -892,6 +911,28 @@
       "type": "checkbox",
       "title": "Please select the statements",
       "answer": "None of the above"
+    }
+  ],
+  [
+    {
+      "type": "radiogroup",
+      "title": "Are you right handed or left handed?",
+      "answer": "Left Handed"
+    },
+    {
+      "type": "radiogroup",
+      "title": "How tired do you feel right now?",
+      "answer": "1: Not Tired"
+    },
+    {
+      "type": "radiogroup",
+      "title": "By this time today",
+      "answer": "More"
+    },
+    {
+      "type": "radiogroup",
+      "title": "How hungry do you feel right now?",
+      "answer": "1: Not Hungry"
     }
   ]
 ]

@@ -66,18 +66,79 @@
                   this.setAttribute('fill', 'rgba(0, 0, 255, 0.5)');
               }
           })
-      }
+      }      
   }
 
   function save_current_page(survey) {
       currentpage = survey.currentPage.name
-      console.log(currentpage)
   }
+
+  function start_question_timer(sender, options) {
+      const questionName = options.question.name;
+      const pageTime = new Date().getTime();
+      if (!questionTimers.hasOwnProperty(questionName)) {
+          if (options.question.constructor.name === "QuestionMatrix"){
+              const rowTimers = {};
+              const rows = options.question.rows;
+              for (let row=0; row < rows.length; row++) {
+                  rowTimers[rows[row].value] = {
+                      pt: [pageTime],
+                      rts: [],
+                      rrs: []
+                  };
+              }
+              questionTimers[questionName] = rowTimers;
+          } else {
+              questionTimers[questionName] = {
+                pt: [pageTime],
+                rts: [],
+                rrs: []
+              };
+          }
+      } else {
+          if (options.question.constructor.name === "QuestionMatrix"){
+              const rowTimers = questionTimers[questionName]
+              const rows = options.question.rows;
+              for (let row=0; row < rows.length; row++) {
+                  rowTimers[rows[row].value].pt.push(pageTime);
+              }
+          } else {
+              questionTimers[questionName].pt.push(pageTime);
+          }
+      }
+
+  }
+
+  function stop_question_timer(sender, options) {
+      const questionName = options.name;
+      const qtime =  new Date().getTime();
+
+      if (questionTimers[questionName]) {
+          if (options.question.constructor.name === "QuestionMatrix"){
+              for (const rk of Object.keys(options.value)) {
+                  const row = questionTimers[questionName][rk];
+                  const rowresps = row.rrs;
+                  if (rowresps[rowresps.length - 1] !== options.value[rk]) {
+                     row.rts.push(qtime);
+                     row.rrs.push(options.value[rk]);
+                  }
+              }
+          } else {
+              questionTimers[questionName].rts.push(qtime);
+              questionTimers[questionName].rrs.push(options.value);
+          }
+      }
+      {#keep radio bubles on questionmatrix questions from turning pink#}
+      document.querySelectorAll('.sd-item--error', '.sd-radio').forEach(element => {element.classList.remove('sd-item--error')});
+  }
+
   function augment_survey(survey) {
       survey.onTextMarkdown.add(convert_markdown);
       survey.onCurrentPageChanged.add(ongoing_save);
       survey.onCurrentPageChanged.add(save_current_page);
       survey.onAfterRenderQuestion.add(add_onclick);
+      survey.onAfterRenderQuestion.add(start_question_timer);
+      survey.onValueChanged.add(stop_question_timer);
 
       {% if prev_data is not none %}
           let parsed_data = JSON.parse({{ prev_data|tojson|safe }});
@@ -90,13 +151,14 @@
 
   // Define global variables.
   var currentpage = ""
+  const questionTimers = {};
 
   const survey_trial = {
     type: jsPsychSurvey,
     survey_json: survey_json,
     survey_function:  augment_survey,
     on_start: function(data) {
-      pass_message('message to pass to nivturk')
+      pass_message('Survey Started')
     },
   };
 
@@ -114,6 +176,7 @@
         // Add interactions to the data variable
         var interaction_data = jsPsych.data.getInteractionData();
         jsPsych.data.get().addToLast({interactions: interaction_data.json()});
+        jsPsych.data.get().addToLast({timings: questionTimers});
 
         // Display jsPsych data in viewport.
         // jsPsych.data.displayData();
@@ -160,6 +223,7 @@
   function ongoing_save(survey) {
     var ogdata = survey.data;
     ogdata.pageNo = survey.currentPageNo;
+    ogdata.timings = questionTimers;
     $.ajax({
       url: "{{ url_for("survey.ongoing_save") }}",
       method: 'POST',

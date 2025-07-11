@@ -1916,7 +1916,7 @@ const survey_json = {
               name: "hunger",
               title: "How hungry do you feel right now?",
               choices: [
-                  "1: Not hungry",
+                  "1: Not Hungry",
                   "2",
                   "3",
                   "4",
