@@ -24,6 +24,7 @@
   ],
   "mood_med_today": "Not applicable (Not taking medication for a mood disorder)",
   "mood_bothered": "Yes",
+  "mood_bothered_today": "Yes",
   "anxiety_pro_diagnosis": "Yes",
   "anxiety_diagnoses": [
     "Selective Mutism"
@@ -34,6 +35,7 @@
   ],
   "anxiety_med_today": "Yes",
   "anxiety_bothered": "Yes",
+  "anxiety_bothered_today": "Yes",
   "attention_pro_diagnosis": "Yes",
   "attention_diagnoses": [
     "Attention-Deficit Disorder (ADD)"
@@ -44,6 +46,7 @@
   ],
   "attention_med_today": "Yes",
   "attention_bothered": "Yes",
+  "attention_bothered_today": "Yes",
   "baaars_inattention": {
     "baars_inattentive_1": 1,
     "baars_inattentive_2": 1,
@@ -101,6 +104,7 @@
   },
   "hitopintro1": null,
   "hitopintro2": null,
+  "check_ack": "Yes",
   "hitop_01": {
     "hitop_anhdep_1": 0,
     "hitop_sepinsec_1": 0,
