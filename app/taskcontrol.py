@@ -37,7 +37,7 @@ def taskcontrol():
             data['error'] = 'No worker_id'
             return data, 400
         expected_code = blake2b(workerId.encode(), digest_size=4, salt=CFG['salt'].encode()).hexdigest()[:4]
-        print(code, expected_code)
+
         if code != expected_code:
             data['error'] = 'Invalid worker_id'
             return data, 400
