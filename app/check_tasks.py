@@ -17,16 +17,26 @@ def print_task_performance(sub_id):
                 slog_file = ZipFile(zipped_path).extract(f'log_{task_name}_0.slog', path=tmpdir)
                 lod = log.log2dl(slog_file)
                 loddf = pd.DataFrame(lod)
+            try:
+                loddf = loddf.loc[loddf.run_num == runnum].copy()
+            except AttributeError:
+                loddf = loddf.loc[loddf.block == runnum].copy()
             print()
             print(f'task_name: {task_name}, run: {runnum}, valid: {validate(zipped_path, task_name, runnum)}')
             if task_name == 'cab':
+                loddf['noresp'] = loddf.resp_rt.isnull()
+                print(loddf.groupby(['cond_strength', 'cond_trial']).noresp.mean())
                 print(loddf.groupby(['cond_strength', 'cond_trial']).resp_acc.mean())
                 print(loddf.groupby(['cond_strength', 'cond_trial']).resp_rt.mean())
             elif task_name == 'flkr':
+                loddf['noresp'] = loddf.rt.isnull()
+                print(loddf.groupby("condition").noresp.mean())
                 print(loddf.groupby("condition").correct.mean())
                 print(loddf.groupby("condition").rt.mean())
             elif task_name == 'rdm':
                 loddf['coh_dif'] = np.abs(loddf.left_coherence - loddf.right_coherence)
+                loddf['noresp'] = loddf.rt.isnull()
+                print(loddf.groupby('coh_dif').noresp.mean())
                 print(loddf.groupby('coh_dif').correct.sum())
                 print(loddf.groupby('coh_dif').correct.mean())
                 print(loddf.groupby('coh_dif').rt.mean())
@@ -34,6 +44,8 @@ def print_task_performance(sub_id):
 if __name__ == "__main__":
     parser = ArgumentParser(description = 'Print performance stats')
     parser.add_argument('--workerId', help='Optional: Worker id of the participant to'
+                                           ' print performance stats.', default=None)
+    parser.add_argument('--subId', help='Optional: Sub id of the participant to'
                                            ' print performance stats.', default=None)
     args = parser.parse_args()
     data_dir = Path('./data')
@@ -64,6 +76,16 @@ if __name__ == "__main__":
             if md.get('workerId', None) == args.workerId:
                 print('###################################')
                 print("Worker ID:", md['workerId'])
+                print("Sub ID:", md['sub'])
+                print('###################################')
+                print_task_performance(md['subId'])
+                print()
+                print()
+        elif args.subId is not None:
+            if md.get('subId', None) == args.workerId:
+                print('###################################')
+                print("Worker ID:", md['workerId'])
+                print("Sub ID:", md['sub'])
                 print('###################################')
                 print_task_performance(md['subId'])
                 print()
