@@ -9,7 +9,7 @@ FLKR_KEYS = {'run_num', 'appear_time_time', 'appear_time_error', 'disappear_time
              'press_time_time','press_time_error', 'rt', 'block', 'trial_id', 'correct',
              'fmri_tr_time', 'eeg_pulse_time', 'log_time','loc_x', 'loc_y', 'condition',
              'dir', 'corr_resp', 'log_num'}
-RDM_THR = 13
+RDM_THR = 9
 RDM_NTRIALS = 73
 RDM_KEYS = {'run_num', 'appear_time_time', 'appear_time_error', 'disappear_time_time',
             'disappear_time_error', 'pressed', 'press_time_time', 'press_time_error', 'rt',
