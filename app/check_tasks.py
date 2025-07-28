@@ -76,7 +76,7 @@ if __name__ == "__main__":
             if md.get('workerId', None) == args.workerId:
                 print('###################################')
                 print("Worker ID:", md['workerId'])
-                print("Sub ID:", md['sub'])
+                print("Sub ID:", md['subId'])
                 print('###################################')
                 print_task_performance(md['subId'])
                 print()
@@ -85,7 +85,7 @@ if __name__ == "__main__":
             if md.get('subId', None) == args.workerId:
                 print('###################################')
                 print("Worker ID:", md['workerId'])
-                print("Sub ID:", md['sub'])
+                print("Sub ID:", md['subId'])
                 print('###################################')
                 print_task_performance(md['subId'])
                 print()
