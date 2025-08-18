@@ -39,28 +39,28 @@ def complete():
         write_metadata(session, ['ERROR','complete','code_reject'], 'a')
 
         ## Redirect participant with decoy code.
-        url = "https://app.prolific.co/submissions/complete?cc=" + CFG['code_reject']
+        url = "https://app.prolific.com/submissions/complete?cc=" + CFG['code_reject']
         return redirect(url)
 
     # Case 4: visit complete page with previous rejection.
     elif session['complete'] == 'reject':
 
         ## Redirect participant with decoy code.
-        url = "https://app.prolific.co/submissions/complete?cc=" + CFG['code_reject']
+        url = "https://app.prolific.com/submissions/complete?cc=" + CFG['code_reject']
         return redirect(url)
 
     # Case 5: visit complete page after task failed validation
     elif session['complete'] == 'task_invalid':
 
         ## Redirect participant with decoy code.
-        url = "https://app.prolific.co/submissions/complete?cc=" + CFG['code_inval']
+        url = "https://app.prolific.com/submissions/complete?cc=" + CFG['code_inval']
         return redirect(url)
 
     # Case 6: visit complete page with succesfull completion.
     elif session['complete'] == 'success':
 
         ## Redirect participant with completion code.
-        url = "https://app.prolific.co/submissions/complete?cc=" + CFG['code_success']
+        url = "https://app.prolific.com/submissions/complete?cc=" + CFG['code_success']
         return redirect(url)
 
     # Case 7: catch all

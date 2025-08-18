@@ -303,7 +303,7 @@
   function redirect_reject(workerId, assignmentId, hitId, code_reject) {
 
     // Concatenate metadata into complete URL (returned on reject).
-    var url = "https://app.prolific.co/submissions/complete?cc=" + code_reject;
+    var url = "https://app.prolific.com/submissions/complete?cc=" + code_reject;
 
     $.ajax({
       url: "{{ url_for("survey.redirect_reject") }}",
